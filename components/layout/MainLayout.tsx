@@ -17,7 +17,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         options={{
           headerStyle: {
             // backgroundColor: COLORS.lightWhite,
-            backgroundColor: "#2b8a3e", //green-9
+            backgroundColor: "#f8f9fa", //green-9
           },
           headerShadowVisible: false,
           headerLeft: () => <View>{props.headerLeft}</View>,

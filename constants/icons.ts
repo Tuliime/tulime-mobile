@@ -9,7 +9,8 @@ const location = require("../assets/icons/location.png");
 const chevronLeft = require("../assets/icons/chevron-left.png");
 const chevronRight = require("../assets/icons/chevron-right.png");
 const notification = require("../assets/icons/notification.png");
-const internet = require("../assets/icons/internet.png");
+// const internet = require("../assets/icons/internet.png");
+const internet = require("@/assets/icons/internet.png");
 
 export default {
   heart,

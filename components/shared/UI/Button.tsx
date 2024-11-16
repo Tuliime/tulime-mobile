@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { COLORS, SIZES } from "../../constants";
+import { COLORS, SIZES } from "../../../constants";
 
 type ButtonProps = {
   label: ReactNode;

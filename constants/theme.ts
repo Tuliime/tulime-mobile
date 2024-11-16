@@ -1,12 +1,14 @@
 const COLORS = {
-  primary: "#312651",
-  secondary: "#444262",
-  tertiary: "#FF7754",
+  primary: "#37b24d",
+  secondary: "#f59f00",
+  tertiary: "#1c7ed6",
 
   gray: "#83829A",
   gray2: "#C1C0C8",
-
-  white: "#F3F4F8",
+  gray6: "#868e96",
+  gray7: "#495057",
+  gray8: "#343a40",
+  white: "#FFFFFF",
   lightWhite: "#FAFAFC",
 };
 
@@ -16,7 +18,17 @@ const FONT = {
   bold: "DMBold",
 };
 
+/**
+ *xxSmall: 8
+ *xSmall: 10
+ *small: 12
+ *medium: 16
+ *large: 20
+ *xLarge: 24
+ *xxLarge: 32
+ */
 const SIZES = {
+  xxSmall: 8,
   xSmall: 10,
   small: 12,
   medium: 16,

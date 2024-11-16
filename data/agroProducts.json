@@ -1,0 +1,67 @@
+{
+  "data": [
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    },
+    {
+      "name": "Rice",
+      "category": "crop",
+      "price": 3000,
+      "currency": "UGX",
+      "image": "@/assets/images/agro/rice.png"
+    }
+  ]
+}

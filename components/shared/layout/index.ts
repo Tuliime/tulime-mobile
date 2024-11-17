@@ -1,4 +1,5 @@
 import { MainLayout } from "./MainLayout";
 import { MainSectionLayout } from "./MainSectionLayout";
+import { Sidebar } from "./Sidebar";
 
-export { MainLayout, MainSectionLayout };
+export { MainLayout, MainSectionLayout, Sidebar };

@@ -9,21 +9,25 @@ import {
 } from "react-native";
 import { Stack } from "expo-router";
 import { COLORS, SIZES, icons } from "@/constants";
+import { Sidebar } from "@/components/shared/layout";
+import { useSidebarStore } from "@/store";
 
 type MainLayoutProps = {
   children: ReactNode;
 };
 
 export const MainLayout: React.FC<MainLayoutProps> = (props) => {
-  const openSideBar = () => {};
+  const openSideBar = useSidebarStore((state) => state.openSidebar);
+  const isOpenSidebar = useSidebarStore((state) => state.isOpen);
+
+  console.log("isOpenSidebar>>", isOpenSidebar);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#f1f3f5" }}>
-      {/* TODO: put sidebar here */}
       <Stack.Screen
         options={{
           headerStyle: {
-            backgroundColor: "#f8f9fa", //green-9 #ebfbee
+            backgroundColor: "#f8f9fa",
           },
           headerShadowVisible: false,
           headerLeft: () => (
@@ -47,7 +51,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={openSideBar}
+                onPress={(_) => openSideBar()}
               >
                 <Image
                   source={icons.menu}
@@ -137,6 +141,11 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
+        {isOpenSidebar && (
+          <View style={{ position: "relative" }}>
+            <Sidebar />
+          </View>
+        )}
         <View style={{ flex: 1, padding: SIZES.medium }}>{props.children}</View>
       </ScrollView>
     </SafeAreaView>

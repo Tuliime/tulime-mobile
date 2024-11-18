@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import {
   View,
   ScrollView,
@@ -20,16 +20,19 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
   const openSideBar = useSidebarStore((state) => state.openSidebar);
   const isOpenSidebar = useSidebarStore((state) => state.isOpen);
 
-  console.log("isOpenSidebar>>", isOpenSidebar);
+  console.log("isOpenSidebar: ", isOpenSidebar);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f1f3f5" }}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: "#f1f3f5", position: "relative" }}
+    >
       <Stack.Screen
         options={{
           headerStyle: {
             backgroundColor: "#f8f9fa",
           },
           headerShadowVisible: false,
+          headerShown: isOpenSidebar ? false : true,
           headerLeft: () => (
             <View
               style={{
@@ -73,8 +76,8 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                 backgroundColor: COLORS.white,
                 borderRadius: SIZES.small / 1.25,
                 flexDirection: "row",
-                justifyContent: "center",
                 alignItems: "center",
+                justifyContent: "center",
                 gap: 8,
               }}
             >
@@ -86,7 +89,6 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={openSideBar}
               >
                 <Image
                   source={icons.notification}
@@ -141,11 +143,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        {isOpenSidebar && (
-          <View style={{ position: "relative" }}>
-            <Sidebar />
-          </View>
-        )}
+        {isOpenSidebar && <Sidebar />}
         <View style={{ flex: 1, padding: SIZES.medium }}>{props.children}</View>
       </ScrollView>
     </SafeAreaView>

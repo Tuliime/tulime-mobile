@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Text,
   Image,
+  Platform,
 } from "react-native";
 import { Stack } from "expo-router";
 import { COLORS, SIZES, icons } from "@/constants";
@@ -21,6 +22,8 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
   const isOpenSidebar = useSidebarStore((state) => state.isOpen);
 
   console.log("isOpenSidebar: ", isOpenSidebar);
+
+  const HEADER_HEIGHT = Platform.OS === "android" ? 56 : 44;
 
   return (
     <SafeAreaView
@@ -144,7 +147,15 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         {isOpenSidebar && <Sidebar />}
-        <View style={{ flex: 1, padding: SIZES.medium }}>{props.children}</View>
+        <View
+          style={{
+            flex: 1,
+            padding: SIZES.medium,
+            marginTop: isOpenSidebar ? HEADER_HEIGHT : 0,
+          }}
+        >
+          {props.children}
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

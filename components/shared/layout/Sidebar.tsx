@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import {
   View,
-  Text,
   Dimensions,
   Animated,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
 import { useSidebarStore } from "@/store";
+import { SidebarContent } from "./SidebarContent";
 
 const screenWidth = Dimensions.get("window").width;
 const sidebarWidth = screenWidth * 0.8;
@@ -43,7 +43,7 @@ export const Sidebar: React.FC = () => {
     <View style={styles.container}>
       {/* Sidebar */}
       <Animated.View style={[styles.sidebar, { transform: [{ translateX }] }]}>
-        <Text style={styles.text}>Sidebar</Text>
+        <SidebarContent />
       </Animated.View>
 
       {/* Backdrop */}
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: 100,
-    padding: 20,
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,

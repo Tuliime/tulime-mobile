@@ -1,5 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { View, Text, Dimensions, FlatList } from "react-native";
+import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { SecondaryLayout } from "@/components/shared/layout/SecondaryLayout";
 import { Button } from "@/components/shared/UI";
 import { SIZES } from "@/constants";
@@ -12,7 +14,21 @@ const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const Agroproducts: React.FC = () => {
-  // TODO: To get the active category from search params
+  const { category } = useGlobalSearchParams();
+  // const { category } = useLocalSearchParams();
+
+  const [activeCategory, _] = useState(!!category ? category : "crop");
+
+  const navigateToNewCategory = (category: string) => {
+    router.push(`/agroproducts?category=${category}`);
+  };
+
+  const isActiveCategory = (category: string) => {
+    return activeCategory === `${category}`;
+  };
+
+  // TODO: To research updating search params without screen navigation
+
   const renderProductItem = useCallback(({ item }: { item: TProduct }) => {
     return (
       <View style={{ width: itemWidth, margin: 2 }}>
@@ -34,32 +50,32 @@ const Agroproducts: React.FC = () => {
       <View style={{ gap: 16 }}>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <Button
-            handlePress={() => {}}
+            handlePress={() => navigateToNewCategory("crop")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Crops"
-            isActive={true}
+            isActive={isActiveCategory("crop")}
           />
           <Button
-            handlePress={() => {}}
+            handlePress={() => navigateToNewCategory("livestock")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Livestock"
-            isActive={false}
+            isActive={isActiveCategory("livestock")}
           />
           <Button
-            handlePress={() => {}}
+            handlePress={() => navigateToNewCategory("poultry")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Poultry"
-            isActive={false}
+            isActive={isActiveCategory("poultry")}
           />
           <Button
-            handlePress={() => {}}
+            handlePress={() => navigateToNewCategory("fish")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Fish"
-            isActive={false}
+            isActive={isActiveCategory("fish")}
           />
         </View>
         <FlatList

@@ -28,13 +28,14 @@ export const SidebarContent: React.FC = () => {
           gap: SIZES.xLarge,
         }}
       >
-        {sidebarContentList.map((item) => (
+        {sidebarContentList.map((item, index) => (
           <TouchableOpacity
             style={{
               flexDirection: "row",
               gap: SIZES.large,
             }}
             activeOpacity={1}
+            key={index}
           >
             <Image
               source={item.icon}
@@ -63,13 +64,14 @@ export const SidebarContent: React.FC = () => {
           gap: SIZES.xLarge,
         }}
       >
-        {otherContentList.map((item) => (
+        {otherContentList.map((item, index) => (
           <TouchableOpacity
             style={{
               flexDirection: "row",
               gap: SIZES.large,
             }}
             activeOpacity={1}
+            key={index}
           >
             <Image
               source={item.icon}

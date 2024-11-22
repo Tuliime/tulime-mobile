@@ -5,6 +5,7 @@ const COLORS = {
 
   gray: "#83829A",
   gray2: "#C1C0C8",
+  gray3: "#dee2e6",
   gray6: "#868e96",
   gray7: "#495057",
   gray8: "#343a40",

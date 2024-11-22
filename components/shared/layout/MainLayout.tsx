@@ -26,10 +26,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
 
   console.log("isOpenSidebar: ", isOpenSidebar);
 
-  const navigateToSearch = () => {
-    const searchRoute = "/search" as any;
-    router.push(searchRoute);
-  };
+  const navigateToSearch = () => router.push("/search");
 
   const HEADER_HEIGHT = Platform.OS === "android" ? 56 : 44;
 
@@ -102,7 +99,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={(_) => openSideBar()}
+                onPress={(_) => navigateToSearch()}
               >
                 <Image
                   source={icons.search}

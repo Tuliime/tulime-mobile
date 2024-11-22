@@ -19,6 +19,7 @@ const headerWidth = Dimensions.get("window").width * 0.9;
 
 export const SecondaryLayout: React.FC<SecondaryLayoutProps> = (props) => {
   const navigateToBack = () => router.back();
+  const navigateToSearch = () => router.push("/search");
 
   return (
     <SafeAreaView
@@ -91,7 +92,7 @@ export const SecondaryLayout: React.FC<SecondaryLayoutProps> = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={(_) => {}}
+                onPress={(_) => navigateToSearch()}
               >
                 <Image
                   source={icons.search}

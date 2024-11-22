@@ -7,8 +7,10 @@ import {
   Text,
   Image,
   Platform,
+  Dimensions,
+  StatusBar,
 } from "react-native";
-import { Stack } from "expo-router";
+import { Href, Stack, router } from "expo-router";
 import { COLORS, SIZES, icons } from "@/constants";
 import { Sidebar } from "@/components/shared/layout";
 import { useSidebarStore } from "@/store";
@@ -16,6 +18,7 @@ import { useSidebarStore } from "@/store";
 type MainLayoutProps = {
   children: ReactNode;
 };
+const headerWidth = Dimensions.get("window").width * 0.9;
 
 export const MainLayout: React.FC<MainLayoutProps> = (props) => {
   const openSideBar = useSidebarStore((state) => state.openSidebar);
@@ -23,12 +26,22 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
 
   console.log("isOpenSidebar: ", isOpenSidebar);
 
+  const navigateToSearch = () => {
+    const searchRoute = "/search" as any;
+    router.push(searchRoute);
+  };
+
   const HEADER_HEIGHT = Platform.OS === "android" ? 56 : 44;
 
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "#f1f3f5", position: "relative" }}
     >
+      <StatusBar
+        barStyle="dark-content"
+        backgroundColor="#f1f3f5"
+        translucent={false}
+      />
       <Stack.Screen
         options={{
           headerStyle: {
@@ -39,19 +52,20 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
           headerLeft: () => (
             <View
               style={{
-                backgroundColor: COLORS.white,
-                borderRadius: SIZES.small / 1.25,
+                width: headerWidth,
+                backgroundColor: COLORS.gray3,
+                borderRadius: 50,
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
                 gap: 2,
+                padding: 8,
               }}
             >
               <TouchableOpacity
                 style={{
                   width: 40,
                   height: 40,
-                  backgroundColor: COLORS.white,
                   borderRadius: SIZES.small / 1.25,
                   flexDirection: "row",
                   justifyContent: "center",
@@ -68,68 +82,27 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   }}
                 />
               </TouchableOpacity>
-              <Text style={{ fontSize: SIZES.xLarge, fontWeight: "600" }}>
-                Tulime
-              </Text>
-            </View>
-          ),
-          headerRight: () => (
-            <View
-              style={{
-                backgroundColor: COLORS.white,
-                borderRadius: SIZES.small / 1.25,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 8,
-              }}
-            >
               <TouchableOpacity
                 style={{
-                  backgroundColor: COLORS.white,
+                  width: "auto",
                   borderRadius: SIZES.small / 1.25,
+                  flex: 1,
                   flexDirection: "row",
-                  justifyContent: "center",
                   alignItems: "center",
                 }}
+                onPress={(_) => navigateToSearch()}
               >
-                <Image
-                  source={icons.notification}
-                  resizeMode="cover"
-                  style={{
-                    width: 24,
-                    height: 24,
-                  }}
-                />
+                <Text>Search Tulime</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
-                  backgroundColor: COLORS.white,
+                  width: 40,
+                  height: 40,
                   borderRadius: SIZES.small / 1.25,
-                  flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={openSideBar}
-              >
-                <Image
-                  source={icons.internet}
-                  resizeMode="cover"
-                  style={{
-                    width: 24,
-                    height: 24,
-                  }}
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: COLORS.white,
-                  borderRadius: SIZES.small / 1.25,
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                onPress={openSideBar}
+                onPress={(_) => openSideBar()}
               >
                 <Image
                   source={icons.search}

@@ -1,8 +1,13 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { icons, SIZES, COLORS } from "@/constants";
+import { router } from "expo-router";
 
 export const SidebarContent: React.FC = () => {
+  const navigateToScreen = (link: string) => {
+    const currenLink = link as any;
+    router.push(currenLink);
+  };
   return (
     <View style={{ marginTop: 28 }}>
       {/* Logo */}
@@ -36,6 +41,7 @@ export const SidebarContent: React.FC = () => {
             }}
             activeOpacity={1}
             key={index}
+            onPress={(_) => navigateToScreen(item.link)}
           >
             <Image
               source={item.icon}
@@ -72,6 +78,7 @@ export const SidebarContent: React.FC = () => {
             }}
             activeOpacity={1}
             key={index}
+            onPress={(_) => navigateToScreen(item.link)}
           >
             <Image
               source={item.icon}
@@ -100,37 +107,37 @@ export const SidebarContent: React.FC = () => {
 const sidebarContentList = [
   {
     name: "Agro Products",
-    link: "#",
+    link: "/agroproducts",
     icon: icons.maize,
     Children: [],
   },
   {
     name: "Farm Inputs",
-    link: "#",
+    link: "/farminputs",
     icon: icons.spray,
     Children: [],
   },
   {
     name: "Farm managers",
-    link: "#",
+    link: "/farmmanagers",
     icon: icons.farmManager,
     Children: [],
   },
   {
     name: "Veterinary Doctors",
-    link: "#",
+    link: "/veterinarydoctors",
     icon: icons.vet,
     Children: [],
   },
   {
     name: "News",
-    link: "#",
+    link: "/news",
     icon: icons.news3,
     Children: [],
   },
   {
     name: "Institutions",
-    link: "#",
+    link: "/institutions",
     icon: icons.institution,
     Children: [],
   },
@@ -139,13 +146,13 @@ const sidebarContentList = [
 const otherContentList = [
   {
     name: "Settings",
-    link: "#",
+    link: "/settings",
     icon: icons.settings3,
     Children: [],
   },
   {
     name: "Feedback",
-    link: "#",
+    link: "/feedback",
     icon: icons.feedback3,
     Children: [],
   },

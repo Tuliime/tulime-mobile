@@ -2,12 +2,17 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { icons, SIZES, COLORS } from "@/constants";
 import { router } from "expo-router";
+import { useSidebarStore } from "@/store";
 
 export const SidebarContent: React.FC = () => {
+  const closeSidebar = useSidebarStore((state) => state.closeSidebar);
+
   const navigateToScreen = (link: string) => {
     const currenLink = link as any;
     router.push(currenLink);
+    closeSidebar();
   };
+
   return (
     <View style={{ marginTop: 28 }}>
       {/* Logo */}

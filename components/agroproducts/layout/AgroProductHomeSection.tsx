@@ -28,10 +28,7 @@ export const AgroProductHomeSection = () => {
   }, []);
 
   return (
-    <MainSectionLayout
-      title="Crops, Livestock and Poultry"
-      link="/agro-products"
-    >
+    <MainSectionLayout title="Agro products" link="/agroproducts">
       <FlatList
         data={agroProducts}
         keyExtractor={(item) => item.id}

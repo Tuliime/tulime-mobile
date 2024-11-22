@@ -11,7 +11,7 @@ type MainSectionLayoutProp = {
 
 export const MainSectionLayout: React.FC<MainSectionLayoutProp> = (props) => {
   const navigateToSection = () => {
-    const link = props.link as Href<string | Object>;
+    const link = props.link as any;
     router.push(link);
   };
 
@@ -27,7 +27,7 @@ export const MainSectionLayout: React.FC<MainSectionLayoutProp> = (props) => {
         <Text
           style={{
             color: COLORS.gray7,
-            fontWeight: 600,
+            fontWeight: 500,
             fontSize: SIZES.medium,
           }}
         >

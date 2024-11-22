@@ -29,6 +29,9 @@ const settings4 = require("@/assets/icons/settings4.png");
 const vet = require("@/assets/icons/vet.png");
 const vet2 = require("@/assets/icons/vet2.png");
 const institution = require("@/assets/icons/institution.png");
+const profile = require("@/assets/icons/profile.png");
+const profile2 = require("@/assets/icons/profile2.png");
+const arrowLeft = require("@/assets/icons/arrow-left.png");
 
 export default {
   heart,
@@ -62,4 +65,7 @@ export default {
   vet,
   vet2,
   institution,
+  profile,
+  profile2,
+  arrowLeft,
 };

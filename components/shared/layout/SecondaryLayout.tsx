@@ -6,32 +6,19 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  Platform,
   Dimensions,
   StatusBar,
 } from "react-native";
-import { Href, Stack, router } from "expo-router";
+import { Stack, router } from "expo-router";
 import { COLORS, SIZES, icons } from "@/constants";
-import { Sidebar } from "@/components/shared/layout";
-import { useSidebarStore } from "@/store";
-
-type MainLayoutProps = {
+type SecondaryLayoutProps = {
   children: ReactNode;
+  title: string;
 };
 const headerWidth = Dimensions.get("window").width * 0.9;
 
-export const MainLayout: React.FC<MainLayoutProps> = (props) => {
-  const openSideBar = useSidebarStore((state) => state.openSidebar);
-  const isOpenSidebar = useSidebarStore((state) => state.isOpen);
-
-  console.log("isOpenSidebar: ", isOpenSidebar);
-
-  const navigateToSearch = () => {
-    const searchRoute = "/search" as any;
-    router.push(searchRoute);
-  };
-
-  const HEADER_HEIGHT = Platform.OS === "android" ? 56 : 44;
+export const SecondaryLayout: React.FC<SecondaryLayoutProps> = (props) => {
+  const navigateToBack = () => router.back();
 
   return (
     <SafeAreaView
@@ -47,19 +34,19 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
           headerStyle: {
             backgroundColor: "#f8f9fa",
           },
-          headerShown: isOpenSidebar ? false : true,
-          headerShadowVisible: false,
+          headerShown: true,
+          headerShadowVisible: true,
           headerLeft: () => (
             <View
               style={{
                 width: headerWidth,
-                backgroundColor: COLORS.gray3,
-                borderRadius: 50,
+                backgroundColor: "#f1f3f5",
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                gap: 2,
+                gap: -8,
                 padding: 8,
+                paddingHorizontal: -28,
               }}
             >
               <TouchableOpacity
@@ -71,14 +58,15 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={(_) => openSideBar()}
+                onPress={(_) => navigateToBack()}
               >
                 <Image
-                  source={icons.menu}
+                  source={icons.arrowLeft}
                   resizeMode="cover"
                   style={{
                     width: 24,
                     height: 24,
+                    marginLeft: -20,
                   }}
                 />
               </TouchableOpacity>
@@ -90,9 +78,10 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   flexDirection: "row",
                   alignItems: "center",
                 }}
-                onPress={(_) => navigateToSearch()}
               >
-                <Text>Search Tulime</Text>
+                <Text style={{ fontSize: SIZES.medium, fontWeight: 500 }}>
+                  {props.title}
+                </Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -102,7 +91,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onPress={(_) => openSideBar()}
+                onPress={(_) => {}}
               >
                 <Image
                   source={icons.search}
@@ -110,6 +99,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
                   style={{
                     width: 24,
                     height: 24,
+                    marginRight: -20,
                   }}
                 />
               </TouchableOpacity>
@@ -119,12 +109,10 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        {isOpenSidebar && <Sidebar />}
         <View
           style={{
             flex: 1,
             padding: SIZES.medium,
-            marginTop: isOpenSidebar ? HEADER_HEIGHT : 0,
           }}
         >
           {props.children}

@@ -1,5 +1,11 @@
 import React, { ReactNode } from "react";
-import { TouchableOpacity, View } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  StyleProp,
+  ViewStyle,
+  Text,
+} from "react-native";
 import { COLORS, SIZES } from "../../../constants";
 
 type ButtonProps = {
@@ -8,30 +14,47 @@ type ButtonProps = {
   isTransparent?: boolean;
   isDisabled?: boolean;
   isActive?: boolean;
+  style?: StyleProp<ViewStyle>;
 };
 
 export const Button: React.FC<ButtonProps> = (props) => {
-  const isDisabled = props.isDisabled;
-  const isActive = props.isDisabled;
-  const transparentColor = "rgba(51,214,159,0.1)";
-  const transparentActiveColor = "rgba(206,212,218,0.1)";
+  const { isTransparent, isDisabled, isActive, style, handlePress, label } =
+    props;
+
+  const transparentBgColor = "rgba(73,80,87,0.3)";
+  const transparentActiveBgColor = "rgba(55,178,77,0.5)";
+  const transparentTextColor = "#343a40";
+  const transparentActiveTextColor = "#099268";
   const btnPrimaryColor = "#37b24d";
-  const isTransparent = props.isTransparent;
+  const textColor = "#343a40";
 
   if (isTransparent) {
     return (
       <TouchableOpacity
-        style={{
-          padding: 16,
-          backgroundColor: isActive ? transparentActiveColor : transparentColor,
-          borderRadius: SIZES.small / 1.25,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        style={[
+          {
+            padding: 16,
+            backgroundColor: isActive
+              ? transparentActiveBgColor
+              : transparentBgColor,
+            borderRadius: SIZES.small / 1.25,
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          style,
+        ]}
         onPress={props.handlePress}
         disabled={isDisabled}
       >
-        <View>{props.label}</View>
+        <Text
+          style={{
+            color: isActive ? transparentActiveTextColor : transparentTextColor,
+            fontSize: SIZES.small,
+            fontWeight: 900,
+          }}
+        >
+          {props.label}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -50,7 +73,11 @@ export const Button: React.FC<ButtonProps> = (props) => {
       onPress={props.handlePress}
       disabled={isDisabled}
     >
-      <View>{props.label}</View>
+      <Text
+        style={{ color: isActive ? transparentActiveTextColor : textColor }}
+      >
+        {props.label}
+      </Text>
     </TouchableOpacity>
   );
 };

@@ -7,27 +7,31 @@ import { Button } from "@/components/shared/UI";
 import { SIZES } from "@/constants";
 import { TProduct } from "@/types/product";
 import { ProductItem } from "@/components/agroproducts/UI";
-import { agroProducts } from "@/data/agroProducts";
+import { useGetAgroProducts } from "@/hooks/useGetAgroProducts";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const Agroproducts: React.FC = () => {
-  const { category } = useGlobalSearchParams();
+  const { category }: { category: string } = useGlobalSearchParams();
   // const { category } = useLocalSearchParams();
 
-  const [activeCategory, _] = useState(!!category ? category : "crop");
+  const [activeCategory, setActiveCategory] = useState(
+    !!category ? category : "crop"
+  );
 
-  const navigateToNewCategory = (category: string) => {
-    router.push(`/agroproducts?category=${category}`);
+  const { getByCategory } = useGetAgroProducts();
+  const agroProducts = getByCategory(activeCategory);
+
+  const setCategory = (category: string) => {
+    router.setParams({ category });
+    setActiveCategory(category);
   };
 
   const isActiveCategory = (category: string) => {
     return activeCategory === `${category}`;
   };
-
-  // TODO: To research updating search params without screen navigation
 
   const renderProductItem = useCallback(({ item }: { item: TProduct }) => {
     return (
@@ -50,28 +54,28 @@ const Agroproducts: React.FC = () => {
       <View style={{ gap: 16 }}>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <Button
-            handlePress={() => navigateToNewCategory("crop")}
+            handlePress={() => setCategory("crop")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Crops"
             isActive={isActiveCategory("crop")}
           />
           <Button
-            handlePress={() => navigateToNewCategory("livestock")}
+            handlePress={() => setCategory("livestock")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Livestock"
             isActive={isActiveCategory("livestock")}
           />
           <Button
-            handlePress={() => navigateToNewCategory("poultry")}
+            handlePress={() => setCategory("poultry")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Poultry"
             isActive={isActiveCategory("poultry")}
           />
           <Button
-            handlePress={() => navigateToNewCategory("fish")}
+            handlePress={() => setCategory("fish")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="Fish"

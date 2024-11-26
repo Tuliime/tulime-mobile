@@ -5,12 +5,16 @@ import { SIZES } from "@/constants";
 import { TProduct } from "@/types/product";
 import { ProductItem } from "@/components/agroproducts/UI";
 import { agroProducts } from "@/data/agroProducts";
+import { useGetAgroProducts } from "@/hooks/useGetAgroProducts";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 export const AgroProductHomeSection = () => {
+  const { getOverview } = useGetAgroProducts();
+  const agroProductOverview = getOverview as TProduct[];
+
   const renderProductItem = useCallback(({ item }: { item: TProduct }) => {
     return (
       <View style={{ width: itemWidth, margin: 2 }}>
@@ -30,7 +34,7 @@ export const AgroProductHomeSection = () => {
   return (
     <MainSectionLayout title="Agro products" link="/agroproducts">
       <FlatList
-        data={agroProducts}
+        data={agroProductOverview}
         keyExtractor={(item) => item.id}
         renderItem={renderProductItem}
         scrollEnabled={false}

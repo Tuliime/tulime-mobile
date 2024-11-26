@@ -1,7 +1,9 @@
 import React, { ReactNode } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Dimensions } from "react-native";
 import { Link, useRouter, router, Href } from "expo-router";
 import { COLORS, SIZES } from "@/constants";
+
+const screenHeight = Dimensions.get("window").height;
 
 type MainSectionLayoutProp = {
   title: string;
@@ -47,7 +49,7 @@ export const MainSectionLayout: React.FC<MainSectionLayoutProp> = (props) => {
           </Text>
         </TouchableOpacity>
       </View>
-      <View>{props.children}</View>
+      <View style={{ minHeight: screenHeight }}>{props.children}</View>
     </View>
   );
 };

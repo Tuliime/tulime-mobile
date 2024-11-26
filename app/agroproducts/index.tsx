@@ -90,7 +90,6 @@ const Agroproducts: React.FC = () => {
           numColumns={numColumns}
           contentContainerStyle={{
             justifyContent: "center",
-            alignItems: "center",
             columnGap: SIZES.medium,
             backgroundColor: "",
           }}

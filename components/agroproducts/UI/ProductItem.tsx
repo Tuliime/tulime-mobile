@@ -20,7 +20,7 @@ export const ProductItem: React.FC<TProduct & { itemWidth: number }> = (
         resizeMode="contain"
         style={{
           width: "100%",
-          aspectRatio: "1/1",
+          aspectRatio: "4/3",
           objectFit: "fill",
           padding: 4,
         }}

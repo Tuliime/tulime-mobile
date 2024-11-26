@@ -234,7 +234,7 @@ export const seedData = [
   {
     id: "c1d8e7a2-4f5b-9a3f-8c2e-7d4a6b9e5f3a",
     name: "Tray of Eggs",
-    category: "eggs",
+    category: "poultry",
     price: 12000,
     currency: "UGX",
     image:

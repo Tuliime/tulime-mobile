@@ -86,7 +86,7 @@ export const seedData = [
   },
   {
     id: "9e1a32d8-05cf-4b19-9171-3152f6e7d1b9",
-    name: "White Maize",
+    name: "Maize",
     category: "crop",
     price: 1800,
     currency: "UGX",
@@ -95,11 +95,12 @@ export const seedData = [
   },
   {
     id: "5b79e77d-37a2-4c2d-96e9-2b714f9a1b2c",
-    name: "Matoke (Cooking Banana)",
+    name: "Matooke",
     category: "crop",
     price: 25000,
     currency: "UGX",
-    image: "",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34",
   },
   {
     id: "92d3a64e-98b8-4e1a-9a5c-28e9fb6c6e17",
@@ -233,7 +234,7 @@ export const seedData = [
   {
     id: "c1d8e7a2-4f5b-9a3f-8c2e-7d4a6b9e5f3a",
     name: "Tray of Eggs",
-    category: "eggs",
+    category: "poultry",
     price: 12000,
     currency: "UGX",
     image:

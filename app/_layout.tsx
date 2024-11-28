@@ -8,6 +8,8 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect } from "react";
 import "react-native-reanimated";
+// import { Provider } from "react";
+import { Providers } from "@/provider";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -46,5 +48,9 @@ export default function RootLayout() {
   // return <Stack onLayout={onLayoutRootView} />;
 
   // TODO: global providers here
-  return <Stack />;
+  return (
+    <Providers>
+      <Stack />
+    </Providers>
+  );
 }

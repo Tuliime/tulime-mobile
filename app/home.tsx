@@ -1,11 +1,19 @@
 import React from "react";
-import { MainLayout } from "@/components/shared/layout/MainLayout";
-import { AgroProductionHomeSection } from "@/components/agroproducts/layout";
+import { HomeLayout } from "@/components/shared/layout";
+import { View, Text } from "react-native";
 
 export default function Home() {
   return (
-    <MainLayout>
-      <AgroProductionHomeSection />
-    </MainLayout>
+    <HomeLayout
+      header={
+        <View>
+          <Text>Header Content here</Text>
+        </View>
+      }
+    >
+      <View>
+        <Text>Home content here</Text>
+      </View>
+    </HomeLayout>
   );
 }

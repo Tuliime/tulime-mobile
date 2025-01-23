@@ -13,6 +13,12 @@ type ForgotPasswordInput = {
   telNumber: string;
 };
 
+type ResetPasswordInput = {
+  password: string;
+  confirmPassword: string;
+  OTP: string;
+};
+
 type AuthResponse = {};
 
 export type TAuth = {
@@ -20,4 +26,5 @@ export type TAuth = {
   signup: SignUpInput;
   apiResponse: AuthResponse;
   forgotPassword: ForgotPasswordInput;
+  resetPassword: ResetPasswordInput;
 };

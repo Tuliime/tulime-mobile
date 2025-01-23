@@ -26,6 +26,11 @@ export default function Home() {
             Forgot Password
           </Text>
         </Link>
+        <Link style={{ alignItems: "center" }} href="/auth/resetPassword">
+          <Text style={{ fontSize: 12, color: COLORS.gray8 }}>
+            Reset Password
+          </Text>
+        </Link>
       </View>
     </HomeLayout>
   );

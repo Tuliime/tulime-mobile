@@ -9,10 +9,15 @@ type SignInInput = {
   password: string;
 };
 
+type ForgotPasswordInput = {
+  telNumber: string;
+};
+
 type AuthResponse = {};
 
 export type TAuth = {
   signin: SignInInput;
   signup: SignUpInput;
   apiResponse: AuthResponse;
+  forgotPassword: ForgotPasswordInput;
 };

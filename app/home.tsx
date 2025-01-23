@@ -18,6 +18,9 @@ export default function Home() {
         <Link style={{ alignItems: "center" }} href="/auth/signup">
           <Text style={{ fontSize: 12, color: COLORS.gray8 }}>sign up</Text>
         </Link>
+        <Link style={{ alignItems: "center" }} href="/auth/signin">
+          <Text style={{ fontSize: 12, color: COLORS.gray8 }}>sign In</Text>
+        </Link>
       </View>
     </HomeLayout>
   );

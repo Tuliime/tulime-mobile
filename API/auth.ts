@@ -59,6 +59,29 @@ class AuthAPI {
     }
     return await response.json();
   };
+
+  // TODO: verify OTP here
+
+  resetPassword = async ({ OTP, password }: TAuth["resetPassword"]) => {
+    const response = await fetch(
+      `${serverURL}/user/auth/reset-password/${OTP}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          password: password,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const auth = new AuthAPI();

@@ -5,7 +5,7 @@ type SignUpInput = {
 };
 
 type SignInInput = {
-  name: string;
+  telNumber: string;
   password: string;
 };
 

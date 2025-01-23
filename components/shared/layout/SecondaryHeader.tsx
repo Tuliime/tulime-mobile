@@ -1,26 +1,23 @@
-import { COLORS, icons, SIZES } from "@/constants";
+import { COLORS, SIZES } from "@/constants";
 import { router, Stack } from "expo-router";
 import React from "react";
 import {
   Dimensions,
   TouchableOpacity,
   View,
-  Image,
   Text,
   StyleSheet,
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
-type HeaderProps = {
+type SecondaryHeaderProps = {
   title: string;
 };
 
-export const Header: React.FC<HeaderProps> = (props) => {
+export const SecondaryHeader: React.FC<SecondaryHeaderProps> = (props) => {
   const navigateToBack = () => router.back();
-  const navigateToSearch = () => router.push("/search");
 
   return (
     <Stack.Screen
@@ -39,12 +36,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
             <TouchableOpacity style={styles.titleContainer}>
               <Text style={styles.titleText}>{props.title}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={navigateToSearch}
-            >
-              <MaterialIcons name="search" size={24} color={COLORS.white} />
-            </TouchableOpacity>
           </View>
         ),
         headerTitle: "",
@@ -60,7 +51,7 @@ const styles = StyleSheet.create({
   headerLeftContainer: {
     width: headerWidth,
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     gap: 0,
     paddingHorizontal: 4,

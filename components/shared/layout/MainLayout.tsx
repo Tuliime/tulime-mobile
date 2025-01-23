@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
-import { Header } from "./Header";
+import { MainHeader } from "./MainHeader";
 
 type MainLayoutProps = {
   children: ReactNode;
@@ -24,7 +24,7 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         backgroundColor={COLORS.green9}
         translucent={false}
       />
-      <Header title={props.title} />
+      <MainHeader title={props.title} />
       <View style={styles.mainContent}>
         <ScrollView
           showsVerticalScrollIndicator={false}

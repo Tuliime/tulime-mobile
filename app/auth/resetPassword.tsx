@@ -72,9 +72,9 @@ const ResetPassword: React.FC = () => {
   };
 
   return (
-    <SecondaryLayout title="Register">
+    <SecondaryLayout title="Reset Password">
       <View style={styles.container}>
-        <Text style={styles.headerText}>Create Tulime Account</Text>
+        <Text style={styles.headerText}>Reset Your Password</Text>
 
         <Formik
           validationSchema={signUpValidationSchema}

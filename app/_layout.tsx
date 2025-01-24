@@ -49,6 +49,9 @@ export default function RootLayout() {
   // return <Stack onLayout={onLayoutRootView} />;
 
   // TODO: global providers here
+  // TODO: To put an auto logout here
+
+  console.log("Invoked at global _layout");
   return (
     <Providers>
       <Stack />

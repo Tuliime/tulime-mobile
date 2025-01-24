@@ -41,6 +41,28 @@ class AuthAPI {
     return await response.json();
   };
 
+  signInWithRefreshToken = async ({
+    userID,
+    refreshToken,
+  }: TAuth["signInWithRefreshToken"]) => {
+    const response = await fetch(`${serverURL}/user/auth/rt-signin`, {
+      method: "POST",
+      body: JSON.stringify({
+        userID: userID,
+        refreshToken: refreshToken,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   forgotPassword = async ({ telNumber }: TAuth["forgotPassword"]) => {
     const response = await fetch(`${serverURL}/user/auth/forgot-password`, {
       method: "POST",

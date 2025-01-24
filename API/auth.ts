@@ -1,4 +1,3 @@
-import SignIn from "@/app/auth/signin";
 import { serverURL } from "@/constants/urls";
 import { TAuth } from "@/types/auth";
 
@@ -60,7 +59,23 @@ class AuthAPI {
     return await response.json();
   };
 
-  // TODO: verify OTP here
+  verifyOTP = async ({ otp }: TAuth["verifyOTP"]) => {
+    const response = await fetch(`${serverURL}/user/auth/verify-otp`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        otp: otp,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 
   resetPassword = async ({ OTP, password }: TAuth["resetPassword"]) => {
     const response = await fetch(

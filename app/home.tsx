@@ -1,10 +1,11 @@
 import React from "react";
 import { HomeLayout } from "@/components/shared/layout";
 import { View, Text } from "react-native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { COLORS } from "@/constants";
 
 export default function Home() {
+  // router.push(`/auth/resetPassword?otp=${otp}`)
   return (
     <HomeLayout
       header={
@@ -30,6 +31,9 @@ export default function Home() {
           <Text style={{ fontSize: 12, color: COLORS.gray8 }}>
             Reset Password
           </Text>
+        </Link>
+        <Link style={{ alignItems: "center" }} href="/auth/verifyOTP">
+          <Text style={{ fontSize: 12, color: COLORS.gray8 }}>Verify OTP </Text>
         </Link>
       </View>
     </HomeLayout>

@@ -19,6 +19,10 @@ type ResetPasswordInput = {
   OTP: string;
 };
 
+type VerifyOTPInput = {
+  otp: string;
+};
+
 type AuthResponse = {};
 
 export type TAuth = {
@@ -27,4 +31,5 @@ export type TAuth = {
   apiResponse: AuthResponse;
   forgotPassword: ForgotPasswordInput;
   resetPassword: ResetPasswordInput;
+  verifyOTP: VerifyOTPInput;
 };

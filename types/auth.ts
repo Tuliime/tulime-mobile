@@ -23,7 +23,7 @@ type VerifyOTPInput = {
   otp: string;
 };
 
-type Auth = {
+export type Auth = {
   accessToken: string;
   refreshToken: string;
   user: {
@@ -39,6 +39,11 @@ type AuthResponse = Auth & {
   message: string;
 };
 
+type TAuthAction = {
+  updateAuth: (auth: Auth) => void;
+  deleteAuth: () => void;
+};
+
 export type TAuth = {
   signin: SignInInput;
   signup: SignUpInput;
@@ -46,4 +51,5 @@ export type TAuth = {
   forgotPassword: ForgotPasswordInput;
   resetPassword: ResetPasswordInput;
   verifyOTP: VerifyOTPInput;
+  authAction: TAuthAction;
 };

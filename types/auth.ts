@@ -36,6 +36,7 @@ export type Auth = {
     name: string;
     role: string;
     telNumber: number;
+    imageUrl: string;
   };
 };
 

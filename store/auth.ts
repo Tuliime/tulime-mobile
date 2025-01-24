@@ -9,9 +9,11 @@ const authInitialValues: Auth = {
     name: "",
     role: "",
     telNumber: 0,
+    imageUrl: "",
   },
 };
 
+// TODO: configure persisting store values
 export const useAuthStore = create<{ auth: Auth } & TAuth["authAction"]>(
   (set) => ({
     auth: authInitialValues,

@@ -14,10 +14,12 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
 import { TAuth } from "@/types/auth";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
+import { useAuthStore } from "@/store/auth";
 
 const ResetPassword: React.FC = () => {
+  const updateAuth = useAuthStore((state) => state.updateAuth);
   // TODO: To get OTP from query params 'OTP'
   const initialFormValues: TAuth["resetPassword"] = {
     password: "",
@@ -41,7 +43,8 @@ const ResetPassword: React.FC = () => {
     mutationFn: auth.resetPassword,
     onSuccess: (response: TAuth["apiResponse"]) => {
       console.log("reset password response:", response);
-      // TODO: Update global state (e.g., Zustand)
+      updateAuth(response);
+      router.push("/home");
       Toast.show({
         type: "success",
         text1: "Success!",

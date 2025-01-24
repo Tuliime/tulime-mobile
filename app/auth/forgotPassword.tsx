@@ -15,6 +15,7 @@ import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
 import { TAuth } from "@/types/auth";
 import { Link } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const forgotPassword: React.FC = () => {
   const initialFormValues: TAuth["forgotPassword"] = {
@@ -37,9 +38,25 @@ const forgotPassword: React.FC = () => {
     onSuccess: (response: TAuth["apiResponse"]) => {
       console.log("forgot Password response:", response);
       // TODO: Update global state (e.g., Zustand)
+      Toast.show({
+        type: "success",
+        text1: "Success!",
+        text2: response.message,
+        position: "top",
+        visibilityTime: 5000,
+        autoHide: true,
+      });
     },
     onError: (error) => {
       console.log("Error:", error);
+      Toast.show({
+        type: "error",
+        text1: "Error!",
+        text2: error.message,
+        position: "top",
+        visibilityTime: 5000,
+        autoHide: true,
+      });
     },
   });
 

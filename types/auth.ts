@@ -23,7 +23,21 @@ type VerifyOTPInput = {
   otp: string;
 };
 
-type AuthResponse = {};
+type Auth = {
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    id: string;
+    name: string;
+    role: string;
+    telNumber: number;
+  };
+};
+
+type AuthResponse = Auth & {
+  status: string;
+  message: string;
+};
 
 export type TAuth = {
   signin: SignInInput;

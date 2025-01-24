@@ -12,6 +12,7 @@ import { COLORS } from "@/constants";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
 import { Link } from "expo-router";
+import Toast from "react-native-toast-message";
 
 const VerifyOTP: React.FC = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
@@ -22,9 +23,25 @@ const VerifyOTP: React.FC = () => {
     onSuccess: (response: any) => {
       console.log("OTP verification response:", response);
       // TODO: Update global state (e.g., Zustand)
+      Toast.show({
+        type: "success",
+        text1: "Success!",
+        text2: response.message,
+        position: "top",
+        visibilityTime: 5000,
+        autoHide: true,
+      });
     },
     onError: (error) => {
       console.log("Error:", error);
+      Toast.show({
+        type: "error",
+        text1: "Error!",
+        text2: error.message,
+        position: "top",
+        visibilityTime: 5000,
+        autoHide: true,
+      });
     },
   });
 

@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { SecondaryLayout } from "@/components/shared/layout/SecondaryLayout";
+import { MainLayout } from "@/components/shared/layout";
 
 const Settings: React.FC = () => {
   return (
-    <SecondaryLayout title="Settings">
+    <MainLayout title="Settings">
       <View>
         <Text>Settings here</Text>
       </View>
-    </SecondaryLayout>
+    </MainLayout>
   );
 };
 

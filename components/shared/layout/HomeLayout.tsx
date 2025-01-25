@@ -20,7 +20,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
     <SafeAreaView style={styles.container}>
       <StatusBar
         barStyle="dark-content"
-        backgroundColor={COLORS.gray1}
+        backgroundColor={COLORS.green9}
         translucent={false}
       />
       <Stack.Screen
@@ -28,7 +28,9 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
           headerStyle: styles.headerStyle,
           headerShown: true,
           headerShadowVisible: false,
-          headerLeft: () => <View>{props.header}</View>,
+          headerLeft: () => (
+            <View style={styles.headerLeftContainer}>{props.header}</View>
+          ),
           headerTitle: "",
         }}
       />
@@ -47,7 +49,14 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   headerStyle: {
-    backgroundColor: "#f8f9fa",
+    backgroundColor: COLORS.primary,
+  },
+  headerLeftContainer: {
+    height: 120,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 0.005,
   },
   contentContainer: {
     flex: 1,

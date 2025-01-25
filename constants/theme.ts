@@ -12,10 +12,14 @@ const COLORS = {
   gray8: "#343a40",
   white: "#FFFFFF",
   lightWhite: "#FAFAFC",
+  green5: "#51cf66",
   green9: "#2b8a3e",
   red5: "#ff6b6b",
   red6: "#fa5252",
+  blue5: "#339af0",
   blue7: "#1c7ed6",
+  yellow5: "#fcc419",
+  pink8: "#c2255c",
 };
 
 const FONT = {

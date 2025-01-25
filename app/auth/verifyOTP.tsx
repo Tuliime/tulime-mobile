@@ -11,7 +11,7 @@ import { SecondaryLayout } from "@/components/shared/layout/SecondaryLayout";
 import { COLORS } from "@/constants";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
 
 const VerifyOTP: React.FC = () => {
@@ -22,7 +22,8 @@ const VerifyOTP: React.FC = () => {
     mutationFn: auth.verifyOTP,
     onSuccess: (response: any) => {
       console.log("OTP verification response:", response);
-      // TODO: Update global state (e.g., Zustand)
+      const otpCode = otp.join("");
+      router.push(`/auth/resetPassword?otp=${otpCode}`);
       Toast.show({
         type: "success",
         text1: "Success!",

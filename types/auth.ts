@@ -9,6 +9,11 @@ type SignInInput = {
   password: string;
 };
 
+type SignInWithRefreshTokenInput = {
+  userID: string;
+  refreshToken: string;
+};
+
 type ForgotPasswordInput = {
   telNumber: string;
 };
@@ -31,6 +36,7 @@ export type Auth = {
     name: string;
     role: string;
     telNumber: number;
+    imageUrl: string;
   };
 };
 
@@ -47,6 +53,7 @@ type TAuthAction = {
 export type TAuth = {
   signin: SignInInput;
   signup: SignUpInput;
+  signInWithRefreshToken: SignInWithRefreshTokenInput;
   apiResponse: AuthResponse;
   forgotPassword: ForgotPasswordInput;
   resetPassword: ResetPasswordInput;

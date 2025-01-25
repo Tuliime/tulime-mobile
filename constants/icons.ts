@@ -33,6 +33,14 @@ const profile = require("@/assets/icons/profile.png");
 const profile2 = require("@/assets/icons/profile2.png");
 const arrowLeft = require("@/assets/icons/arrow-left.png");
 
+const account = require("@/assets/icons/home/account.png");
+const corn = require("@/assets/icons/home/corn.png");
+const tractor = require("@/assets/icons/home/tractor.png");
+const trend = require("@/assets/icons/home/trend.png");
+const education = require("@/assets/icons/home/education.png");
+const manager = require("@/assets/icons/home/manager.png");
+const logoTemp = require("@/assets/icons/home/logo-temp.png");
+
 export default {
   heart,
   menu,
@@ -68,4 +76,11 @@ export default {
   profile,
   profile2,
   arrowLeft,
+  account,
+  corn,
+  trend,
+  education,
+  tractor,
+  manager,
+  logoTemp,
 };

@@ -14,7 +14,7 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
 import { TAuth } from "@/types/auth";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import Toast from "react-native-toast-message";
 
 const forgotPassword: React.FC = () => {
@@ -37,7 +37,7 @@ const forgotPassword: React.FC = () => {
     mutationFn: auth.forgotPassword,
     onSuccess: (response: TAuth["apiResponse"]) => {
       console.log("forgot Password response:", response);
-      // TODO: Update global state (e.g., Zustand)
+      router.push("/auth/verifyOTP");
       Toast.show({
         type: "success",
         text1: "Success!",

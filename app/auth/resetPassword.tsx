@@ -14,17 +14,18 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
 import { TAuth } from "@/types/auth";
-import { Link, router } from "expo-router";
+import { Link, router, useGlobalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 import { useAuthStore } from "@/store/auth";
 
 const ResetPassword: React.FC = () => {
   const updateAuth = useAuthStore((state) => state.updateAuth);
-  // TODO: To get OTP from query params 'OTP'
+  const { otp }: { otp: string } = useGlobalSearchParams();
+
   const initialFormValues: TAuth["resetPassword"] = {
     password: "",
     confirmPassword: "",
-    OTP: "186141",
+    OTP: otp,
   };
 
   const signUpValidationSchema = yup.object().shape({

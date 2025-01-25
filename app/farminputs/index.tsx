@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { SecondaryLayout } from "@/components/shared/layout/SecondaryLayout";
+import { MainLayout } from "@/components/shared/layout";
 
 const FarmInputs: React.FC = () => {
   return (
-    <SecondaryLayout title="Farm Inputs">
+    <MainLayout title="Farm Inputs">
       <View>
         <Text>Farm input prices here</Text>
       </View>
-    </SecondaryLayout>
+    </MainLayout>
   );
 };
 

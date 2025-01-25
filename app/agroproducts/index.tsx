@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 import { View, Text, Dimensions, FlatList } from "react-native";
 import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
 import { router } from "expo-router";
-import { SecondaryLayout } from "@/components/shared/layout/SecondaryLayout";
+import { MainLayout } from "@/components/shared/layout";
 import { Button } from "@/components/shared/UI";
 import { SIZES } from "@/constants";
 import { TProduct } from "@/types/product";
@@ -50,7 +50,7 @@ const Agroproducts: React.FC = () => {
   }, []);
 
   return (
-    <SecondaryLayout title="Agro Products">
+    <MainLayout title="Agro Products">
       <View style={{ gap: 16 }}>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <Button
@@ -95,7 +95,7 @@ const Agroproducts: React.FC = () => {
           }}
         />
       </View>
-    </SecondaryLayout>
+    </MainLayout>
   );
 };
 

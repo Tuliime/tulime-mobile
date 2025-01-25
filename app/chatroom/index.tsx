@@ -1,14 +1,14 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { SecondaryLayout } from "@/components/shared/layout/SecondaryLayout";
+import { MainLayout } from "@/components/shared/layout";
 
 const Chatroom: React.FC = () => {
   return (
-    <SecondaryLayout title="Chatroom">
+    <MainLayout title="Chatroom">
       <View>
         <Text>Chatroom here</Text>
       </View>
-    </SecondaryLayout>
+    </MainLayout>
   );
 };
 

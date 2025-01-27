@@ -20,9 +20,9 @@ type TProduct = {
   name: string;
   category: string;
   imageUrl: string;
-  imagePath: string;
-  createdAt: string;
-  updatedAt: string;
+  imagePath?: string;
+  createdAt?: string;
+  updatedAt?: string;
   Price: TPrice[];
 };
 

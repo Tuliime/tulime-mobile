@@ -7,8 +7,6 @@ import { truncateString, addCommasToNumber } from "@/utils";
 export const ProductItem: React.FC<
   TAgroproducts["product"] & {
     itemWidth: number;
-    price: number;
-    currency: string;
   }
 > = (props) => {
   return (
@@ -35,7 +33,9 @@ export const ProductItem: React.FC<
           {truncateString(props.name)}
         </Text>
         <Text style={{ color: COLORS.primary, fontWeight: 600 }}>
-          {`${props.currency} ${addCommasToNumber(props.price)}`}
+          {`${props.Price[0].currency} ${addCommasToNumber(
+            props.Price[0].amount
+          )}`}
         </Text>
       </View>
     </View>

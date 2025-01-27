@@ -62,9 +62,8 @@ const Agroproducts: React.FC = () => {
             id={item.id}
             name={item.name}
             category={item.category}
-            image={item.imageUrl}
-            price={item.Price[0].amount}
-            currency={item.Price[0]?.currency}
+            imageUrl={item.imageUrl}
+            Price={item.Price}
             itemWidth={itemWidth}
           />
         </View>

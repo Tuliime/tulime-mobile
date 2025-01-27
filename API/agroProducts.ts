@@ -8,7 +8,6 @@ class AgroProductAPI {
     category,
     cursor,
   }: TAgroproducts["getAgroProduct"]) => {
-    // Reconstruct the url here
     const response = await fetch(
       `${serverURL}/agroproducts?limit=${limit}&category=${category}&cursor=${cursor}`,
       {

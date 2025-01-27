@@ -17,6 +17,7 @@ import { ProductItem } from "@/components/agroproducts/UI";
 import { agroProduct } from "@/API/agroProducts";
 import { useQuery } from "@tanstack/react-query";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
+import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;
@@ -87,7 +88,7 @@ const Agroproducts: React.FC = () => {
       <MainLayout title="Agro Products">
         {/* TODO: To define custom error card for get requests */}
         <View style={styles.errorContainer}>
-          <Text>{error.message}</Text>
+          <ErrorCard message={error.message} />
         </View>
       </MainLayout>
     );

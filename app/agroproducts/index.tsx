@@ -1,13 +1,22 @@
 import React, { useCallback, useState } from "react";
-import { View, Text, Dimensions, FlatList } from "react-native";
-import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import {
+  View,
+  Text,
+  Dimensions,
+  FlatList,
+  ActivityIndicator,
+  StyleSheet,
+} from "react-native";
+import { useGlobalSearchParams } from "expo-router";
 import { router } from "expo-router";
 import { MainLayout } from "@/components/shared/layout";
 import { Button } from "@/components/shared/UI";
-import { SIZES } from "@/constants";
-import { TProduct } from "@/types/product";
+import { COLORS, SIZES } from "@/constants";
+import { TAgroproducts } from "@/types/product";
 import { ProductItem } from "@/components/agroproducts/UI";
-import { useGetAgroProducts } from "@/hooks/useGetAgroProducts";
+import { agroProduct } from "@/API/agroProducts";
+import { useQuery } from "@tanstack/react-query";
+import { isArrayWithElements } from "@/utils/isArrayWithElements";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;
@@ -15,14 +24,10 @@ const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const Agroproducts: React.FC = () => {
   const { category }: { category: string } = useGlobalSearchParams();
-  // const { category } = useLocalSearchParams();
 
   const [activeCategory, setActiveCategory] = useState(
     !!category ? category : "crop"
   );
-
-  const { getByCategory } = useGetAgroProducts();
-  const agroProducts = getByCategory(activeCategory);
 
   const setCategory = (category: string) => {
     router.setParams({ category });
@@ -33,21 +38,60 @@ const Agroproducts: React.FC = () => {
     return activeCategory === `${category}`;
   };
 
-  const renderProductItem = useCallback(({ item }: { item: TProduct }) => {
+  // TODO: To define logic for the cursor based pagination
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: [`agroproducts-category-${activeCategory}`],
+    queryFn: () => {
+      return agroProduct.get({
+        limit: 20,
+        category: activeCategory,
+        cursor: "",
+      });
+    },
+  });
+
+  const agroProducts: TAgroproducts["product"][] = data?.data ?? [];
+  const hasAgroProducts = isArrayWithElements(agroProducts);
+
+  const renderProductItem = useCallback(
+    ({ item }: { item: TAgroproducts["product"] }) => {
+      return (
+        <View style={{ width: itemWidth, margin: 2 }}>
+          <ProductItem
+            id={item.id}
+            name={item.name}
+            category={item.category}
+            image={item.imageUrl}
+            price={item.Price[0].amount}
+            currency={item.Price[0]?.currency}
+            itemWidth={itemWidth}
+          />
+        </View>
+      );
+    },
+    []
+  );
+
+  if (isPending) {
     return (
-      <View style={{ width: itemWidth, margin: 2 }}>
-        <ProductItem
-          id={item.id}
-          name={item.name}
-          category={item.category}
-          image={item.image}
-          price={item.price}
-          currency={item.currency}
-          itemWidth={itemWidth}
-        />
-      </View>
+      <MainLayout title="Agro Products">
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.blue7} />
+        </View>
+      </MainLayout>
     );
-  }, []);
+  }
+
+  if (isError) {
+    return (
+      <MainLayout title="Agro Products">
+        {/* TODO: To define custom error card for get requests */}
+        <View style={styles.errorContainer}>
+          <Text>{error.message}</Text>
+        </View>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout title="Agro Products">
@@ -82,21 +126,36 @@ const Agroproducts: React.FC = () => {
             isActive={isActiveCategory("fish")}
           />
         </View>
-        <FlatList
-          data={agroProducts}
-          keyExtractor={(item) => item.id}
-          renderItem={renderProductItem}
-          scrollEnabled={false}
-          numColumns={numColumns}
-          contentContainerStyle={{
-            justifyContent: "center",
-            columnGap: SIZES.medium,
-            backgroundColor: "",
-          }}
-        />
+        {hasAgroProducts && (
+          <FlatList
+            data={agroProducts!}
+            keyExtractor={(item) => item.id}
+            renderItem={renderProductItem}
+            scrollEnabled={false}
+            numColumns={numColumns}
+            contentContainerStyle={{
+              justifyContent: "center",
+              columnGap: SIZES.medium,
+              backgroundColor: "",
+            }}
+          />
+        )}
       </View>
     </MainLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 
 export default Agroproducts;

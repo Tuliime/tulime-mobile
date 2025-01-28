@@ -19,6 +19,21 @@ class FarmInputAPI {
     }
     return await response.json();
   };
+
+  getById = async ({ id }: TFarmInput["getById"]) => {
+    const response = await fetch(`${serverURL}/farminputs/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const farmInput = new FarmInputAPI();

@@ -19,7 +19,12 @@ type GetFarmInput = {
   cursor?: string;
 };
 
+type GetById = {
+  id: string;
+};
+
 export type TFarmInput = {
   farminput: FarmInput;
   getFarmInput: GetFarmInput;
+  getById: GetById;
 };

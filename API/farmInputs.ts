@@ -1,14 +1,10 @@
 import { serverURL } from "@/constants/urls";
-import { TAgroproducts } from "@/types/product";
+import { TFarmInput } from "@/types/farmInput";
 
-class AgroProductAPI {
-  get = async ({
-    limit,
-    category,
-    cursor,
-  }: TAgroproducts["getAgroProduct"]) => {
+class FarmInputAPI {
+  get = async ({ limit, category, cursor }: TFarmInput["getFarmInput"]) => {
     const response = await fetch(
-      `${serverURL}/agroproducts?limit=${limit}&category=${category}&cursor=${cursor}`,
+      `${serverURL}/farminputs?limit=${limit}&category=${category}&cursor=${cursor}`,
       {
         method: "GET",
         headers: {
@@ -25,4 +21,4 @@ class AgroProductAPI {
   };
 }
 
-export const agroProduct = new AgroProductAPI();
+export const farmInput = new FarmInputAPI();

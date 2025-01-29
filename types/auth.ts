@@ -54,6 +54,14 @@ type UpdateUserInput = {
   token?: string;
 };
 
+type ChangePasswordInput = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword?: string;
+  userID?: string;
+  token?: string;
+};
+
 type TAuthAction = {
   updateAuth: (auth: Auth) => void;
   deleteAuth: () => void;
@@ -70,4 +78,5 @@ export type TAuth = {
   verifyOTP: VerifyOTPInput;
   authAction: TAuthAction;
   updateUserInput: UpdateUserInput;
+  changePasswordInput: ChangePasswordInput;
 };

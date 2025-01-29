@@ -31,6 +31,7 @@ const vet2 = require("@/assets/icons/vet2.png");
 const institution = require("@/assets/icons/institution.png");
 const profile = require("@/assets/icons/profile.png");
 const profile2 = require("@/assets/icons/profile2.png");
+const profileLarge = require("@/assets/images/general/profile.png");
 const arrowLeft = require("@/assets/icons/arrow-left.png");
 
 const account = require("@/assets/icons/home/account.png");
@@ -75,6 +76,7 @@ export default {
   institution,
   profile,
   profile2,
+  profileLarge,
   arrowLeft,
   account,
   corn,

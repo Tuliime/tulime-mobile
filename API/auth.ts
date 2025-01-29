@@ -119,6 +119,31 @@ class AuthAPI {
     }
     return await response.json();
   };
+
+  updateUser = async ({
+    userID,
+    token,
+    name,
+    telNumber,
+  }: TAuth["updateUserInput"]) => {
+    const response = await fetch(`${serverURL}/user/${userID}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        name: name,
+        telNumber: parseInt(telNumber),
+      }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const auth = new AuthAPI();

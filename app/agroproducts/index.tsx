@@ -85,7 +85,6 @@ const Agroproducts: React.FC = () => {
   if (isError) {
     return (
       <MainLayout title="Agro Products">
-        {/* TODO: To define custom error card for get requests */}
         <View style={styles.errorContainer}>
           <ErrorCard message={error.message} />
         </View>

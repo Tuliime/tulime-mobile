@@ -95,13 +95,13 @@ const SignIn: React.FC = () => {
                 onPress={(_) => formik.handleSubmit()}
                 disabled={isPending}
               >
-                {!isPending ? (
-                  <Text style={styles.buttonText}>Log In</Text>
-                ) : (
+                {isPending ? (
                   <View style={styles.loadingContainer}>
                     <ActivityIndicator size="large" color={COLORS.white} />
                     <Text style={styles.buttonText}>Logging in...</Text>
                   </View>
+                ) : (
+                  <Text style={styles.buttonText}>Log In</Text>
                 )}
               </TouchableOpacity>
             </View>

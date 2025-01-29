@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { MainLayout } from "@/components/shared/layout";
 import { UpdateAvatar } from "@/components/settings/UpdateAvatar";
 import { UpdateUserBasicInfo } from "@/components/settings/updateUserBasicInfo";
+import { ChangePassword } from "@/components/settings/ChangePassword";
 
 const Settings: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const Settings: React.FC = () => {
         <UpdateAvatar />
         <UpdateUserBasicInfo />
         {/* Change password */}
+        <ChangePassword />
       </View>
     </MainLayout>
   );
@@ -18,7 +20,7 @@ const Settings: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    gap: 32,
+    gap: 40,
   },
 });
 

@@ -144,6 +144,36 @@ class AuthAPI {
     }
     return await response.json();
   };
+
+  // auth/change-password
+
+  changePassword = async ({
+    userID,
+    token,
+    currentPassword,
+    newPassword,
+  }: TAuth["changePasswordInput"]) => {
+    const response = await fetch(
+      `${serverURL}/user/${userID}/auth/change-password`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+        }),
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const auth = new AuthAPI();

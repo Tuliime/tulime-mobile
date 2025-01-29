@@ -15,37 +15,44 @@ import { auth } from "@/API/auth";
 import { TAuth } from "@/types/auth";
 import Toast from "react-native-toast-message";
 import { useAuthStore } from "@/store/auth";
+import { router } from "expo-router";
 
-export const UpdateUserBasicInfo: React.FC = () => {
-  const updateUser = useAuthStore((state) => state.updateUser);
+export const ChangePassword: React.FC = () => {
+  const deleteAuth = useAuthStore((state) => state.deleteAuth);
   const authData = useAuthStore((state) => state.auth);
 
-  const initialFormValues: TAuth["updateUserInput"] = {
-    name: authData.user.name,
-    telNumber: authData.user.telNumber.toString(),
+  const initialFormValues: TAuth["changePasswordInput"] = {
     userID: authData.user.id,
     token: authData.accessToken,
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
   };
 
-  const updateUserValidationSchema = yup.object().shape({
-    name: yup
+  const changePasswordValidationSchema = yup.object().shape({
+    currentPassword: yup
       .string()
       .transform((value) => value.trim())
-      .required("Username is required"),
-    telNumber: yup
+      .required("Current password is required"),
+    newPassword: yup
       .string()
       .transform((value) => value.trim())
       .matches(
-        /^2567\d{8}$/,
-        "Telephone number must start with '2567' followed by 8 digits"
-      ),
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/,
+        "Password must be at least 6 characters long and include at least one letter, one number, and one special character"
+      )
+      .required("New password is required"),
+    confirmPassword: yup
+      .string()
+      .transform((value) => value.trim())
+      .oneOf([yup.ref("newPassword")], "Must be similar to New password")
+      .required("Confirm password is required"),
   });
 
   const { isPending, mutate } = useMutation({
-    mutationFn: auth.updateUser,
+    mutationFn: auth.changePassword,
     onSuccess: (response: any) => {
-      console.log("update user response:", response);
-      updateUser(response.data);
+      deleteAuth();
       Toast.show({
         type: "success",
         text1: "Success!",
@@ -54,6 +61,7 @@ export const UpdateUserBasicInfo: React.FC = () => {
         visibilityTime: 5000,
         autoHide: true,
       });
+      router.push("/auth/signin");
     },
     onError: (error) => {
       console.log("Error:", error);
@@ -68,33 +76,43 @@ export const UpdateUserBasicInfo: React.FC = () => {
     },
   });
 
-  const updateUserHandler = (values: TAuth["updateUserInput"]) => {
-    console.log("user update values:", values);
+  const changePasswordHandler = (values: TAuth["changePasswordInput"]) => {
+    console.log("change password values:", values);
     mutate(values);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.Heading}>Basic Information</Text>
+      <Text style={styles.Heading}>Change Password</Text>
       <Formik
-        validationSchema={updateUserValidationSchema}
+        validationSchema={changePasswordValidationSchema}
         initialValues={initialFormValues}
-        onSubmit={(values) => updateUserHandler(values)}
+        onSubmit={(values) => changePasswordHandler(values)}
       >
         {(formik) => (
           <View style={styles.formContainer}>
             <InputField
               formik={formik}
-              label="Username"
-              name="name"
+              label="Current Password"
+              name="currentPassword"
               keyboardType="default"
+              isSecureTextEntry
               placeholder=""
             />
             <InputField
               formik={formik}
-              label="Telephone number"
-              name="telNumber"
+              label="New Password"
+              name="newPassword"
               keyboardType="default"
+              isSecureTextEntry
+              placeholder=""
+            />
+            <InputField
+              formik={formik}
+              label="Confirm Password"
+              name="confirmPassword"
+              keyboardType="default"
+              isSecureTextEntry
               placeholder=""
             />
             <TouchableOpacity
@@ -105,10 +123,10 @@ export const UpdateUserBasicInfo: React.FC = () => {
               {isPending ? (
                 <View style={styles.loadingContainer}>
                   <ActivityIndicator size="large" color={COLORS.white} />
-                  <Text style={styles.buttonText}>Saving...</Text>
+                  <Text style={styles.buttonText}>Submitting...</Text>
                 </View>
               ) : (
-                <Text style={styles.buttonText}>Save Changes</Text>
+                <Text style={styles.buttonText}>Submit</Text>
               )}
             </TouchableOpacity>
           </View>

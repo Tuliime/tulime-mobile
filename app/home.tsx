@@ -183,8 +183,9 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray3,
   },
   chatroomIcon: {
-    // width: 80,
-    // aspectRatio: "1/1",
+    width: 68,
+    height: 68,
+    objectFit: "contain",
   },
   chatroomTitleText: {
     fontWeight: 700,

@@ -20,6 +20,7 @@ const COLORS = {
   blue7: "#1c7ed6",
   yellow5: "#fcc419",
   pink8: "#c2255c",
+  teal7: "#0ca678",
 };
 
 const FONT = {

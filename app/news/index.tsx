@@ -98,7 +98,7 @@ const News: React.FC = () => {
 
   return (
     <MainLayout title="News, G.O.U & Conferences">
-      <View style={{ gap: 16 }}>
+      <View style={{ flex: 1, gap: 16 }}>
         <View style={{ flexDirection: "row", gap: 8 }}>
           <Button
             handlePress={() => setCategory("news")}

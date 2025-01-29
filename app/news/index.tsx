@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from "react";
 import {
   View,
+  Text,
   Dimensions,
   FlatList,
   ActivityIndicator,
@@ -142,6 +143,13 @@ const News: React.FC = () => {
             }}
           />
         )}
+        {!hasNews && (
+          <View style={styles.noContentContainer}>
+            <Text style={styles.noContentText}>
+              {` No data for ${activeCategory}`}
+            </Text>
+          </View>
+        )}
       </View>
     </MainLayout>
   );
@@ -157,6 +165,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  noContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentText: {
+    textAlign: "center",
+    fontSize: 14,
+    color: COLORS.gray7,
   },
 });
 

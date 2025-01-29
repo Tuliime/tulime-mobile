@@ -37,6 +37,8 @@ export type Auth = {
     role: string;
     telNumber: number;
     imageUrl: string;
+    createdAt: string;
+    updatedAt: string;
   };
 };
 
@@ -45,9 +47,17 @@ type AuthResponse = Auth & {
   message: string;
 };
 
+type UpdateUserInput = {
+  name: string;
+  telNumber: string;
+  userID?: string;
+  token?: string;
+};
+
 type TAuthAction = {
   updateAuth: (auth: Auth) => void;
   deleteAuth: () => void;
+  updateUser: (user: Auth["user"]) => void;
 };
 
 export type TAuth = {
@@ -59,4 +69,5 @@ export type TAuth = {
   resetPassword: ResetPasswordInput;
   verifyOTP: VerifyOTPInput;
   authAction: TAuthAction;
+  updateUserInput: UpdateUserInput;
 };

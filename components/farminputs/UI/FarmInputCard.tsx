@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     borderRadius: 8,
     elevation: 5,
-    // padding: 12,
     alignItems: "center",
     shadowColor: COLORS.gray8,
     shadowOffset: { width: 0, height: 2 },

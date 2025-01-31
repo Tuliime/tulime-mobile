@@ -41,6 +41,7 @@ const trend = require("@/assets/icons/home/trend.png");
 const education = require("@/assets/icons/home/education.png");
 const manager = require("@/assets/icons/home/manager.png");
 const logoTemp = require("@/assets/icons/home/logo-temp.png");
+const bot = require("@/assets/icons/home/bot.png");
 
 export default {
   heart,
@@ -85,4 +86,5 @@ export default {
   tractor,
   manager,
   logoTemp,
+  bot,
 };

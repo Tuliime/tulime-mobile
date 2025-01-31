@@ -15,6 +15,7 @@ const authInitialValues: Auth = {
     imageUrl: "",
     createdAt: "",
     updatedAt: "",
+    profileBgColor: "",
   },
 };
 

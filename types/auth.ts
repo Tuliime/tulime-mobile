@@ -37,6 +37,7 @@ export type Auth = {
     role: string;
     telNumber: number;
     imageUrl: string;
+    profileBgColor: string;
     createdAt: string;
     updatedAt: string;
   };

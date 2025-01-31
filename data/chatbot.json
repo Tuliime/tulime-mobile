@@ -1,0 +1,148 @@
+{
+  "chats": [
+    {
+      "id": "9a8d9b3c-7f83-4dbf-bf6f-2e8b0fd57a38",
+      "userID": "8d19ab9e-4fe0-40c7-8c60-f256cb1842b4",
+      "message": "What are the current prices for fertilizers?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T10:00:00Z",
+      "updatedAt": "2025-01-31T10:05:00Z"
+    },
+    {
+      "id": "8e2c4b61-03a4-488a-a6f4-d738def1227d",
+      "userID": "8d19ab9e-4fe0-40c7-8c60-f256cb1842b4",
+      "message": "The current price for fertilizers ranges between 100 and 150 UGX per kg depending on the type.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T10:05:10Z",
+      "updatedAt": "2025-01-31T10:10:00Z"
+    },
+    {
+      "id": "5e5a812f-c07c-4c60-b9f3-879e3e3491b9",
+      "userID": "923a6f02-1a6d-4ed8-9cb5-54773ef62e57",
+      "message": "Can you recommend a good veterinary doctor?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T10:10:00Z",
+      "updatedAt": "2025-01-31T10:15:00Z"
+    },
+    {
+      "id": "7f1c4df6-4e55-4416-8206-6e9750df9741",
+      "userID": "923a6f02-1a6d-4ed8-9cb5-54773ef62e57",
+      "message": "We recommend Dr. John Doe, who is highly rated in the region for his expertise in animal healthcare.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T10:15:10Z",
+      "updatedAt": "2025-01-31T10:20:00Z"
+    },
+    {
+      "id": "d3926a84-cb66-46ac-b4db-f77479a1d73d",
+      "userID": "1a3b8fcd-5adf-4022-a211-d36aeb3e23d4",
+      "message": "What is the best time to plant maize in Uganda?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T10:20:00Z",
+      "updatedAt": "2025-01-31T10:25:00Z"
+    },
+    {
+      "id": "7d5c4b3b-cae2-4e2e-88ad-34f45b4ca3c7",
+      "userID": "1a3b8fcd-5adf-4022-a211-d36aeb3e23d4",
+      "message": "The best time to plant maize is during the rainy season, typically from March to May.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T10:25:10Z",
+      "updatedAt": "2025-01-31T10:30:00Z"
+    },
+    {
+      "id": "bcb98f0d-f52f-49f1-b3f9-1003142e30a9",
+      "userID": "d23dff43-6ea2-43d1-9d0e-e4f1b70a8368",
+      "message": "What are the trends in livestock farming in Uganda?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T10:30:00Z",
+      "updatedAt": "2025-01-31T10:35:00Z"
+    },
+    {
+      "id": "8d9b0b21-79d9-46b5-b24f-167fb3aeb5c0",
+      "userID": "d23dff43-6ea2-43d1-9d0e-e4f1b70a8368",
+      "message": "Trends in livestock farming include the rise of organic farming and more focus on dairy production.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T10:35:10Z",
+      "updatedAt": "2025-01-31T10:40:00Z"
+    },
+    {
+      "id": "1d7ef3a7-bb99-4293-93d3-5b6d4d81223b",
+      "userID": "562ff963-bb36-44ff-b517-672b9faff77f",
+      "message": "How much does agro machinery cost?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T10:40:00Z",
+      "updatedAt": "2025-01-31T10:45:00Z"
+    },
+    {
+      "id": "0fc65b58-2321-4292-9b9e-c08404f4e25e",
+      "userID": "562ff963-bb36-44ff-b517-672b9faff77f",
+      "message": "The cost for agro machinery depends on the type. Tractors may cost from 15 to 60 million UGX.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T10:45:10Z",
+      "updatedAt": "2025-01-31T10:50:00Z"
+    },
+    {
+      "id": "3cbd53a3-b11e-413b-8460-3be0f9d8d83b",
+      "userID": "987fc28d-e15f-4426-9061-684ab6f2c0d2",
+      "message": "What are the common diseases affecting crops?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T10:50:00Z",
+      "updatedAt": "2025-01-31T10:55:00Z"
+    },
+    {
+      "id": "d2994d47-4f42-4bbd-bf3c-dc3e3fd0bdb9",
+      "userID": "987fc28d-e15f-4426-9061-684ab6f2c0d2",
+      "message": "Common diseases affecting crops include blight, rust, and mildew, especially in wet conditions.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T10:55:10Z",
+      "updatedAt": "2025-01-31T11:00:00Z"
+    },
+    {
+      "id": "a80c0329-df5d-4080-9d31-24402dce2d11",
+      "userID": "76b1fe83-e206-45d1-9184-fbb51a42679d",
+      "message": "What is the current price of pesticides?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T11:00:00Z",
+      "updatedAt": "2025-01-31T11:05:00Z"
+    },
+    {
+      "id": "36abdcf1-2fe4-40d6-bab0-1bb5e6c893da",
+      "userID": "76b1fe83-e206-45d1-9184-fbb51a42679d",
+      "message": "The current price of pesticides ranges between 120 and 200 UGX per liter, depending on the type.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T11:05:10Z",
+      "updatedAt": "2025-01-31T11:10:00Z"
+    },
+    {
+      "id": "73a051ac-41da-47d0-b074-7c8c2cc35457",
+      "userID": "91d231c4-4d95-44d9-a3f9-24cdadd80336",
+      "message": "Can you suggest a farm manager?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T11:10:00Z",
+      "updatedAt": "2025-01-31T11:15:00Z"
+    },
+    {
+      "id": "b44be1a9-b7c3-4724-bb7b-978c8bc9b748",
+      "userID": "91d231c4-4d95-44d9-a3f9-24cdadd80336",
+      "message": "We recommend a farm manager named Michael who specializes in crop and livestock management.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T11:15:10Z",
+      "updatedAt": "2025-01-31T11:20:00Z"
+    },
+    {
+      "id": "c11834be-88fe-41c0-8b29-8b2ed08a2c4f",
+      "userID": "e436d53c-f93f-46c1-a1b5-c2bc7f3a4fc5",
+      "message": "When is the next planting season for maize?",
+      "writtenBy": "user",
+      "createdAt": "2025-01-31T11:20:00Z",
+      "updatedAt": "2025-01-31T11:25:00Z"
+    },
+    {
+      "id": "9b56f91d-60ed-4d45-b0ed-d3c9b8e7e75d",
+      "userID": "e436d53c-f93f-46c1-a1b5-c2bc7f3a4fc5",
+      "message": "The next planting season for maize is from March to May, coinciding with the rainy season.",
+      "writtenBy": "bot",
+      "createdAt": "2025-01-31T11:25:10Z",
+      "updatedAt": "2025-01-31T11:30:00Z"
+    }
+  ]
+}

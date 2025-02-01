@@ -5,6 +5,10 @@ export const useChatbotStore = create<
   { messages: TChatbot["message"][] } & TChatbot["chatbotAction"]
 >((set) => ({
   messages: [],
+  updateAll: (messages) =>
+    set((state) => ({
+      messages: messages,
+    })),
   addMessage: (message) =>
     set((state) => ({
       messages: [...state.messages, message],

@@ -16,7 +16,15 @@ type MessageInput = {
   token: string;
 };
 
+type GetChatbotMessages = {
+  userID: string;
+  limit: number;
+  cursor?: string;
+  token: string;
+};
+
 type TChatbotAction = {
+  updateAll: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
   updateMessage: (message: Message) => void;
   clearMessages: () => void;
@@ -25,5 +33,6 @@ type TChatbotAction = {
 export type TChatbot = {
   message: Message;
   messageInput: MessageInput;
+  getChatbotMessages: GetChatbotMessages;
   chatbotAction: TChatbotAction;
 };

@@ -9,5 +9,11 @@ export const useChatbotStore = create<
     set((state) => ({
       messages: [...state.messages, message],
     })),
+  updateMessage: (message) =>
+    set((state) => ({
+      messages: state.messages.map((msg) =>
+        msg.id === message.id ? { ...msg, ...message } : msg
+      ),
+    })),
   clearMessages: () => set(() => ({ messages: [] })),
 }));

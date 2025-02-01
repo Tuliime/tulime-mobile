@@ -18,6 +18,7 @@ type MessageInput = {
 
 type TChatbotAction = {
   addMessage: (message: Message) => void;
+  updateMessage: (message: Message) => void;
   clearMessages: () => void;
 };
 

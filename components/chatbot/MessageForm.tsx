@@ -25,6 +25,7 @@ const inputFieldWith = formContainerWidth - 64;
 export const MessageForm: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
   const addMessageToList = useChatbotStore((state) => state.addMessage);
+  const updateMessage = useChatbotStore((state) => state.updateMessage);
 
   const initialFormValues: TChatbot["messageInput"] = {
     userID: auth.user.id,
@@ -42,8 +43,8 @@ export const MessageForm: React.FC = () => {
     mutationFn: chatbot.post,
     onSuccess: (response: any) => {
       console.log("chatbot response:", response);
-      response.data.postedAt = new Date().toISOString(); //To be removed
-      addMessageToList(response.data);
+      addMessageToList(response.data.bot);
+      updateMessage(response.data.user);
     },
     onError: (error) => {
       console.log("Error:", error);

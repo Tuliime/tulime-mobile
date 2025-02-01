@@ -9,7 +9,7 @@ const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.88;
 
 export const BotMessage: React.FC<TChatbot["message"]> = (props) => {
-  const messageTime = new AppDate(props.createdAt).time();
+  const messageTime = new AppDate(props.postedAt!).time();
 
   return (
     <View style={styles.Container}>

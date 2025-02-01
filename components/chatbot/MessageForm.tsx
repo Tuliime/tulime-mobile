@@ -42,6 +42,7 @@ export const MessageForm: React.FC = () => {
     mutationFn: chatbot.post,
     onSuccess: (response: any) => {
       console.log("chatbot response:", response);
+      response.data.postedAt = new Date().toISOString(); //To be removed
       addMessageToList(response.data);
     },
     onError: (error) => {
@@ -58,17 +59,30 @@ export const MessageForm: React.FC = () => {
   });
 
   const messageSubmitHandler = (values: TChatbot["messageInput"]) => {
+    console.log("Submit handler start...");
     values.postedAt = new Date().toISOString();
     console.log("message input values:", values);
     addMessageToList(values as any);
     mutate(values);
+    console.log("Submit handler end...");
   };
 
+  // TODO: to find way better to implement clearing the form
   const makeFormValuesEmpty = (
     formik: FormikProps<TChatbot["messageInput"]>
   ) => {
-    formik.values["message"] = "";
-    formik.values["postedAt"] = "";
+    // console.log("makeFormValuesEmpty...");
+    // formik.values["message"] = "";
+    // formik.values["postedAt"] = "";
+  };
+
+  const formikSubmitHandler = (
+    formik: FormikProps<TChatbot["messageInput"]>
+  ) => {
+    formik.handleSubmit();
+    setTimeout(() => {
+      makeFormValuesEmpty(formik);
+    }, 200);
   };
 
   const disableSubmitButton = (
@@ -103,7 +117,9 @@ export const MessageForm: React.FC = () => {
                 { opacity: disableSubmitButton(formik) ? 0.75 : 1 },
               ]}
               onPress={(_) => {
-                formik.handleSubmit(), makeFormValuesEmpty(formik);
+                // formik.handleSubmit();
+                //   makeFormValuesEmpty(formik);
+                formikSubmitHandler(formik);
               }}
               disabled={disableSubmitButton(formik)}
             >

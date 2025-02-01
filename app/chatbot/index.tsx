@@ -1,13 +1,15 @@
 import React, { useCallback } from "react";
 import { View, FlatList } from "react-native";
-import { MainLayout } from "@/components/shared/layout";
 import ChatJson from "@/data/chatbot.json";
 import { BotMessage } from "@/components/chatbot/BotMessage";
 import { UserMessage } from "@/components/chatbot/UserMessage";
 import { TChatbot } from "@/types/chatbot";
+import { MessageForm } from "@/components/chatbot/MessageForm";
+import { ChatbotLayout } from "@/components/shared/layout/ChatbotLayout";
 
 const Chatbot: React.FC = () => {
   const chats = ChatJson.chats;
+  // TODO: To fetch messages here
 
   const renderMessageItem = useCallback(
     ({ item }: { item: TChatbot["message"] }) => {
@@ -37,7 +39,7 @@ const Chatbot: React.FC = () => {
     []
   );
   return (
-    <MainLayout title="Tulime Chatbot">
+    <ChatbotLayout title="Tulime Chatbot" chatInputField={<MessageForm />}>
       <View style={{ gap: 24 }}>
         <FlatList
           data={chats}
@@ -51,7 +53,7 @@ const Chatbot: React.FC = () => {
           }}
         />
       </View>
-    </MainLayout>
+    </ChatbotLayout>
   );
 };
 

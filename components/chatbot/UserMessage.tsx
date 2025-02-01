@@ -11,7 +11,7 @@ const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.88;
 
 export const UserMessage: React.FC<TChatbot["message"]> = (props) => {
-  const messageTime = new AppDate(props.createdAt).time();
+  const messageTime = new AppDate(props.postedAt!).time();
   const user = useAuthStore((state) => state.auth.user);
 
   const hasImage: boolean = !!user.imageUrl;

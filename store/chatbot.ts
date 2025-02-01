@@ -1,0 +1,13 @@
+import { create } from "zustand";
+import { TChatbot } from "@/types/chatbot";
+
+export const useChatbotStore = create<
+  { messages: TChatbot["message"][] } & TChatbot["chatbotAction"]
+>((set) => ({
+  messages: [],
+  addMessage: (message) =>
+    set((state) => ({
+      messages: [...state.messages, message],
+    })),
+  clearMessages: () => set(() => ({ messages: [] })),
+}));

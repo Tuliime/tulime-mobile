@@ -1,14 +1,15 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { MainLayout } from "@/components/shared/layout";
+import { ChatroomLayout } from "@/components/shared/layout/ChatroomLayout";
+import { MessageForm } from "@/components/chatroom/MessageForm";
 
 const Chatroom: React.FC = () => {
   return (
-    <MainLayout title="Chatroom">
+    <ChatroomLayout title="Chatroom" chatInputField={<MessageForm />}>
       <View>
         <Text>Chatroom here</Text>
       </View>
-    </MainLayout>
+    </ChatroomLayout>
   );
 };
 

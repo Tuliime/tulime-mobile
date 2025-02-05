@@ -15,6 +15,7 @@ import { NotificationCount } from "@/components/notification/NotificationCount";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ServiceCard } from "@/components/shared/UI/ServiceCard";
 import { TService } from "@/types/service";
+import { Logout } from "@/components/auth/Logout";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
@@ -83,7 +84,12 @@ export default function Home() {
         <View style={styles.headerContainer}>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitleText}>Tulime</Text>
-            <NotificationCount />
+            <View
+              style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+            >
+              <NotificationCount />
+              <Logout />
+            </View>
           </View>
           <Link href={"/search"}>
             <View style={styles.headerSearch}>

@@ -2,10 +2,15 @@ import { create } from "zustand";
 import { TChatroom } from "@/types/chatroom";
 
 export const useChatroomStore = create<
-  { messages: TChatroom["message"][] } & TChatroom["chatroomAction"]
+  {
+    messages: TChatroom["message"][];
+    replies: TChatroom["message"][];
+  } & TChatroom["chatroomAction"]
 >((set) => ({
   messages: [],
-  updateAll: (messages) =>
+  replies: [],
+  // Message Actions
+  updateAllMessages: (messages) =>
     set(() => ({
       messages: messages,
     })),
@@ -20,4 +25,20 @@ export const useChatroomStore = create<
       ),
     })),
   clearMessages: () => set(() => ({ messages: [] })),
+  // Replies Actions
+  updateAllReplies: (messages) =>
+    set(() => ({
+      replies: messages,
+    })),
+  addReply: (message) =>
+    set((state) => ({
+      replies: [...state.messages, message],
+    })),
+  updateReply: (message) =>
+    set((state) => ({
+      replies: state.messages.map((msg) =>
+        msg.id === message.id ? { ...msg, ...message } : msg
+      ),
+    })),
+  clearReplies: () => set(() => ({ replies: [] })),
 }));

@@ -54,7 +54,7 @@ type MessageInput = {
 
 type GetMessageAPIResponse = {
   data: {
-    chats: Message[];
+    messages: Message[];
     replies: Message[] | null;
   };
   pagination: Pagination;
@@ -62,10 +62,14 @@ type GetMessageAPIResponse = {
 };
 
 type TChatroomAction = {
-  updateAll: (messages: Message[]) => void;
+  updateAllMessages: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
   updateMessage: (message: Message) => void;
   clearMessages: () => void;
+  updateAllReplies: (messages: Message[]) => void;
+  addReply: (message: Message) => void;
+  updateReply: (message: Message) => void;
+  clearReplies: () => void;
 };
 
 export type TChatroom = {

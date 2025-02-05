@@ -25,7 +25,7 @@ class ChatroomAPI {
     token,
   }: TChatroom["getMessageInput"]) => {
     const response = await fetch(
-      `${serverURL}/chatbot/user?limit=${limit}&cursor=${cursor}&includeCursor=${includeCursor}`,
+      `${serverURL}/chatroom?limit=${limit}&cursor=${cursor}&includeCursor=${includeCursor}`,
       {
         method: "GET",
         headers: {

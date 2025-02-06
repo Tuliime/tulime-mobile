@@ -11,6 +11,7 @@ import "react-native-reanimated";
 // import { Provider } from "react";
 import { Providers } from "@/provider";
 import Toast from "react-native-toast-message";
+import { UseGlobalHooks } from "@/hooks/useGlobalHooks";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
@@ -56,6 +57,7 @@ export default function RootLayout() {
     <Providers>
       <Stack />
       <Toast />
+      <UseGlobalHooks />
     </Providers>
   );
 }

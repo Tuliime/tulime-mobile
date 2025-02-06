@@ -1,3 +1,5 @@
+import { Auth } from "./auth";
+
 type Pagination = {
   limit: number;
   prevCursor: string;
@@ -34,6 +36,14 @@ type Message = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+};
+
+type OrganizedMessage = Message & {
+  repliedMessage: Message;
+  isPrimaryMessage: boolean;
+  isCurrentUserSender: boolean;
+  showDay: boolean;
+  user: Auth["user"];
 };
 
 type GetMessageInput = {
@@ -75,6 +85,7 @@ type TChatroomAction = {
 export type TChatroom = {
   messageInput: MessageInput;
   message: Message;
+  organizedMessage: OrganizedMessage;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
   chatroomAction: TChatroomAction;

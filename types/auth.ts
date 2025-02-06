@@ -67,6 +67,8 @@ type TAuthAction = {
   updateAuth: (auth: Auth) => void;
   deleteAuth: () => void;
   updateUser: (user: Auth["user"]) => void;
+  updateAllUsers: (users: Auth["user"][]) => void;
+  clearAllUsers: () => void;
 };
 
 export type TAuth = {

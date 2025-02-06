@@ -20,16 +20,22 @@ const authInitialValues: Auth = {
 };
 
 export const useAuthStore = create(
-  persist<{ auth: Auth } & TAuth["authAction"] & TStoreHydration>(
+  persist<
+    { auth: Auth } & TAuth["authAction"] & {
+        users: Auth["user"][];
+      } & TStoreHydration
+  >(
     (set) => ({
       auth: authInitialValues,
+      users: [],
       updateAuth: (auth) => set(() => ({ auth })),
       deleteAuth: () => set(() => ({ auth: authInitialValues })),
       updateUser: (user) =>
         set((state) => ({
           auth: { ...state.auth, user: { ...state.auth.user, ...user } },
         })),
-
+      updateAllUsers: (users) => set(() => ({ users: users })),
+      clearAllUsers: () => set(() => ({ users: [] })),
       // Track Hydration State
       _hasHydrated: false,
       setHasHydrated: (state: any) => {

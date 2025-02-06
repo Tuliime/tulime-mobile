@@ -5,47 +5,33 @@ import { TChatroom } from "@/types/chatroom";
 import { useAuthStore } from "@/store/auth";
 import { RecipientMessage } from "./RecipientMessage";
 import { useChatroomStore } from "@/store/chatroom";
+import { ChatroomMessages } from "@/utils/organizeChatroomMessage";
 
 export const ChatroomMessageList: React.FC = () => {
-  const user = useAuthStore((state) => state.auth.user);
-  const messages = useChatroomStore((state) => state.messages);
-  const replies = useChatroomStore((state) => state.replies);
+  const currentUser = useAuthStore((state) => state.auth.user);
+  const users = useAuthStore((state) => state.users) ?? [];
+  const messages = useChatroomStore((state) => state.messages) ?? [];
+  const replies = useChatroomStore((state) => state.replies) ?? [];
 
-  console.log("messages: ", messages);
-  console.log("replies: ", replies);
+  // console.log("messages: ", messages);
+  // console.log("replies: ", replies);
+  // console.log("users: ", users);
+
+  const organizedMessages = new ChatroomMessages(
+    messages,
+    replies,
+    users,
+    currentUser
+  ).organize();
+
+  console.log("organizedMessages: ", organizedMessages);
 
   const renderMessageItem = useCallback(
-    ({ item }: { item: TChatroom["message"] }) => {
-      if (item.userID === user.id) {
-        return (
-          <SenderMessage
-            id={item.id}
-            userID={item.userID}
-            text={item.text}
-            sentAt={item.sentAt}
-            arrivedAt={item.arrivedAt}
-            createdAt={item.createdAt}
-            updatedAt={item.updatedAt}
-            reply={item.reply}
-            mention={item.mention}
-            deletedAt={null}
-          />
-        );
+    ({ item }: { item: TChatroom["organizedMessage"] }) => {
+      if (item.isCurrentUserSender) {
+        return <SenderMessage message={item} />;
       }
-      return (
-        <RecipientMessage
-          id={item.id}
-          userID={item.userID}
-          text={item.text}
-          sentAt={item.sentAt}
-          arrivedAt={item.arrivedAt}
-          createdAt={item.createdAt}
-          updatedAt={item.updatedAt}
-          reply={item.reply}
-          mention={item.mention}
-          deletedAt={null}
-        />
-      );
+      return <RecipientMessage message={item} />;
     },
     []
   );
@@ -53,9 +39,10 @@ export const ChatroomMessageList: React.FC = () => {
   return (
     <View>
       <FlatList
-        data={messages}
+        data={organizedMessages}
         // keyExtractor={(item) => item.id}
-        keyExtractor={(item) => item.id!}
+        // keyExtractor={(item) => item.id!}
+        keyExtractor={(item) => item.sentAt!}
         renderItem={renderMessageItem}
         scrollEnabled={false}
         numColumns={1}

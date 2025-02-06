@@ -7,10 +7,12 @@ import { COLORS } from "@/constants";
 
 export const Logout: React.FC = () => {
   const deleteAuth = useAuthStore((state) => state.deleteAuth);
+  const clearAllUsers = useAuthStore((state) => state.clearAllUsers);
 
   const logoutHandler = () => {
     // maybe TODO: invalid user session
     deleteAuth();
+    clearAllUsers();
     router.push("/auth/signin");
   };
   return (

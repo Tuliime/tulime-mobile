@@ -6,6 +6,7 @@ import { TChatroom } from "@/types/chatroom";
 import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
 import { useAuthStore } from "@/store/auth";
 import { ReplyRecipientMessage } from "./ReplyRecipientMessage";
+import { truncateString } from "@/utils/truncateString";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -47,6 +48,11 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
         <RightAngledTriangle
           style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
         />
+        {isPrimaryMessage && (
+          <Text style={styles.usernameText}>
+            {truncateString(props.message.user.name, 24)}
+          </Text>
+        )}
         {/* <ReplyRecipientMessage message={props.message} /> */}
         {hasReplyMessage && <ReplyRecipientMessage message={props.message} />}
         <View style={styles.messageTextContainer}>
@@ -94,6 +100,11 @@ const styles = StyleSheet.create({
     left: -12,
     top: 0,
     transform: [{ rotate: "180deg" }],
+  },
+  usernameText: {
+    color: COLORS.blue4,
+    fontWeight: 700,
+    paddingLeft: 6,
   },
   messageTextContainer: {
     padding: 4,

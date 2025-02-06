@@ -9,26 +9,43 @@ import { useAuthStore } from "@/store/auth";
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
 
-export const RecipientMessage: React.FC<TChatroom["message"]> = (props) => {
-  const messageTime = new AppDate(props.arrivedAt!).time();
+type RecipientMessageProps = {
+  message: TChatroom["organizedMessage"];
+};
+
+export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
+  const messageTime = new AppDate(props.message.arrivedAt!).time();
   const user = useAuthStore((state) => state.auth.user);
 
   const hasImage: boolean = !!user.imageUrl;
+  const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
 
   //   TODO: To add logic for the file display
   //   TODO: To add logic for displaying the profile image
   return (
     <View style={styles.Container}>
-      <View style={styles.profileIconContainer}>
+      <View
+        style={[
+          styles.profileIconContainer,
+          { opacity: isPrimaryMessage ? 1 : 0 },
+        ]}
+      >
         <Image
           source={icons.profile}
           resizeMode="contain"
           style={styles.profileIcon}
         />
       </View>
-      <View style={styles.messageContainer}>
-        <RightAngledTriangle style={styles.triangleIcon} />
-        <Text style={styles.messageText}>{props.text}</Text>
+      <View
+        style={[
+          styles.messageContainer,
+          { borderTopLeftRadius: isPrimaryMessage ? 0 : 16 },
+        ]}
+      >
+        <RightAngledTriangle
+          style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
+        />
+        <Text style={styles.messageText}>{props.message.text}</Text>
         <Text style={styles.messageTime}>{messageTime}</Text>
       </View>
     </View>

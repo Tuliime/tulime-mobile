@@ -10,12 +10,17 @@ import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
 
-export const SenderMessage: React.FC<TChatroom["message"]> = (props) => {
-  const messageTime = new AppDate(props.arrivedAt!).time();
+type SenderMessageProps = {
+  message: TChatroom["organizedMessage"];
+};
+
+export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
+  const messageTime = new AppDate(props.message.arrivedAt!).time();
   const user = useAuthStore((state) => state.auth.user);
 
   const hasImage: boolean = !!user.imageUrl;
   const hasProfileBgColor: boolean = !!user.profileBgColor;
+  const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
 
   const showProfileImage: boolean = hasImage;
   const showProfileBgColor: boolean = !hasImage && hasProfileBgColor;
@@ -23,13 +28,25 @@ export const SenderMessage: React.FC<TChatroom["message"]> = (props) => {
 
   return (
     <View style={styles.Container}>
-      <View style={styles.messageContainer}>
-        <RightAngledTriangle style={styles.triangleIcon} />
-        <Text style={styles.messageText}>{props.text}</Text>
+      <View
+        style={[
+          styles.messageContainer,
+          { borderTopRightRadius: isPrimaryMessage ? 0 : 16 },
+        ]}
+      >
+        <RightAngledTriangle
+          style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
+        />
+        <Text style={styles.messageText}>{props.message.text}</Text>
         <Text style={styles.messageTime}>{messageTime}</Text>
       </View>
       {showProfileImage && (
-        <View style={styles.userIconContainer}>
+        <View
+          style={[
+            styles.userIconContainer,
+            { opacity: isPrimaryMessage ? 1 : 0 },
+          ]}
+        >
           <Image
             source={{ uri: user.imageUrl }}
             resizeMode="contain"
@@ -38,7 +55,12 @@ export const SenderMessage: React.FC<TChatroom["message"]> = (props) => {
         </View>
       )}
       {showProfileBgColor && (
-        <View style={styles.userIconContainer}>
+        <View
+          style={[
+            styles.userIconContainer,
+            { opacity: isPrimaryMessage ? 1 : 0 },
+          ]}
+        >
           <DefaultUserProfileBgIcon
             profileBgColor={user.profileBgColor}
             name={user.name}
@@ -46,7 +68,12 @@ export const SenderMessage: React.FC<TChatroom["message"]> = (props) => {
         </View>
       )}
       {showDefaultProfileImage && (
-        <View style={styles.profileImageContainer}>
+        <View
+          style={[
+            styles.profileImageContainer,
+            { opacity: isPrimaryMessage ? 1 : 0 },
+          ]}
+        >
           <Image
             source={icons.profile}
             resizeMode="contain"

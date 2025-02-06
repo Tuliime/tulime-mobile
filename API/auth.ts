@@ -145,8 +145,6 @@ class AuthAPI {
     return await response.json();
   };
 
-  // auth/change-password
-
   changePassword = async ({
     userID,
     token,
@@ -167,6 +165,22 @@ class AuthAPI {
         },
       }
     );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  get = async ({ token }: { token: string }) => {
+    const response = await fetch(`${serverURL}/user`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();

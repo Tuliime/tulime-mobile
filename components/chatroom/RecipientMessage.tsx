@@ -5,6 +5,7 @@ import { AppDate } from "@/utils/appDate";
 import { TChatroom } from "@/types/chatroom";
 import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
 import { useAuthStore } from "@/store/auth";
+import { ReplyRecipientMessage } from "./ReplyRecipientMessage";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -19,6 +20,7 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
 
   const hasImage: boolean = !!user.imageUrl;
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
+  const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
 
   //   TODO: To add logic for the file display
   //   TODO: To add logic for displaying the profile image
@@ -45,7 +47,11 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
         <RightAngledTriangle
           style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
         />
-        <Text style={styles.messageText}>{props.message.text}</Text>
+        {/* <ReplyRecipientMessage message={props.message} /> */}
+        {hasReplyMessage && <ReplyRecipientMessage message={props.message} />}
+        <View style={styles.messageTextContainer}>
+          <Text style={styles.messageText}>{props.message.text}</Text>
+        </View>
         <Text style={styles.messageTime}>{messageTime}</Text>
       </View>
     </View>
@@ -61,17 +67,12 @@ const styles = StyleSheet.create({
     // backgroundColor: "pink",
   },
   profileIconContainer: {
-    // backgroundColor: COLORS.gray4,
     width: 32,
     height: 32,
-    // padding: -8,
-    // borderRadius: 1000,
     justifyContent: "center",
     alignItems: "center",
   },
   profileIcon: {
-    // width: "100%",
-    // height: "100%",
     marginTop: -8,
     width: 44,
     height: 40,
@@ -80,28 +81,34 @@ const styles = StyleSheet.create({
   messageContainer: {
     width: "auto",
     maxWidth: maxWidth,
-    backgroundColor: COLORS.gray4,
-    padding: 16,
-    paddingBottom: 28,
+    backgroundColor: COLORS.gray3,
+    padding: 4,
+    paddingBottom: 18,
     borderRadius: 12,
     borderTopLeftRadius: 0,
     position: "relative",
   },
   triangleIcon: {
-    borderBottomColor: COLORS.gray4,
+    borderBottomColor: COLORS.gray3,
     position: "absolute",
     left: -12,
     top: 0,
     transform: [{ rotate: "180deg" }],
   },
+  messageTextContainer: {
+    padding: 4,
+    paddingLeft: 8,
+  },
   messageText: {
-    color: COLORS.gray8,
+    color: COLORS.gray9,
     fontSize: 16,
   },
   messageTime: {
     color: COLORS.gray6,
     position: "absolute",
-    right: 12,
-    bottom: 8,
+    right: 8,
+    bottom: 4,
+    fontWeight: 400,
+    fontSize: 12,
   },
 });

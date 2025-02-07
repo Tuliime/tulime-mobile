@@ -5,6 +5,7 @@ import { AppDate } from "@/utils/appDate";
 import { TChatroom } from "@/types/chatroom";
 import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
 import { ReplySenderMessage } from "./ReplySenderMessage";
+import { MessageOnSwipe } from "./MessageOnSwipe";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -19,24 +20,26 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
 
   return (
-    <View style={styles.Container}>
-      <View
-        style={[
-          styles.messageContainer,
-          { borderTopRightRadius: isPrimaryMessage ? 0 : 16 },
-        ]}
-      >
-        <RightAngledTriangle
-          style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
-        />
-        {/* <ReplySenderMessage message={props.message} /> */}
-        {hasReplyMessage && <ReplySenderMessage message={props.message} />}
-        <View style={styles.messageTextContainer}>
-          <Text style={styles.messageText}>{props.message.text}</Text>
+    <MessageOnSwipe message={props.message}>
+      <View style={styles.Container}>
+        <View
+          style={[
+            styles.messageContainer,
+            { borderTopRightRadius: isPrimaryMessage ? 0 : 16 },
+          ]}
+        >
+          <RightAngledTriangle
+            style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
+          />
+          {/* <ReplySenderMessage message={props.message} /> */}
+          {hasReplyMessage && <ReplySenderMessage message={props.message} />}
+          <View style={styles.messageTextContainer}>
+            <Text style={styles.messageText}>{props.message.text}</Text>
+          </View>
+          <Text style={styles.messageTime}>{messageTime}</Text>
         </View>
-        <Text style={styles.messageTime}>{messageTime}</Text>
       </View>
-    </View>
+    </MessageOnSwipe>
   );
 };
 

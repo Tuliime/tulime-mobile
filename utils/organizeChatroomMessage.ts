@@ -82,7 +82,7 @@ export class ChatroomMessages {
         (user) => user.id === currentMessage.userID
       )!;
       organizedMessage.repliedMessage = this.replies.find(
-        (repliedMessage) => repliedMessage.id === currentMessage.id
+        (repliedMessage) => repliedMessage?.id === currentMessage.reply
       )!;
 
       organizedMessageList.push(organizedMessage);

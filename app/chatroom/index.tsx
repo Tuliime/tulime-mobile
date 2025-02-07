@@ -52,7 +52,7 @@ const Chatroom: React.FC = () => {
 
   if (isPending) {
     return (
-      <ChatroomLayout title="Tulime Chatbot" chatInputField={<MessageForm />}>
+      <ChatroomLayout title="Chatroom" chatInputField={<MessageForm />}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.blue7} />
         </View>
@@ -62,7 +62,7 @@ const Chatroom: React.FC = () => {
 
   if (isError) {
     return (
-      <ChatroomLayout title="Tulime Chatbot" chatInputField={<MessageForm />}>
+      <ChatroomLayout title="Chatroom" chatInputField={<MessageForm />}>
         <View style={styles.errorContainer}>
           <ErrorCard message={error.message} />
         </View>

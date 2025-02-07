@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -18,6 +18,7 @@ import { chatroom } from "@/API/chatroom";
 import Toast from "react-native-toast-message";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SwipedMessage } from "./SwipedMessage";
+import uuid from "react-native-uuid";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -25,11 +26,27 @@ const inputFieldWith = formContainerWidth - 64;
 
 export const MessageForm: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
-  const addMessageToList = useChatroomStore((state) => state.addMessage);
-  const updateMessage = useChatroomStore((state) => state.updateMessage);
+  const addMessage = useChatroomStore((state) => state.addMessage);
+  const addRepliedMessage = useChatroomStore((state) => state.addReply);
+  const updateMessageBySentAt = useChatroomStore(
+    (state) => state.updateMessageBySentAt
+  );
+  const updatePostingMessage = useChatroomStore(
+    (state) => state.updatePostingMessage
+  );
+  const clearSwipedMessage = useChatroomStore(
+    (state) => state.clearSwipedMessage
+  );
   const swipedMessage = useChatroomStore((state) => state.swipedMessage);
-  console.log("swipedMessage: ", swipedMessage);
   const showSwipedMessage: boolean = !!swipedMessage?.id;
+
+  const textInputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    if (showSwipedMessage) {
+      textInputRef.current?.focus();
+    }
+  }, [showSwipedMessage]);
 
   const initialFormValues: TChatroom["messageInput"] = {
     userID: auth.user.id,
@@ -48,6 +65,8 @@ export const MessageForm: React.FC = () => {
     mutationFn: chatroom.post,
     onSuccess: (response: any) => {
       console.log("chatbot response:", response);
+      updateMessageBySentAt(response.data);
+      updatePostingMessage({ status: "success", sentAt: response.data.sentAt });
     },
     onError: (error) => {
       console.log("Error:", error);
@@ -62,9 +81,28 @@ export const MessageForm: React.FC = () => {
     },
   });
 
+  const genInitialMessageValues = (
+    values: TChatroom["messageInput"]
+  ): TChatroom["message"] => {
+    const message: TChatroom["message"] = {
+      id: uuid.v4(),
+      userID: auth.user.id,
+      text: values.text,
+      reply: values.text,
+      mention: values.mention as any,
+      sentAt: values.sentAt,
+      arrivedAt: values.sentAt,
+      createdAt: values.sentAt,
+      updatedAt: values.sentAt,
+      deletedAt: null,
+    };
+    return message;
+  };
+
   const messageSubmitHandler = (values: TChatroom["messageInput"]) => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
+    if (showSwipedMessage) values.reply = swipedMessage?.id!;
 
     formData.append("userID", values.userID);
     formData.append("text", values.text);
@@ -76,7 +114,12 @@ export const MessageForm: React.FC = () => {
       formData.append("file", new Blob([values.file]));
     }
 
+    // addMessage(values as any);
+    addMessage(genInitialMessageValues(values));
+    addRepliedMessage(swipedMessage!);
+    updatePostingMessage({ status: "pending", sentAt: values.sentAt });
     mutate({ formData: formData, token: auth.accessToken });
+    clearSwipedMessage();
   };
 
   // TODO: to find way better to implement clearing the form
@@ -116,6 +159,7 @@ export const MessageForm: React.FC = () => {
         {(formik) => (
           <View style={[styles.formContainer, {}]}>
             <TextInput
+              ref={textInputRef}
               placeholder={"Please be polite"}
               style={styles.input}
               onChangeText={formik.handleChange("text")}

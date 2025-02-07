@@ -4,8 +4,10 @@ import { View, Text, StyleSheet, Dimensions } from "react-native";
 import { AppDate } from "@/utils/appDate";
 import { TChatroom } from "@/types/chatroom";
 import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
-import { ReplySenderMessage } from "./ReplySenderMessage";
+import { RepliedMessage } from "./RepliedMessage";
 import { MessageOnSwipe } from "./MessageOnSwipe";
+import Feather from "@expo/vector-icons/Feather";
+import { useChatroomStore } from "@/store/chatroom";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -15,9 +17,14 @@ type SenderMessageProps = {
 };
 
 export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
-  const messageTime = new AppDate(props.message.arrivedAt!).time();
+  const messageTime = new AppDate(props.message.sentAt!).time();
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
+  const postingMessage = useChatroomStore((state) => state.postingMessage);
+
+  const isPending: boolean =
+    props.message.sentAt === postingMessage.sentAt &&
+    postingMessage.status === "pending";
 
   return (
     <MessageOnSwipe message={props.message}>
@@ -31,12 +38,20 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
           <RightAngledTriangle
             style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
           />
-          {/* <ReplySenderMessage message={props.message} /> */}
-          {hasReplyMessage && <ReplySenderMessage message={props.message} />}
+          {hasReplyMessage && (
+            <RepliedMessage message={props.message} displayUnder={"sender"} />
+          )}
           <View style={styles.messageTextContainer}>
             <Text style={styles.messageText}>{props.message.text}</Text>
           </View>
-          <Text style={styles.messageTime}>{messageTime}</Text>
+          <View style={styles.messageTimeContainer}>
+            <Text style={styles.messageTime}>{messageTime}</Text>
+            {isPending ? (
+              <Feather name="clock" size={16} color={COLORS.gray6} />
+            ) : (
+              <Feather name="check" size={16} color={COLORS.gray6} />
+            )}
+          </View>
         </View>
       </View>
     </MessageOnSwipe>
@@ -78,12 +93,23 @@ const styles = StyleSheet.create({
     color: COLORS.gray9,
     fontSize: 16,
   },
-  messageTime: {
-    color: COLORS.gray6,
+  messageTimeContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+    // backgroundColor: "lightblue",
     position: "absolute",
     right: 8,
     bottom: 4,
     fontWeight: 400,
+  },
+  messageTime: {
+    color: COLORS.gray6,
+    // position: "absolute",
+    // right: 8,
+    // bottom: 4,
+    // fontWeight: 400,
     fontSize: 12,
   },
 });

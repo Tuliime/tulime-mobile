@@ -24,7 +24,7 @@ export const ChatroomMessageList: React.FC = () => {
     currentUser
   ).organize();
 
-  console.log("organizedMessages: ", organizedMessages);
+  // console.log("organizedMessages: ", organizedMessages);
 
   const renderMessageItem = useCallback(
     ({ item }: { item: TChatroom["organizedMessage"] }) => {
@@ -40,8 +40,6 @@ export const ChatroomMessageList: React.FC = () => {
     <View>
       <FlatList
         data={organizedMessages}
-        // keyExtractor={(item) => item.id}
-        // keyExtractor={(item) => item.id!}
         keyExtractor={(item) => item.sentAt!}
         renderItem={renderMessageItem}
         scrollEnabled={false}

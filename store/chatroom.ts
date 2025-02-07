@@ -6,11 +6,13 @@ export const useChatroomStore = create<
     messages: TChatroom["message"][];
     replies: TChatroom["message"][];
     swipedMessage: TChatroom["swipedMessage"];
+    postingMessage: TChatroom["postingMessage"];
   } & TChatroom["chatroomAction"]
 >((set) => ({
   messages: [],
   replies: [],
   swipedMessage: null,
+  postingMessage: { status: null, sentAt: "" },
   // Message Actions
   updateAllMessages: (messages) =>
     set(() => ({
@@ -24,6 +26,12 @@ export const useChatroomStore = create<
     set((state) => ({
       messages: state.messages.map((msg) =>
         msg.id === message.id ? { ...msg, ...message } : msg
+      ),
+    })),
+  updateMessageBySentAt: (message) =>
+    set((state) => ({
+      messages: state.messages.map((msg) =>
+        msg.sentAt === message.sentAt ? { ...msg, ...message } : msg
       ),
     })),
   clearMessages: () => set(() => ({ messages: [] })),
@@ -46,4 +54,9 @@ export const useChatroomStore = create<
   // Swiped message actions
   updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
   clearSwipedMessage: () => set(() => ({ swipedMessage: null })),
+  // PostingMessage action
+  updatePostingMessage: (postingMessage) =>
+    set(() => ({ postingMessage: postingMessage })),
 }));
+
+//

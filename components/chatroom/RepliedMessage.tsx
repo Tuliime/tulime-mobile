@@ -7,14 +7,23 @@ import { truncateString } from "@/utils";
 
 type RepliedMessageProps = {
   message: TChatroom["organizedMessage"];
-  isNeutralColors?: boolean;
+  displayUnder: "sender" | "recipient";
 };
 
 export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
   const currentUser = useAuthStore((state) => state.auth.user);
-  const isSenderCurrentUser = props.message.userID === currentUser.id;
-  const username = isSenderCurrentUser ? "You" : props.message.user.name;
-  const isNeutralColors = props.isNeutralColors;
+  const users = useAuthStore((state) => state.users);
+  const isDisplayUnderSender: boolean = props.displayUnder === "sender";
+
+  const getUsername = (): string => {
+    const repliedUser = users.find(
+      (user) => user.id === props.message.repliedMessage?.userID
+    );
+    const isSenderCurrentUser = repliedUser?.id === currentUser.id;
+
+    if (isSenderCurrentUser) return "You";
+    return repliedUser?.name!;
+  };
 
   // TODO: To add onPress action that updates the cursor
   // in the query params to the current message id
@@ -24,17 +33,15 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
       style={[
         styles.container,
         {
-          backgroundColor: isSenderCurrentUser
-            ? isNeutralColors
-              ? COLORS.gray4
-              : COLORS.green1
-            : COLORS.gray4,
+          backgroundColor: isDisplayUnderSender ? COLORS.green1 : COLORS.gray4,
         },
       ]}
     >
       <View style={styles.stripeContainer}></View>
       <View style={styles.messageContainer}>
-        <Text style={styles.usernameText}>{truncateString(username, 24)}</Text>
+        <Text style={styles.usernameText}>
+          {truncateString(getUsername(), 24)}
+        </Text>
         <Text style={styles.messageText}>
           {truncateString(props.message.repliedMessage?.text, 100)}
         </Text>

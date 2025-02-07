@@ -71,10 +71,16 @@ type GetMessageAPIResponse = {
   status: string;
 };
 
+type PostingMessage = {
+  status: "pending" | "success" | "error" | null;
+  sentAt: string;
+};
+
 type TChatroomAction = {
   updateAllMessages: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
   updateMessage: (message: Message) => void;
+  updateMessageBySentAt: (message: Message) => void;
   clearMessages: () => void;
   updateAllReplies: (messages: Message[]) => void;
   addReply: (message: Message) => void;
@@ -82,6 +88,7 @@ type TChatroomAction = {
   clearReplies: () => void;
   updateSwipedMessage: (message: OrganizedMessage) => void;
   clearSwipedMessage: () => void;
+  updatePostingMessage: (postingMessage: PostingMessage) => void;
 };
 
 export type TChatroom = {
@@ -89,6 +96,7 @@ export type TChatroom = {
   message: Message;
   organizedMessage: OrganizedMessage;
   swipedMessage: OrganizedMessage | null;
+  postingMessage: PostingMessage;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
   chatroomAction: TChatroomAction;

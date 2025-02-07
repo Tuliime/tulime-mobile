@@ -5,7 +5,7 @@ import { AppDate } from "@/utils/appDate";
 import { TChatroom } from "@/types/chatroom";
 import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
 import { useAuthStore } from "@/store/auth";
-import { ReplyRecipientMessage } from "./ReplyRecipientMessage";
+import { RepliedMessage } from "./RepliedMessage";
 import { truncateString } from "@/utils/truncateString";
 import { MessageOnSwipe } from "./MessageOnSwipe";
 
@@ -55,8 +55,12 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
               {truncateString(props.message.user.name, 24)}
             </Text>
           )}
-          {/* <ReplyRecipientMessage message={props.message} /> */}
-          {hasReplyMessage && <ReplyRecipientMessage message={props.message} />}
+          {hasReplyMessage && (
+            <RepliedMessage
+              message={props.message}
+              displayUnder={"recipient"}
+            />
+          )}
           <View style={styles.messageTextContainer}>
             <Text style={styles.messageText}>{props.message.text}</Text>
           </View>

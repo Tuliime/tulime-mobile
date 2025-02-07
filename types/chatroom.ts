@@ -80,12 +80,15 @@ type TChatroomAction = {
   addReply: (message: Message) => void;
   updateReply: (message: Message) => void;
   clearReplies: () => void;
+  updateSwipedMessage: (message: OrganizedMessage) => void;
+  clearSwipedMessage: () => void;
 };
 
 export type TChatroom = {
   messageInput: MessageInput;
   message: Message;
   organizedMessage: OrganizedMessage;
+  swipedMessage: OrganizedMessage | null;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
   chatroomAction: TChatroomAction;

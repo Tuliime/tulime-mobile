@@ -13,10 +13,11 @@ import { COLORS } from "@/constants";
 import { useMutation } from "@tanstack/react-query";
 import { TChatroom } from "@/types/chatroom";
 import { useAuthStore } from "@/store/auth";
-import { useChatbotStore } from "@/store/chatbot";
+import { useChatroomStore } from "@/store/chatroom";
 import { chatroom } from "@/API/chatroom";
 import Toast from "react-native-toast-message";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { SwipedMessage } from "./SwipedMessage";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -24,8 +25,11 @@ const inputFieldWith = formContainerWidth - 64;
 
 export const MessageForm: React.FC = () => {
   const auth = useAuthStore((state) => state.auth);
-  const addMessageToList = useChatbotStore((state) => state.addMessage);
-  const updateMessage = useChatbotStore((state) => state.updateMessage);
+  const addMessageToList = useChatroomStore((state) => state.addMessage);
+  const updateMessage = useChatroomStore((state) => state.updateMessage);
+  const swipedMessage = useChatroomStore((state) => state.swipedMessage);
+  console.log("swipedMessage: ", swipedMessage);
+  const showSwipedMessage: boolean = !!swipedMessage?.id;
 
   const initialFormValues: TChatroom["messageInput"] = {
     userID: auth.user.id,
@@ -103,6 +107,7 @@ export const MessageForm: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      {showSwipedMessage && <SwipedMessage />}
       <Formik
         validationSchema={messageValidationSchema}
         initialValues={initialFormValues}
@@ -146,8 +151,10 @@ export const MessageForm: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    height: "auto",
     alignItems: "center",
     justifyContent: "center",
+    gap: 8,
     borderTopWidth: 1,
     borderColor: COLORS.gray5,
     paddingVertical: 8,

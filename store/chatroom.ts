@@ -5,10 +5,12 @@ export const useChatroomStore = create<
   {
     messages: TChatroom["message"][];
     replies: TChatroom["message"][];
+    swipedMessage: TChatroom["swipedMessage"];
   } & TChatroom["chatroomAction"]
 >((set) => ({
   messages: [],
   replies: [],
+  swipedMessage: null,
   // Message Actions
   updateAllMessages: (messages) =>
     set(() => ({
@@ -41,4 +43,7 @@ export const useChatroomStore = create<
       ),
     })),
   clearReplies: () => set(() => ({ replies: [] })),
+  // Swiped message actions
+  updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
+  clearSwipedMessage: () => set(() => ({ swipedMessage: null })),
 }));

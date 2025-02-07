@@ -7,6 +7,7 @@ import { RightAngledTriangle } from "../shared/icons/RightAngledTriangle";
 import { useAuthStore } from "@/store/auth";
 import { ReplyRecipientMessage } from "./ReplyRecipientMessage";
 import { truncateString } from "@/utils/truncateString";
+import { MessageOnSwipe } from "./MessageOnSwipe";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -26,41 +27,43 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
   //   TODO: To add logic for the file display
   //   TODO: To add logic for displaying the profile image
   return (
-    <View style={styles.Container}>
-      <View
-        style={[
-          styles.profileIconContainer,
-          { opacity: isPrimaryMessage ? 1 : 0 },
-        ]}
-      >
-        <Image
-          source={icons.profile}
-          resizeMode="contain"
-          style={styles.profileIcon}
-        />
-      </View>
-      <View
-        style={[
-          styles.messageContainer,
-          { borderTopLeftRadius: isPrimaryMessage ? 0 : 16 },
-        ]}
-      >
-        <RightAngledTriangle
-          style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
-        />
-        {isPrimaryMessage && (
-          <Text style={styles.usernameText}>
-            {truncateString(props.message.user.name, 24)}
-          </Text>
-        )}
-        {/* <ReplyRecipientMessage message={props.message} /> */}
-        {hasReplyMessage && <ReplyRecipientMessage message={props.message} />}
-        <View style={styles.messageTextContainer}>
-          <Text style={styles.messageText}>{props.message.text}</Text>
+    <MessageOnSwipe message={props.message}>
+      <View style={styles.Container}>
+        <View
+          style={[
+            styles.profileIconContainer,
+            { opacity: isPrimaryMessage ? 1 : 0 },
+          ]}
+        >
+          <Image
+            source={icons.profile}
+            resizeMode="contain"
+            style={styles.profileIcon}
+          />
         </View>
-        <Text style={styles.messageTime}>{messageTime}</Text>
+        <View
+          style={[
+            styles.messageContainer,
+            { borderTopLeftRadius: isPrimaryMessage ? 0 : 16 },
+          ]}
+        >
+          <RightAngledTriangle
+            style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
+          />
+          {isPrimaryMessage && (
+            <Text style={styles.usernameText}>
+              {truncateString(props.message.user.name, 24)}
+            </Text>
+          )}
+          {/* <ReplyRecipientMessage message={props.message} /> */}
+          {hasReplyMessage && <ReplyRecipientMessage message={props.message} />}
+          <View style={styles.messageTextContainer}>
+            <Text style={styles.messageText}>{props.message.text}</Text>
+          </View>
+          <Text style={styles.messageTime}>{messageTime}</Text>
+        </View>
       </View>
-    </View>
+    </MessageOnSwipe>
   );
 };
 

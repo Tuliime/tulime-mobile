@@ -64,7 +64,7 @@ export const MessageForm: React.FC = () => {
   const { isPending, mutate } = useMutation({
     mutationFn: chatroom.post,
     onSuccess: (response: any) => {
-      console.log("chatbot response:", response);
+      console.log("chatroom response:", response);
       updateMessageBySentAt(response.data);
       updatePostingMessage({ status: "success", sentAt: response.data.sentAt });
     },
@@ -114,29 +114,24 @@ export const MessageForm: React.FC = () => {
       formData.append("file", new Blob([values.file]));
     }
 
-    // addMessage(values as any);
     addMessage(genInitialMessageValues(values));
     addRepliedMessage(swipedMessage!);
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
     mutate({ formData: formData, token: auth.accessToken });
-    clearSwipedMessage();
   };
 
-  // TODO: to find way better to implement clearing the form
-  const makeFormValuesEmpty = (
-    formik: FormikProps<TChatroom["messageInput"]>
-  ) => {
-    // console.log("makeFormValuesEmpty...");
-    // formik.values["text"] = "";
+  const makeFormValuesEmpty = () => {
+    if (textInputRef.current) {
+      textInputRef.current.clear();
+    }
+    clearSwipedMessage();
   };
 
   const formikSubmitHandler = (
     formik: FormikProps<TChatroom["messageInput"]>
   ) => {
     formik.handleSubmit();
-    setTimeout(() => {
-      makeFormValuesEmpty(formik);
-    }, 200);
+    makeFormValuesEmpty();
   };
 
   const disableSubmitButton = (

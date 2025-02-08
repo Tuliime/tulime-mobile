@@ -8,6 +8,7 @@ import { RepliedMessage } from "./RepliedMessage";
 import { MessageOnSwipe } from "./MessageOnSwipe";
 import Feather from "@expo/vector-icons/Feather";
 import { useChatroomStore } from "@/store/chatroom";
+import { ImageDisplay } from "../shared/UI/ImageDisplay";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -21,6 +22,7 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
   const postingMessage = useChatroomStore((state) => state.postingMessage);
+  const hasImage = !!props.message.file?.url;
 
   const isPending: boolean =
     props.message.sentAt === postingMessage.sentAt &&
@@ -41,6 +43,7 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
           {hasReplyMessage && (
             <RepliedMessage message={props.message} displayUnder={"sender"} />
           )}
+          {hasImage && <ImageDisplay uri={props.message.file!.url} />}
           <View style={styles.messageTextContainer}>
             <Text style={styles.messageText}>{props.message.text}</Text>
           </View>
@@ -99,7 +102,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 6,
-    // backgroundColor: "lightblue",
     position: "absolute",
     right: 8,
     bottom: 4,
@@ -107,10 +109,6 @@ const styles = StyleSheet.create({
   },
   messageTime: {
     color: COLORS.gray6,
-    // position: "absolute",
-    // right: 8,
-    // bottom: 4,
-    // fontWeight: 400,
     fontSize: 12,
   },
 });

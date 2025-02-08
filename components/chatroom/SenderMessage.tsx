@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
   },
   messageContainer: {
     width: "auto",
+    minWidth: 96,
     maxWidth: maxWidth,
     backgroundColor: COLORS.green2,
     padding: 4,

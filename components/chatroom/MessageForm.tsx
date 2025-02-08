@@ -19,6 +19,7 @@ import Toast from "react-native-toast-message";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SwipedMessage } from "./SwipedMessage";
 import uuid from "react-native-uuid";
+// import { EmojiPicker } from "../shared/UI/EmojiPicker";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -145,6 +146,7 @@ export const MessageForm: React.FC = () => {
 
   return (
     <View style={styles.container}>
+      {/* <EmojiPicker /> */}
       {showSwipedMessage && <SwipedMessage />}
       <Formik
         validationSchema={messageValidationSchema}

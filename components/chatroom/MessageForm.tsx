@@ -118,13 +118,13 @@ export const MessageForm: React.FC = () => {
     addRepliedMessage(swipedMessage!);
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
     mutate({ formData: formData, token: auth.accessToken });
+    clearSwipedMessage();
   };
 
   const makeFormValuesEmpty = () => {
     if (textInputRef.current) {
       textInputRef.current.clear();
     }
-    clearSwipedMessage();
   };
 
   const formikSubmitHandler = (

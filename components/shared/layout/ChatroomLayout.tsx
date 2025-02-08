@@ -26,12 +26,12 @@ export const ChatroomLayout: React.FC<ChatroomLayoutProps> = (props) => {
       />
       <ChatroomHeader title={props.title} />
       <View style={styles.mainContent}>
-        <ScrollView
+        {/* <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContentContainer}
-        >
-          <View style={styles.contentContainer}>{props.children}</View>
-        </ScrollView>
+        > */}
+        <View style={styles.contentContainer}>{props.children}</View>
+        {/* </ScrollView> */}
         <View style={styles.chatInputFieldContainer}>
           {props.chatInputField}
         </View>

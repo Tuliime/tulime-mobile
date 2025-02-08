@@ -8,6 +8,7 @@ import { useAuthStore } from "@/store/auth";
 import { RepliedMessage } from "./RepliedMessage";
 import { truncateString } from "@/utils/truncateString";
 import { MessageOnSwipe } from "./MessageOnSwipe";
+import { ImageDisplay } from "../shared/UI/ImageDisplay";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -20,12 +21,10 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
   const messageTime = new AppDate(props.message.arrivedAt!).time();
   const user = useAuthStore((state) => state.auth.user);
 
-  const hasImage: boolean = !!user.imageUrl;
+  const hasImage = !!props.message.file?.url;
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
 
-  //   TODO: To add logic for the file display
-  //   TODO: To add logic for displaying the profile image
   return (
     <MessageOnSwipe message={props.message}>
       <View style={styles.Container}>
@@ -61,6 +60,7 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
               displayUnder={"recipient"}
             />
           )}
+          {hasImage && <ImageDisplay uri={props.message.file!.url} />}
           <View style={styles.messageTextContainer}>
             <Text style={styles.messageText}>{props.message.text}</Text>
           </View>

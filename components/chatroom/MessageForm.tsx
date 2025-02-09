@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,6 +6,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  Text,
 } from "react-native";
 import { Formik, FormikProps } from "formik";
 import * as yup from "yup";
@@ -20,12 +21,17 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { SwipedMessage } from "./SwipedMessage";
 import uuid from "react-native-uuid";
 // import { EmojiPicker } from "../shared/UI/EmojiPicker";
+import { ImagePicker } from "../shared/UI/ImagePicker";
+import { Asset } from "@/types/assets";
+import { ImagePreview } from "../shared/UI/ImagePreview";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
 const inputFieldWith = formContainerWidth - 64;
 
 export const MessageForm: React.FC = () => {
+  const [isLoadingFile, setIsLoadingFile] = useState(false);
+  const [fileList, setFileList] = useState<Asset["file"][]>([]);
   const auth = useAuthStore((state) => state.auth);
   const addMessage = useChatroomStore((state) => state.addMessage);
   const addRepliedMessage = useChatroomStore((state) => state.addReply);
@@ -40,8 +46,24 @@ export const MessageForm: React.FC = () => {
   );
   const swipedMessage = useChatroomStore((state) => state.swipedMessage);
   const showSwipedMessage: boolean = !!swipedMessage?.id;
+  const showImagePreview: boolean = !!fileList[0]?.name;
 
   const textInputRef = useRef<TextInput>(null);
+
+  const onPickImageHandler = (files: Asset["file"][]) => {
+    setFileList(() => files);
+    files[0].name;
+    console.log(" files[0].name: ", files[0].name);
+    console.log(" files[0].mimeType: ", files[0].mimeType);
+  };
+
+  const onLoadImageHandler = (isLoading: boolean) => {
+    setIsLoadingFile(() => isLoading);
+  };
+
+  const onDeleteImageHandler = (inputIndex: number) => {
+    setFileList(() => fileList.filter((_, index) => index !== inputIndex));
+  };
 
   useEffect(() => {
     if (showSwipedMessage) {
@@ -100,7 +122,9 @@ export const MessageForm: React.FC = () => {
     return message;
   };
 
-  const messageSubmitHandler = (values: TChatroom["messageInput"]) => {
+  const messageWithoutFileSubmitHandler = (
+    values: TChatroom["messageInput"]
+  ) => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
     if (showSwipedMessage) values.reply = swipedMessage?.id!;
@@ -120,6 +144,78 @@ export const MessageForm: React.FC = () => {
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
     mutate({ formData: formData, token: auth.accessToken });
     clearSwipedMessage();
+  };
+
+  const messageWithFileSubmitHandler = (
+    values: TChatroom["messageInput"],
+    file: Asset["file"],
+    fileIndex: number
+  ) => {
+    const formData = new FormData();
+    values.sentAt = new Date().toISOString();
+    if (showSwipedMessage) values.reply = swipedMessage?.id!;
+
+    formData.append("userID", values.userID);
+    // Attach the message it's reply to the first image file only
+    if (fileIndex === 0) {
+      formData.append("text", values.text);
+      formData.append("reply", values.reply);
+    } else {
+      formData.append("text", "");
+      formData.append("reply", "");
+    }
+    formData.append("sentAt", values.sentAt);
+    formData.append("mention", JSON.stringify(values.mention));
+    // formData.append(
+    //   "file",
+    //   new Blob([file.arrayBuffer], { type: file.mimeType }),
+    //   `$${file.name}`
+    // );
+    // formData.append('file', { uri:file.uri, name: 'media', type: file.mimeType } as any)
+    formData.append("file", {
+      uri: file.uri,
+      name: file.name,
+      type: file.mimeType,
+    } as any);
+
+    addMessage(genInitialMessageValues(values));
+    addRepliedMessage(swipedMessage!);
+    updatePostingMessage({ status: "pending", sentAt: values.sentAt });
+    mutate({ formData: formData, token: auth.accessToken });
+    clearSwipedMessage();
+  };
+
+  const messageSubmitHandler = (values: TChatroom["messageInput"]) => {
+    if (fileList.length === 0) {
+      messageWithoutFileSubmitHandler(values);
+      return;
+    }
+
+    for (let index = 0; index < fileList.length; index++) {
+      messageWithFileSubmitHandler(values, fileList[index], index);
+    }
+    // clear image files
+    setFileList(() => []);
+
+    // const formData = new FormData();
+    // values.sentAt = new Date().toISOString();
+    // if (showSwipedMessage) values.reply = swipedMessage?.id!;
+
+    // formData.append("userID", values.userID);
+    // formData.append("text", values.text);
+    // formData.append("reply", values.reply);
+    // formData.append("sentAt", values.sentAt);
+    // formData.append("mention", JSON.stringify(values.mention));
+
+    // if (values.file) {
+    //   formData.append("file", new Blob([values.file]));
+    // }
+
+    // addMessage(genInitialMessageValues(values));
+    // addRepliedMessage(swipedMessage!);
+    // updatePostingMessage({ status: "pending", sentAt: values.sentAt });
+    // mutate({ formData: formData, token: auth.accessToken });
+    // clearSwipedMessage();
   };
 
   const makeFormValuesEmpty = () => {
@@ -148,6 +244,17 @@ export const MessageForm: React.FC = () => {
     <View style={styles.container}>
       {/* <EmojiPicker /> */}
       {showSwipedMessage && <SwipedMessage />}
+      {isLoadingFile && (
+        <View style={styles.fileLoaderContainer}>
+          <ActivityIndicator size="small" color={COLORS.gray7} />
+          <Text style={styles.fileLoaderText}>
+            Please wait, files loading..
+          </Text>
+        </View>
+      )}
+      {showImagePreview && (
+        <ImagePreview files={fileList} onDelete={onDeleteImageHandler} />
+      )}
       <Formik
         validationSchema={messageValidationSchema}
         initialValues={initialFormValues}
@@ -163,6 +270,10 @@ export const MessageForm: React.FC = () => {
               onBlur={formik.handleBlur("text")}
               value={formik.values["text"]}
               keyboardType={"default"}
+            />
+            <ImagePicker
+              onPick={onPickImageHandler}
+              onLoading={onLoadImageHandler}
             />
             <TouchableOpacity
               style={[
@@ -200,6 +311,16 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray5,
     paddingVertical: 8,
     paddingHorizontal: 16,
+  },
+  fileLoaderContainer: {
+    width: "100%",
+    height: "auto",
+    flexDirection: "row",
+    gap: 8,
+  },
+  fileLoaderText: {
+    color: COLORS.gray7,
+    fontSize: 12,
   },
   formContainer: {
     backgroundColor: COLORS.gray4,

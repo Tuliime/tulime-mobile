@@ -156,7 +156,7 @@ export const MessageForm: React.FC = () => {
     if (showSwipedMessage) values.reply = swipedMessage?.id!;
 
     formData.append("userID", values.userID);
-    // Attach the message it's reply to the first image file only
+    // Attach text and it's reply to the first image file only
     if (fileIndex === 0) {
       formData.append("text", values.text);
       formData.append("reply", values.reply);
@@ -166,15 +166,9 @@ export const MessageForm: React.FC = () => {
     }
     formData.append("sentAt", values.sentAt);
     formData.append("mention", JSON.stringify(values.mention));
-    // formData.append(
-    //   "file",
-    //   new Blob([file.arrayBuffer], { type: file.mimeType }),
-    //   `$${file.name}`
-    // );
-    // formData.append('file', { uri:file.uri, name: 'media', type: file.mimeType } as any)
     formData.append("file", {
       uri: file.uri,
-      name: file.name,
+      name: "media",
       type: file.mimeType,
     } as any);
 
@@ -190,32 +184,10 @@ export const MessageForm: React.FC = () => {
       messageWithoutFileSubmitHandler(values);
       return;
     }
-
     for (let index = 0; index < fileList.length; index++) {
       messageWithFileSubmitHandler(values, fileList[index], index);
     }
-    // clear image files
     setFileList(() => []);
-
-    // const formData = new FormData();
-    // values.sentAt = new Date().toISOString();
-    // if (showSwipedMessage) values.reply = swipedMessage?.id!;
-
-    // formData.append("userID", values.userID);
-    // formData.append("text", values.text);
-    // formData.append("reply", values.reply);
-    // formData.append("sentAt", values.sentAt);
-    // formData.append("mention", JSON.stringify(values.mention));
-
-    // if (values.file) {
-    //   formData.append("file", new Blob([values.file]));
-    // }
-
-    // addMessage(genInitialMessageValues(values));
-    // addRepliedMessage(swipedMessage!);
-    // updatePostingMessage({ status: "pending", sentAt: values.sentAt });
-    // mutate({ formData: formData, token: auth.accessToken });
-    // clearSwipedMessage();
   };
 
   const makeFormValuesEmpty = () => {

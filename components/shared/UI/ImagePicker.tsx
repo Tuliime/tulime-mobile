@@ -6,7 +6,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { COLORS } from "@/constants";
 import { Asset } from "@/types/assets";
 import Toast from "react-native-toast-message";
-import { Buffer } from "buffer";
 
 type ImagePickerProps = {
   onPick: (files: Asset["file"][]) => void;
@@ -24,7 +23,6 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
         copyToCacheDirectory: true,
         multiple: true,
       });
-      console.log("result: ", result); //TODO: To be removed
 
       if (result.canceled || !result.assets) return;
 
@@ -45,14 +43,11 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
           encoding: FileSystem.EncodingType.Base64,
         });
 
-        const arrayBuffer = new Uint8Array(Buffer.from(fileBase64, "base64"));
-
         files.push({
           name: file.name,
           mimeType: file.mimeType!,
-          arrayBuffer: arrayBuffer,
-          base64: fileBase64,
           uri: file.uri,
+          base64: fileBase64,
         });
 
         const isLastAsset = i === result.assets.length - 1;

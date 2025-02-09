@@ -6,7 +6,6 @@ import { COLORS } from "@/constants";
 
 type ImageDisplayProps = {
   uri: string;
-  // displayUnder?: "sender" | "recipient";
 };
 
 export const ImageDisplay: React.FC<ImageDisplayProps> = (props) => {
@@ -15,7 +14,6 @@ export const ImageDisplay: React.FC<ImageDisplayProps> = (props) => {
     height: number;
   } | null>(null);
   const [loading, setLoading] = useState(true);
-  // const isDisplayUnderSender: boolean = props.displayUnder === "sender";
 
   const { data: asset } = useGetAssetInfo({ url: props.uri });
   const hasFileSize = !!asset?.size;
@@ -45,23 +43,12 @@ export const ImageDisplay: React.FC<ImageDisplayProps> = (props) => {
   }
 
   const aspectRatio = dimensions.width / dimensions.height;
-  console.log("dimensions.width: ", dimensions.width);
-  console.log("dimensions.height: ", dimensions.height);
-  console.log("aspectRatio: ", aspectRatio);
 
   return (
     <View style={styles.container}>
       <Image
         source={{ uri: props.uri }}
-        style={[
-          styles.image,
-          {
-            aspectRatio: aspectRatio,
-            // backgroundColor: isDisplayUnderSender
-            //   ? COLORS.green2
-            //   : COLORS.gray4,
-          },
-        ]}
+        style={[styles.image, { aspectRatio: aspectRatio }]}
         resizeMode="contain"
       />
       {hasFileSize && (

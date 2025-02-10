@@ -31,10 +31,13 @@ export class ChatroomMessages {
   ): boolean {
     const currentSenderId = currentMessage.userID;
     const prevSenderId = prevMessage && prevMessage.userID;
+    const currentDate = currentMessage.arrivedAt;
+    const prevDate = prevMessage && prevMessage.arrivedAt;
 
     const isDifferentSender = currentSenderId !== prevSenderId;
+    const hasDifferentDay = this.hasDifferentDay(prevDate, currentDate);
 
-    if (isDifferentSender) {
+    if (isDifferentSender || hasDifferentDay) {
       return true;
     }
     return false;

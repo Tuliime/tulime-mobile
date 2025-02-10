@@ -91,7 +91,6 @@ const styles = StyleSheet.create({
     padding: 8,
     paddingTop: 4,
     paddingLeft: 12,
-    // backgroundColor: "lightyellow",
   },
   usernameText: {
     color: COLORS.blue4,

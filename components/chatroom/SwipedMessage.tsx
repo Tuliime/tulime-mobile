@@ -19,34 +19,32 @@ export const SwipedMessage: React.FC = () => {
   const username = isSenderCurrentUser ? "You" : swipedMessage?.user.name!;
   const hasImage: boolean = !!swipedMessage?.file?.url;
   const hasText: boolean = !!swipedMessage?.text;
+  const showPhotoIcon: boolean = hasImage && !hasText;
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.closeBtn}
-        onPress={(_) => {
-          clearSwipedMessage(), console.log("clicked clear swiped message");
-        }}
+        onPress={(_) => clearSwipedMessage()}
       >
-        <AntDesign name="close" size={18} color={COLORS.gray7} />
+        <AntDesign name="close" size={16} color={COLORS.gray7} />
       </TouchableOpacity>
       <View style={styles.stripeContainer}></View>
       <View style={styles.messageContainer}>
         <Text style={styles.usernameText}>{truncateString(username, 24)}</Text>
-        <View style={styles.messageContentContainer}>
-          {hasText ? (
-            <Text style={styles.messageText}>
-              {truncateString(swipedMessage?.text!, 100)}
-            </Text>
-          ) : (
-            <View style={styles.imageIconContainer}>
-              <FontAwesome name="image" size={16} color={COLORS.gray7} />
-              <Text style={styles.imageIconText}>Photo</Text>
-            </View>
-          )}
-          {hasImage && <SwipedImageDisplay uri={swipedMessage?.file?.url!} />}
-        </View>
+        {hasText && (
+          <Text style={styles.messageText}>
+            {truncateString(swipedMessage?.text!, 100)}
+          </Text>
+        )}
+        {showPhotoIcon && (
+          <View style={styles.imageIconContainer}>
+            <FontAwesome name="image" size={16} color={COLORS.gray7} />
+            <Text style={styles.imageIconText}>Photo</Text>
+          </View>
+        )}
       </View>
+      {hasImage && <SwipedImageDisplay uri={swipedMessage?.file?.url!} />}
     </View>
   );
 };
@@ -72,7 +70,8 @@ const styles = StyleSheet.create({
     marginRight: -4,
   },
   messageContainer: {
-    width: "100%",
+    flex: 1,
+    height: "100%",
     padding: 8,
     paddingTop: 4,
     paddingLeft: 12,
@@ -82,15 +81,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 500,
   },
-  messageContentContainer: {
-    height: "auto",
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "flex-start",
-    gap: 8,
-  },
   messageText: {
-    flex: 1,
     color: COLORS.gray7,
     fontSize: 14,
   },
@@ -110,6 +101,9 @@ const styles = StyleSheet.create({
     zIndex: 100,
     position: "absolute",
     top: 4,
-    right: 8,
+    right: 4,
+    padding: 2,
+    borderRadius: 1000,
+    backgroundColor: COLORS.white,
   },
 });

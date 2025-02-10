@@ -52,9 +52,6 @@ export const MessageForm: React.FC = () => {
 
   const onPickImageHandler = (files: Asset["file"][]) => {
     setFileList(() => files);
-    files[0].name;
-    console.log(" files[0].name: ", files[0].name);
-    console.log(" files[0].mimeType: ", files[0].mimeType);
   };
 
   const onLoadImageHandler = (isLoading: boolean) => {

@@ -44,7 +44,10 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
         <View
           style={[
             styles.messageContainer,
-            { borderTopLeftRadius: isPrimaryMessage ? 0 : 16 },
+            {
+              borderTopLeftRadius: isPrimaryMessage ? 0 : 16,
+              width: hasReplyMessage ? maxWidth : "auto",
+            },
           ]}
         >
           <RightAngledTriangle

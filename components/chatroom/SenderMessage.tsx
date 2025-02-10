@@ -24,10 +24,17 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
   const hasText: boolean = !!props.message.text;
   const postingMessage = useChatroomStore((state) => state.postingMessage);
   const hasImage: boolean = !!props.message.file?.url;
+  const hasLocalFile: boolean = !!props.message.localFile?.mimeType;
+  const showLocalFile: boolean = hasLocalFile && !hasImage;
 
   const isPending: boolean =
     props.message.sentAt === postingMessage.sentAt &&
     postingMessage.status === "pending";
+
+  const buildLocalFileURI = (file: TChatroom["message"]["localFile"]) => {
+    if (!file?.mimeType || !file?.base64) return;
+    return `data:${file.mimeType};base64,${file.base64}`;
+  };
 
   return (
     <MessageOnSwipe message={props.message}>
@@ -46,6 +53,12 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
           />
           {hasReplyMessage && (
             <RepliedMessage message={props.message} displayUnder={"sender"} />
+          )}
+          {showLocalFile && (
+            <ImageDisplay
+              uri={buildLocalFileURI(props.message.localFile)!}
+              style={{ marginBottom: hasText ? 0 : 8 }}
+            />
           )}
           {hasImage && (
             <ImageDisplay

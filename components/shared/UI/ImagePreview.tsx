@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/theme";
 import { Asset } from "@/types/assets";
 import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   ScrollView,
   Image,
@@ -19,22 +19,6 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   files,
   onDelete,
 }) => {
-  const [imageDimensions, setImageDimensions] = useState<{
-    [key: string]: { width: number; height: number };
-  }>({});
-
-  useEffect(() => {
-    files.forEach((file) => {
-      const uri = `data:${file.mimeType};base64,${file.base64}`;
-      Image.getSize(uri, (width, height) => {
-        setImageDimensions((prev) => ({
-          ...prev,
-          [file.name]: { width, height },
-        }));
-      });
-    });
-  }, [files]);
-
   return (
     <ScrollView
       horizontal
@@ -42,10 +26,6 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
       style={styles.container}
     >
       {files.map((file, index) => {
-        const dimensions = imageDimensions[file.name];
-        const aspectRatio = dimensions
-          ? dimensions.width / dimensions.height
-          : 1;
         return (
           <View key={index} style={styles.imageContainer}>
             <TouchableOpacity
@@ -56,9 +36,9 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
             </TouchableOpacity>
             <Image
               key={file.name}
-              resizeMode="contain"
+              resizeMode="cover"
               source={{ uri: `data:${file.mimeType};base64,${file.base64}` }}
-              style={[styles.image, { aspectRatio }]}
+              style={styles.image}
             />
           </View>
         );
@@ -75,6 +55,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "relative",
+    width: 80,
+    height: 80,
+    overflow: "hidden",
     marginRight: 10,
     backgroundColor: COLORS.gray4,
     borderRadius: 8,
@@ -89,7 +72,9 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   image: {
-    height: 100,
+    width: 80,
+    height: "100%",
+    maxHeight: 80,
     borderRadius: 8,
   },
 });

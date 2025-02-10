@@ -15,6 +15,11 @@ type TFile = {
   deletedAt: string | null;
 };
 
+type TLocalFile = {
+  base64: string;
+  mimeType: string;
+};
+
 type Mention = {
   id: string;
   chatroomID: string;
@@ -30,6 +35,7 @@ type Message = {
   text: string;
   reply: string;
   file?: TFile;
+  localFile?: TLocalFile;
   mention: Mention[];
   sentAt: string;
   arrivedAt: string;
@@ -54,10 +60,12 @@ type GetMessageInput = {
 };
 
 type MessageInput = {
+  values: { base64: string };
   userID: string;
   text: string;
   reply: string;
   file: Blob | null;
+  localFile?: TLocalFile;
   sentAt: string;
   mention?: string[];
 };

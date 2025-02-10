@@ -21,8 +21,9 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
   const messageTime = new AppDate(props.message.sentAt!).time();
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
+  const hasText: boolean = !!props.message.text;
   const postingMessage = useChatroomStore((state) => state.postingMessage);
-  const hasImage = !!props.message.file?.url;
+  const hasImage: boolean = !!props.message.file?.url;
 
   const isPending: boolean =
     props.message.sentAt === postingMessage.sentAt &&
@@ -43,10 +44,17 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
           {hasReplyMessage && (
             <RepliedMessage message={props.message} displayUnder={"sender"} />
           )}
-          {hasImage && <ImageDisplay uri={props.message.file!.url} />}
-          <View style={styles.messageTextContainer}>
-            <Text style={styles.messageText}>{props.message.text}</Text>
-          </View>
+          {hasImage && (
+            <ImageDisplay
+              uri={props.message.file!.url}
+              style={{ marginBottom: hasText ? 0 : 8 }}
+            />
+          )}
+          {hasText && (
+            <View style={styles.messageTextContainer}>
+              <Text style={styles.messageText}>{props.message.text}</Text>
+            </View>
+          )}
           <View style={styles.messageTimeContainer}>
             <Text style={styles.messageTime}>{messageTime}</Text>
             {isPending ? (

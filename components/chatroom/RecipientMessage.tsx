@@ -21,9 +21,10 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
   const messageTime = new AppDate(props.message.arrivedAt!).time();
   const user = useAuthStore((state) => state.auth.user);
 
-  const hasImage = !!props.message.file?.url;
+  const hasImage: boolean = !!props.message.file?.url;
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
+  const hasText: boolean = !!props.message.text;
 
   return (
     <MessageOnSwipe message={props.message}>
@@ -60,10 +61,17 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
               displayUnder={"recipient"}
             />
           )}
-          {hasImage && <ImageDisplay uri={props.message.file!.url} />}
-          <View style={styles.messageTextContainer}>
-            <Text style={styles.messageText}>{props.message.text}</Text>
-          </View>
+          {hasImage && (
+            <ImageDisplay
+              uri={props.message.file!.url}
+              style={{ marginBottom: hasText ? 0 : 8 }}
+            />
+          )}
+          {hasText && (
+            <View style={styles.messageTextContainer}>
+              <Text style={styles.messageText}>{props.message.text}</Text>
+            </View>
+          )}
           <Text style={styles.messageTime}>{messageTime}</Text>
         </View>
       </View>

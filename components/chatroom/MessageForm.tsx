@@ -73,8 +73,13 @@ export const MessageForm: React.FC = () => {
     text: "",
     reply: "",
     file: null,
+    localFile: { base64: "", mimeType: "" },
     sentAt: "",
     mention: [""],
+    values: {
+      //To be investigated and removed
+      base64: "",
+    },
   };
 
   const messageValidationSchema = yup.object().shape({
@@ -151,6 +156,7 @@ export const MessageForm: React.FC = () => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
     if (showSwipedMessage) values.reply = swipedMessage?.id!;
+    values.localFile = { base64: file.base64, mimeType: file.mimeType };
 
     formData.append("userID", values.userID);
     // Attach text and it's reply to the first image file only

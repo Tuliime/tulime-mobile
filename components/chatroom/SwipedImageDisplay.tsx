@@ -36,7 +36,6 @@ export const SwipedImageDisplay: React.FC<SwipedImageDisplayProps> = (
     return (
       <View style={styles.loadingIndicatorContainer}>
         <ActivityIndicator size="small" color={COLORS.gray7} />
-        <Text style={styles.loadingIndicatorText}>file loading ...</Text>
       </View>
     );
   }
@@ -59,14 +58,14 @@ const styles = StyleSheet.create({
     position: "relative",
     borderRadius: 4,
     width: 80,
-    height: 100,
+    height: 80,
     overflow: "hidden",
   },
   image: {
     width: 80,
     height: "100%",
     maxHeight: 80,
-    borderRadius: 12,
+    borderRadius: 8,
   },
   fileSizeText: {
     fontSize: 12,
@@ -81,12 +80,15 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   loadingIndicatorContainer: {
-    width: "100%",
     padding: 8,
-    flexDirection: "row",
-    justifyContent: "flex-start",
     alignItems: "center",
+    justifyContent: "center",
+    position: "relative",
+    borderRadius: 8,
+    width: 80,
+    height: 80,
     gap: 8,
+    backgroundColor: COLORS.gray5,
   },
   loadingIndicatorText: {
     color: COLORS.gray7,

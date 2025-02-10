@@ -18,6 +18,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
   const pickImageHandler = async () => {
     try {
       const files: Asset["file"][] = [];
+      props.onPick(files);
       const result = await DocumentPicker.getDocumentAsync({
         type: "image/*",
         copyToCacheDirectory: true,
@@ -57,6 +58,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
         }
       }
     } catch (err: any) {
+      const files: Asset["file"][] = [];
       Toast.show({
         type: "error",
         text1: "Error!",

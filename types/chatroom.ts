@@ -84,6 +84,11 @@ type PostingMessage = {
   sentAt: string;
 };
 
+type SSEData = {
+  type: string;
+  data: any;
+};
+
 type TChatroomAction = {
   updateAllMessages: (messages: Message[]) => void;
   addMessage: (message: Message) => void;
@@ -108,4 +113,5 @@ export type TChatroom = {
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
   chatroomAction: TChatroomAction;
+  sseData: SSEData;
 };

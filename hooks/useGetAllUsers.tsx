@@ -8,13 +8,10 @@ export const useGetAllUsers = () => {
   const updateAllUsers = useAuthStore((state) => state.updateAllUsers);
   const accessToken = useAuthStore((state) => state.auth.accessToken);
 
-  if (!accessToken) {
-    return {};
-  }
-
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`users`],
     queryFn: () => {
+      if (!accessToken) return {} as any;
       return auth.get({ token: accessToken });
     },
   });

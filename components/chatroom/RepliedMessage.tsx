@@ -27,6 +27,16 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
     return repliedUser?.name!;
   };
 
+  const getChatroomColor = (): string => {
+    const repliedUser = users.find(
+      (user) => user.id === props.message.repliedMessage?.userID
+    );
+    const isSenderCurrentUser = repliedUser?.id === currentUser.id;
+
+    if (isSenderCurrentUser) return COLORS.blue4;
+    return repliedUser?.chatroomColor!;
+  };
+
   // TODO: To add onPress action that updates the cursor
   // in the query params to the current message id
 
@@ -43,9 +53,14 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
         },
       ]}
     >
-      <View style={styles.stripeContainer}></View>
+      <View
+        style={[
+          styles.stripeContainer,
+          { backgroundColor: getChatroomColor() },
+        ]}
+      ></View>
       <View style={styles.messageContainer}>
-        <Text style={styles.usernameText}>
+        <Text style={[styles.usernameText, { color: getChatroomColor() }]}>
           {truncateString(getUsername(), 24)}
         </Text>
         {hasText && (

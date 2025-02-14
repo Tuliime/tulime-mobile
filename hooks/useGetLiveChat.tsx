@@ -33,6 +33,9 @@ export const useGetLiveChat = () => {
       if (isKeepLiveMsg) return;
 
       if (isChatroomMessage) {
+        const message = parsedData.data as TChatroom["organizedMessage"];
+        if (message.userID === userID) return;
+
         addMessage(parsedData.data);
       }
     };

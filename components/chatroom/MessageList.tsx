@@ -107,9 +107,9 @@ export const ChatroomMessageList: React.FC = () => {
         renderItem={renderMessageItem}
         numColumns={1}
         contentContainerStyle={{ rowGap: 12, flexGrow: 1 }}
-        onContentSizeChange={() =>
-          flatListRef.current?.scrollToEnd({ animated: true })
-        }
+        // onContentSizeChange={() =>
+        //   flatListRef.current?.scrollToEnd({ animated: true })
+        // }
         // nestedScrollEnabled={true} // Allow FlatList to scroll if inside another ScrollView
         viewabilityConfigCallbackPairs={viewAbilityConfigCallbackPairs}
         onScrollBeginDrag={onScrollStartHandler}

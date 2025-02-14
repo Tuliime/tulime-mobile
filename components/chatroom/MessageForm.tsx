@@ -24,6 +24,10 @@ import uuid from "react-native-uuid";
 import { ImagePicker } from "../shared/UI/ImagePicker";
 import { Asset } from "@/types/assets";
 import { ImagePreview } from "../shared/UI/ImagePreview";
+import { MentionList } from "./MentionList";
+import { Auth } from "@/types/auth";
+import { extractMention } from "@/utils/extractMention";
+import { replaceStringPart } from "@/utils/replaceStringPart";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -49,6 +53,13 @@ export const MessageForm: React.FC = () => {
   const showImagePreview: boolean = !!fileList[0]?.name;
 
   const textInputRef = useRef<TextInput>(null);
+  const [mentionList, setMentionList] = useState<string[]>([]);
+  const [showMentionList, setShowMentionList] = useState<boolean>(false);
+  const [mentionValue, setMentionValue] = useState<string>("");
+  const [textMessage, setTextMessage] = useState<string>("");
+  const [textMessageInput, setTextMessageInput] = useState<string>("");
+  const [transformedTextMessage, transformedSetTextMessage] =
+    useState<string>("");
 
   const onPickImageHandler = (files: Asset["file"][]) => {
     setFileList(() => files);
@@ -60,6 +71,42 @@ export const MessageForm: React.FC = () => {
 
   const onDeleteImageHandler = (inputIndex: number) => {
     setFileList(() => fileList.filter((_, index) => index !== inputIndex));
+  };
+
+  const addToMentionListHandler = (userID: string) => {
+    const userIDExists: boolean = !!mentionList.find(
+      (mentionID) => mentionID == userID
+    );
+    if (userIDExists) return;
+
+    mentionList.push(userID);
+  };
+
+  const onMentionSelectHandler = (user: Auth["user"]) => {
+    console.log("user mentioned: ", user);
+
+    const replacingStringPartTransformed = `@tlmms${user.name}@tlmme`;
+    const replacingStringPartInput = `@${user.name}`;
+    const StringToBeReplaced = `@${mentionValue}`;
+
+    const transformedTextMsg = replaceStringPart(
+      textMessage,
+      StringToBeReplaced,
+      replacingStringPartTransformed
+    );
+    const inputTextMsg = replaceStringPart(
+      textMessage,
+      StringToBeReplaced,
+      replacingStringPartInput
+    );
+    console.log("textMessage: ", textMessage);
+    console.log("transformedTextMsg: ", transformedTextMsg);
+    console.log("inputTextMsg: ", inputTextMsg);
+
+    transformedSetTextMessage(() => transformedTextMsg);
+    setTextMessageInput(() => transformedTextMsg);
+    setShowMentionList(() => false);
+    addToMentionListHandler(user.id);
   };
 
   useEffect(() => {
@@ -206,6 +253,25 @@ export const MessageForm: React.FC = () => {
     makeFormValuesEmpty();
   };
 
+  const onChangeTextHandler = (
+    formik: FormikProps<TChatroom["messageInput"]>,
+    text: string
+  ) => {
+    formik.setFieldValue("text", text);
+    setTextMessage(() => text);
+    const mentionExtract = extractMention(text);
+
+    if (!text || !mentionExtract.hasMention) {
+      setShowMentionList(() => false);
+    }
+    if (mentionExtract.hasMention) {
+      setShowMentionList(() => true);
+      setMentionValue(() => mentionExtract.mention!);
+    }
+    console.log("text: ", text); //To be removed
+    console.log("mention: ", mentionExtract); //To be removed
+  };
+
   const disableSubmitButton = (
     formik: FormikProps<TChatroom["messageInput"]>
   ): boolean => {
@@ -230,6 +296,12 @@ export const MessageForm: React.FC = () => {
       {showImagePreview && (
         <ImagePreview files={fileList} onDelete={onDeleteImageHandler} />
       )}
+      {showMentionList && (
+        <MentionList
+          onSelect={onMentionSelectHandler}
+          mentionValue={mentionValue}
+        />
+      )}
       <Formik
         validationSchema={messageValidationSchema}
         initialValues={initialFormValues}
@@ -241,7 +313,9 @@ export const MessageForm: React.FC = () => {
               ref={textInputRef}
               placeholder={"Please be polite"}
               style={styles.input}
-              onChangeText={formik.handleChange("text")}
+              onChangeText={(text) => {
+                onChangeTextHandler(formik, text);
+              }}
               onBlur={formik.handleBlur("text")}
               value={formik.values["text"]}
               keyboardType={"default"}

@@ -21,9 +21,9 @@ export const useGetLiveChat = () => {
       },
     });
 
-    const onopen = async (_: any) => {
-      console.log("SSE connection established with backend!");
-    };
+    // const onopen = async (_: any) => {
+    //   console.log("SSE connection established with backend!");
+    // };
 
     const onmessage = async (event: any) => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
@@ -47,7 +47,7 @@ export const useGetLiveChat = () => {
 
     eventSource.onmessage = onmessage;
     eventSource.onerror = onerror;
-    eventSource.onopen = onopen;
+    // eventSource.onopen = onopen;
 
     return () => {
       effectRan.current = true;

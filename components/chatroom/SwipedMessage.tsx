@@ -20,6 +20,9 @@ export const SwipedMessage: React.FC = () => {
   const hasImage: boolean = !!swipedMessage?.file?.url;
   const hasText: boolean = !!swipedMessage?.text;
   const showPhotoIcon: boolean = hasImage && !hasText;
+  const chatroomColor = isSenderCurrentUser
+    ? COLORS.blue4
+    : swipedMessage?.user.chatroomColor!;
 
   return (
     <View style={styles.container}>
@@ -29,9 +32,13 @@ export const SwipedMessage: React.FC = () => {
       >
         <AntDesign name="close" size={16} color={COLORS.gray7} />
       </TouchableOpacity>
-      <View style={styles.stripeContainer}></View>
+      <View
+        style={[styles.stripeContainer, { backgroundColor: chatroomColor }]}
+      ></View>
       <View style={styles.messageContainer}>
-        <Text style={styles.usernameText}>{truncateString(username, 24)}</Text>
+        <Text style={[styles.usernameText, { color: chatroomColor }]}>
+          {truncateString(username, 24)}
+        </Text>
         {hasText && (
           <Text style={styles.messageText}>
             {truncateString(swipedMessage?.text!, 100)}

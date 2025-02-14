@@ -54,7 +54,12 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
             style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
           />
           {isPrimaryMessage && (
-            <Text style={styles.usernameText}>
+            <Text
+              style={[
+                styles.usernameText,
+                { color: props.message.user.chatroomColor },
+              ]}
+            >
               {truncateString(props.message.user.name, 24)}
             </Text>
           )}

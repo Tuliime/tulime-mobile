@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: avatarWidth,
     aspectRatio: "1/1",
-    borderRadius: "50%",
+    borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   editContainer: {
     backgroundColor: COLORS.gray4,
     padding: 12,
-    borderRadius: "50%",
+    borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
   },

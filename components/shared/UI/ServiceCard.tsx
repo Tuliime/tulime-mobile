@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: 60,
     height: 60,
-    borderRadius: "50%",
+    borderRadius: 999,
     padding: 16,
     justifyContent: "center",
     alignItems: "center",

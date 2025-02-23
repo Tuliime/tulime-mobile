@@ -130,6 +130,7 @@ export const MessageForm: React.FC = () => {
       console.log("chatroom response:", response);
       updateMessageBySentAt(response.data);
       updatePostingMessage({ status: "success", sentAt: response.data.sentAt });
+      setText(() => "");
     },
     onError: (error) => {
       console.log("Error:", error);
@@ -233,10 +234,12 @@ export const MessageForm: React.FC = () => {
     setFileList(() => []);
   };
 
-  const makeFormValuesEmpty = () => {
+  const makeFormValuesEmpty = (
+    formik: FormikProps<TChatroom["messageInput"]>
+  ) => {
     if (textInputRef.current) {
       textInputRef.current.clear();
-      // TODO: To clear formik values here
+      // formik.setFieldValue("text", "");
     }
   };
 
@@ -244,7 +247,7 @@ export const MessageForm: React.FC = () => {
     formik: FormikProps<TChatroom["messageInput"]>
   ) => {
     formik.handleSubmit();
-    makeFormValuesEmpty();
+    makeFormValuesEmpty(formik);
   };
 
   const onChangeTextHandler = (

@@ -27,7 +27,12 @@ import { ImagePreview } from "../shared/UI/ImagePreview";
 import { MentionList } from "./MentionList";
 import { Auth } from "@/types/auth";
 import { extractMention } from "@/utils/extractMention";
-import { replaceStringPart } from "@/utils/replaceStringPart";
+import { appendMention } from "@/utils/appendMention";
+import {
+  recoverTLMMSFromInvisible,
+  transformTLMMSToInvisible,
+} from "@/utils/tlmmsVisibility";
+import { extractUsernameMentionList } from "@/utils/extractUsernameMentionList";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -37,6 +42,7 @@ export const MessageForm: React.FC = () => {
   const [isLoadingFile, setIsLoadingFile] = useState(false);
   const [fileList, setFileList] = useState<Asset["file"][]>([]);
   const auth = useAuthStore((state) => state.auth);
+  const users = useAuthStore((state) => state.users);
   const addMessage = useChatroomStore((state) => state.addMessage);
   const addRepliedMessage = useChatroomStore((state) => state.addReply);
   const updateMessageBySentAt = useChatroomStore(
@@ -53,13 +59,9 @@ export const MessageForm: React.FC = () => {
   const showImagePreview: boolean = !!fileList[0]?.name;
 
   const textInputRef = useRef<TextInput>(null);
-  const [mentionList, setMentionList] = useState<string[]>([]);
   const [showMentionList, setShowMentionList] = useState<boolean>(false);
   const [mentionValue, setMentionValue] = useState<string>("");
-  const [textMessage, setTextMessage] = useState<string>("");
-  const [textMessageInput, setTextMessageInput] = useState<string>("");
-  const [transformedTextMessage, transformedSetTextMessage] =
-    useState<string>("");
+  const [text, setText] = useState<string>("");
 
   const onPickImageHandler = (files: Asset["file"][]) => {
     setFileList(() => files);
@@ -73,40 +75,29 @@ export const MessageForm: React.FC = () => {
     setFileList(() => fileList.filter((_, index) => index !== inputIndex));
   };
 
-  const addToMentionListHandler = (userID: string) => {
-    const userIDExists: boolean = !!mentionList.find(
-      (mentionID) => mentionID == userID
-    );
-    if (userIDExists) return;
-
-    mentionList.push(userID);
-  };
-
   const onMentionSelectHandler = (user: Auth["user"]) => {
     console.log("user mentioned: ", user);
 
-    const replacingStringPartTransformed = `@tlmms${user.name}@tlmme`;
-    const replacingStringPartInput = `@${user.name}`;
-    const StringToBeReplaced = `@${mentionValue}`;
+    const userMention = `@tlmms${user.name}@tlmme`;
+    const textWithMention = appendMention(text, userMention);
 
-    const transformedTextMsg = replaceStringPart(
-      textMessage,
-      StringToBeReplaced,
-      replacingStringPartTransformed
-    );
-    const inputTextMsg = replaceStringPart(
-      textMessage,
-      StringToBeReplaced,
-      replacingStringPartInput
-    );
-    console.log("textMessage: ", textMessage);
-    console.log("transformedTextMsg: ", transformedTextMsg);
-    console.log("inputTextMsg: ", inputTextMsg);
-
-    transformedSetTextMessage(() => transformedTextMsg);
-    setTextMessageInput(() => transformedTextMsg);
+    setText(() => transformTLMMSToInvisible(textWithMention));
     setShowMentionList(() => false);
-    addToMentionListHandler(user.id);
+  };
+
+  const getMentionListHandler = (
+    text: string,
+    users: Auth["user"][]
+  ): string[] => {
+    const mentionList: string[] = [];
+    const usernameMentionList = extractUsernameMentionList(text);
+
+    usernameMentionList.map((usernameMention) => {
+      const user = users.find((user) => user.name === usernameMention);
+      if (!user?.id) return;
+      mentionList.push(user!.id);
+    });
+    return mentionList;
   };
 
   useEffect(() => {
@@ -177,12 +168,13 @@ export const MessageForm: React.FC = () => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
     if (showSwipedMessage) values.reply = swipedMessage?.id!;
+    const mentionList = getMentionListHandler(text, users);
 
     formData.append("userID", values.userID);
-    formData.append("text", values.text);
+    formData.append("text", text);
     formData.append("reply", values.reply);
     formData.append("sentAt", values.sentAt);
-    formData.append("mention", JSON.stringify(values.mention));
+    formData.append("mention", JSON.stringify(mentionList));
 
     if (values.file) {
       formData.append("file", new Blob([values.file]));
@@ -204,18 +196,19 @@ export const MessageForm: React.FC = () => {
     values.sentAt = new Date().toISOString();
     if (showSwipedMessage) values.reply = swipedMessage?.id!;
     values.localFile = { base64: file.base64, mimeType: file.mimeType };
+    const mentionList = getMentionListHandler(text, users);
 
     formData.append("userID", values.userID);
     // Attach text and it's reply to the first image file only
     if (fileIndex === 0) {
-      formData.append("text", values.text);
+      formData.append("text", text);
       formData.append("reply", values.reply);
     } else {
       formData.append("text", "");
       formData.append("reply", "");
     }
     formData.append("sentAt", values.sentAt);
-    formData.append("mention", JSON.stringify(values.mention));
+    formData.append("mention", JSON.stringify(mentionList));
     formData.append("file", {
       uri: file.uri,
       name: "media",
@@ -243,6 +236,7 @@ export const MessageForm: React.FC = () => {
   const makeFormValuesEmpty = () => {
     if (textInputRef.current) {
       textInputRef.current.clear();
+      // TODO: To clear formik values here
     }
   };
 
@@ -257,9 +251,11 @@ export const MessageForm: React.FC = () => {
     formik: FormikProps<TChatroom["messageInput"]>,
     text: string
   ) => {
-    formik.setFieldValue("text", text);
-    setTextMessage(() => text);
-    const mentionExtract = extractMention(text);
+    formik.setFieldValue("text", transformTLMMSToInvisible(text));
+    setText(() => transformTLMMSToInvisible(text));
+
+    const originalText = recoverTLMMSFromInvisible(text);
+    const mentionExtract = extractMention(originalText);
 
     if (!text || !mentionExtract.hasMention) {
       setShowMentionList(() => false);
@@ -268,8 +264,6 @@ export const MessageForm: React.FC = () => {
       setShowMentionList(() => true);
       setMentionValue(() => mentionExtract.mention!);
     }
-    console.log("text: ", text); //To be removed
-    console.log("mention: ", mentionExtract); //To be removed
   };
 
   const disableSubmitButton = (
@@ -317,7 +311,8 @@ export const MessageForm: React.FC = () => {
                 onChangeTextHandler(formik, text);
               }}
               onBlur={formik.handleBlur("text")}
-              value={formik.values["text"]}
+              // value={formik.values["text"]}
+              value={text}
               keyboardType={"default"}
             />
             <ImagePicker

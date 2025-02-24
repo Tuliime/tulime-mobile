@@ -19,7 +19,7 @@ export const Typing: React.FC = () => {
       const now = Date.now();
       const currentlyTypingUsers = getAllTypingStatuses()
         .filter(
-          (status) => now - 5000 <= new Date(status.startedTypingAt).getTime()
+          (status) => now - 3000 <= new Date(status.startedTypingAt).getTime()
         )
         .map((status) => {
           return users.find((usr) => usr.id === status.userID)!;

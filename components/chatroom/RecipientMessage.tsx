@@ -9,6 +9,7 @@ import { RepliedMessage } from "./RepliedMessage";
 import { truncateString } from "@/utils/truncateString";
 import { MessageOnSwipe } from "./MessageOnSwipe";
 import { ImageDisplay } from "../shared/UI/ImageDisplay";
+import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -29,16 +30,12 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
   return (
     <MessageOnSwipe message={props.message}>
       <View style={styles.Container}>
-        <View
-          style={[
-            styles.profileIconContainer,
-            { opacity: isPrimaryMessage ? 1 : 0 },
-          ]}
-        >
-          <Image
-            source={icons.profile}
-            resizeMode="contain"
-            style={styles.profileIcon}
+        <View style={{ opacity: isPrimaryMessage ? 1 : 0 }}>
+          <ProfileAvatar
+            user={props.message.user}
+            width={32}
+            height={32}
+            fontWeight={500}
           />
         </View>
         <View
@@ -57,7 +54,10 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
             <Text
               style={[
                 styles.usernameText,
-                { color: props.message.user.chatroomColor },
+                {
+                  color: props.message.user.chatroomColor,
+                  marginBottom: hasReplyMessage ? 4 : 0,
+                },
               ]}
             >
               {truncateString(props.message.user.name, 24)}
@@ -94,18 +94,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-start",
     // backgroundColor: "pink",
-  },
-  profileIconContainer: {
-    width: 32,
-    height: 32,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  profileIcon: {
-    marginTop: -8,
-    width: 44,
-    height: 40,
-    objectFit: "fill",
   },
   messageContainer: {
     width: "auto",

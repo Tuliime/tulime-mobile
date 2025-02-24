@@ -10,6 +10,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
+import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
 
 type MentionListProps = {
   onSelect: (user: Auth["user"]) => void;
@@ -38,13 +39,7 @@ export const MentionList: React.FC<MentionListProps> = (props) => {
         style={styles.userContainer}
         onPress={(_) => onSelectHandler(item)}
       >
-        <View style={styles.profileIconContainer}>
-          <Image
-            source={icons.profile}
-            resizeMode="contain"
-            style={styles.profileIcon}
-          />
-        </View>
+        <ProfileAvatar user={item} width={32} height={32} fontWeight={500} />
         <Text style={styles.usernameText}>{item.name}</Text>
       </TouchableOpacity>
     );
@@ -80,17 +75,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: COLORS.gray5,
     padding: 4,
-  },
-  profileIconContainer: {
-    width: 32,
-    height: 32,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  profileIcon: {
-    width: 44,
-    height: 40,
-    objectFit: "fill",
   },
   usernameText: {
     color: COLORS.gray7,

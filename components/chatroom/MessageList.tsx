@@ -8,7 +8,7 @@ import { useChatroomStore } from "@/store/chatroom";
 import { ChatroomMessages } from "@/utils/organizeChatroomMessage";
 import { MessageDay } from "./MessageDay";
 import { AppDate } from "@/utils/appDate";
-import { COLORS } from "@/constants";
+import { COLORS, SIZES } from "@/constants";
 
 export const ChatroomMessageList: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
@@ -106,7 +106,11 @@ export const ChatroomMessageList: React.FC = () => {
         keyExtractor={(item) => item.sentAt!}
         renderItem={renderMessageItem}
         numColumns={1}
-        contentContainerStyle={{ rowGap: 12, flexGrow: 1 }}
+        contentContainerStyle={{
+          rowGap: 12,
+          flexGrow: 1,
+          paddingBottom: SIZES.medium,
+        }}
         // onContentSizeChange={() =>
         //   flatListRef.current?.scrollToEnd({ animated: true })
         // }

@@ -64,18 +64,13 @@ export const useChatroomStore = create<
   // PostingMessage action
   updatePostingMessage: (postingMessage) =>
     set(() => ({ postingMessage: postingMessage })),
-  // Online status action  TODO: To test use of immer js
+  // Online status action
   updateOnlineStatus: (status) =>
-    set((state) => {
-      const newMap = new Map(state.onlineStatusMap);
-      newMap.set(status.userID, status);
-      return { onlineStatusMap: newMap };
-    }),
-  // set(
-  //   produce((state) => {
-  //     state.onlineStatusMap.set(status.userID, status);
-  //   })
-  // ),
+    set(
+      produce((state) => {
+        state.onlineStatusMap.set(status.userID, status);
+      })
+    ),
   getAllOnlineStatuses: () => Array.from(get().onlineStatusMap.values()),
   // Typing status action
   updateTypingStatus: (status) =>

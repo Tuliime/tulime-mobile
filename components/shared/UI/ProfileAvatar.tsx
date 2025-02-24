@@ -1,13 +1,14 @@
 import { COLORS } from "@/constants";
 import { Auth } from "@/types/auth";
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TextStyle } from "react-native";
 
 type ProfileAvatarProps = {
   user: Auth["user"];
   width?: number;
   height?: number;
   fontSize?: number;
+  fontWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900;
 };
 
 export const ProfileAvatar: React.FC<ProfileAvatarProps> = (props) => {
@@ -18,6 +19,7 @@ export const ProfileAvatar: React.FC<ProfileAvatarProps> = (props) => {
   const isWidthGiven: boolean = !!props.width;
   const isHeightGiven: boolean = !!props.height;
   const isFontSizeGiven: boolean = !!props.fontSize;
+  const isFontWeightGiven: boolean = !!props.fontWeight;
 
   return (
     <View style={styles.container}>
@@ -48,7 +50,11 @@ export const ProfileAvatar: React.FC<ProfileAvatarProps> = (props) => {
           <Text
             style={[
               styles.profileBgText,
-              { fontSize: isFontSizeGiven ? props.fontSize : 16 },
+              // { fontSize: isFontSizeGiven ? props.fontSize : 16, fontWeight: isFontWeightGiven ? props.fontWeight : 700 },
+              {
+                fontSize: isFontSizeGiven ? props.fontSize : 16,
+                fontWeight: isFontWeightGiven ? props.fontWeight : 700,
+              },
             ]}
           >
             {firstNameChar}

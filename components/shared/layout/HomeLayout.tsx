@@ -5,10 +5,13 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { Stack } from "expo-router";
 import { COLORS, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
+
+const headerWidth = Dimensions.get("window").width * 0.999;
 
 type HomeLayoutProps = {
   children: ReactNode;
@@ -53,10 +56,10 @@ const styles = StyleSheet.create({
   },
   headerLeftContainer: {
     height: 120,
-    width: "100%",
+    width: headerWidth,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 0.005,
+    paddingHorizontal: 16,
   },
   contentContainer: {
     flex: 1,

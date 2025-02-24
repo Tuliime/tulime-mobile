@@ -30,5 +30,5 @@ export const useUpdateOnlineStatus = () => {
     return () => clearInterval(interval);
   }, [accessToken, user.id]);
 
-  console.log("update online isPending: ", isPending);
+  // console.log("update online isPending: ", isPending);
 };

@@ -33,6 +33,7 @@ import {
   transformTLMMSToInvisible,
 } from "@/utils/tlmmsVisibility";
 import { extractUsernameMentionList } from "@/utils/extractUsernameMentionList";
+import { useKeypadInputTracker } from "@/hooks/useKeypadInputTracker";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -62,6 +63,8 @@ export const MessageForm: React.FC = () => {
   const [showMentionList, setShowMentionList] = useState<boolean>(false);
   const [mentionValue, setMentionValue] = useState<string>("");
   const [text, setText] = useState<string>("");
+
+  const { keypadInputTracker } = useKeypadInputTracker();
 
   const onPickImageHandler = (files: Asset["file"][]) => {
     setFileList(() => files);
@@ -267,6 +270,7 @@ export const MessageForm: React.FC = () => {
       setShowMentionList(() => true);
       setMentionValue(() => mentionExtract.mention!);
     }
+    keypadInputTracker(text);
   };
 
   const disableSubmitButton = (

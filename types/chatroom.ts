@@ -96,6 +96,12 @@ type UpdateOnlineStatusInput = {
   token: string;
 };
 
+type UpdateTypingStatusInput = {
+  userID: string;
+  startedTypingAt: string;
+  token: string;
+};
+
 type PostingMessage = {
   status: "pending" | "success" | "error" | null;
   sentAt: string;
@@ -138,6 +144,7 @@ export type TChatroom = {
   onlineStatusMap: Map<string, OnlineStatus>;
   typingStatusMap: Map<string, TypingStatus>;
   updateOnlineStatusInput: UpdateOnlineStatusInput;
+  updateTypingStatusInput: UpdateTypingStatusInput;
   chatroomAction: TChatroomAction;
   sseData: SSEData;
 };

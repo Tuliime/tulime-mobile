@@ -124,11 +124,12 @@ const styles = StyleSheet.create({
   typingContainer: {
     flexDirection: "row",
     alignItems: "center",
+    gap: 8,
   },
   titleText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "500",
-    color: COLORS.gray8,
+    color: COLORS.gray7,
   },
   chatroomUsersContainer: {},
 });

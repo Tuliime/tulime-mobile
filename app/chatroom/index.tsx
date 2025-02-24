@@ -52,7 +52,7 @@ const Chatroom: React.FC = () => {
 
   if (isPending) {
     return (
-      <ChatroomLayout title="Chatroom" chatInputField={<MessageForm />}>
+      <ChatroomLayout title="Chatfam" chatInputField={<MessageForm />}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.blue7} />
         </View>
@@ -62,7 +62,7 @@ const Chatroom: React.FC = () => {
 
   if (isError) {
     return (
-      <ChatroomLayout title="Chatroom" chatInputField={<MessageForm />}>
+      <ChatroomLayout title="Chatfam" chatInputField={<MessageForm />}>
         <View style={styles.errorContainer}>
           <ErrorCard message={error.message} />
         </View>
@@ -71,7 +71,7 @@ const Chatroom: React.FC = () => {
   }
 
   return (
-    <ChatroomLayout title="Chatroom" chatInputField={<MessageForm />}>
+    <ChatroomLayout title="Chatfam" chatInputField={<MessageForm />}>
       <View style={{ flex: 1, gap: 24 }}>
         {hasMessages ? (
           <ChatroomMessageList />

@@ -131,9 +131,7 @@ export default function Home() {
             resizeMode="contain"
             style={styles.chatroomIcon}
           />
-          <Text style={styles.chatroomTitleText}>
-            Tulime Community Chatroom
-          </Text>
+          <Text style={styles.chatroomTitleText}>Tulime Community Chatfam</Text>
           <Text style={styles.chatroomDescriptionText}>
             Connect, share ideas, and grow together in the heart of Tulime!
           </Text>

@@ -13,6 +13,9 @@ export const useGetLiveChat = () => {
   const updateOnlineStatus = useChatroomStore(
     (state) => state.updateOnlineStatus
   );
+  const updateTypingStatus = useChatroomStore(
+    (state) => state.updateTypingStatus
+  );
 
   useEffect(() => {
     if (effectRan.current == true) return;
@@ -34,6 +37,7 @@ export const useGetLiveChat = () => {
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
       const isOnlineStatusMsg = parsedData.type === "online-status";
+      const isTypingStatusMsg = parsedData.type === "typing-status";
       if (isKeepLiveMsg) return;
 
       if (isChatroomMessage) {
@@ -45,6 +49,10 @@ export const useGetLiveChat = () => {
       if (isOnlineStatusMsg) {
         const onlineStatus = parsedData.data as TChatroom["onlineStatus"];
         updateOnlineStatus(onlineStatus);
+      }
+      if (isTypingStatusMsg) {
+        const typingStatus = parsedData.data as TChatroom["typingStatus"];
+        updateTypingStatus(typingStatus);
       }
     };
 

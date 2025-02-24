@@ -77,6 +77,11 @@ type OnlineStatus = {
   updatedAt: string;
 };
 
+type TypingStatus = {
+  userID: string;
+  startedTypingAt: string;
+};
+
 type GetMessageAPIResponse = {
   data: {
     messages: Message[];
@@ -116,6 +121,8 @@ type TChatroomAction = {
   updatePostingMessage: (postingMessage: PostingMessage) => void;
   updateOnlineStatus: (status: OnlineStatus) => void;
   getAllOnlineStatuses: () => OnlineStatus[];
+  updateTypingStatus: (status: TypingStatus) => void;
+  getAllTypingStatuses: () => TypingStatus[];
 };
 
 export type TChatroom = {
@@ -127,7 +134,9 @@ export type TChatroom = {
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
   onlineStatus: OnlineStatus;
+  typingStatus: TypingStatus;
   onlineStatusMap: Map<string, OnlineStatus>;
+  typingStatusMap: Map<string, TypingStatus>;
   updateOnlineStatusInput: UpdateOnlineStatusInput;
   chatroomAction: TChatroomAction;
   sseData: SSEData;

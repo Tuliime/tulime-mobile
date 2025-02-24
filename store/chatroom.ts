@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import { TChatroom } from "@/types/chatroom";
-import { produce } from "immer";
+import { produce, enableMapSet } from "immer";
+
+enableMapSet(); // Enable Map & Set support for Immer
 
 export const useChatroomStore = create<
   {
@@ -9,6 +11,7 @@ export const useChatroomStore = create<
     swipedMessage: TChatroom["swipedMessage"];
     postingMessage: TChatroom["postingMessage"];
     onlineStatusMap: TChatroom["onlineStatusMap"];
+    typingStatusMap: TChatroom["typingStatusMap"];
   } & TChatroom["chatroomAction"]
 >((set, get) => ({
   messages: [],
@@ -16,6 +19,7 @@ export const useChatroomStore = create<
   swipedMessage: null,
   postingMessage: { status: null, sentAt: "" },
   onlineStatusMap: new Map(),
+  typingStatusMap: new Map(),
   // Message Actions
   updateAllMessages: (messages) =>
     set(() => ({
@@ -73,4 +77,12 @@ export const useChatroomStore = create<
   //   })
   // ),
   getAllOnlineStatuses: () => Array.from(get().onlineStatusMap.values()),
+  // Typing status action
+  updateTypingStatus: (status) =>
+    set(
+      produce((state) => {
+        state.typingStatusMap.set(status.userID, status);
+      })
+    ),
+  getAllTypingStatuses: () => Array.from(get().typingStatusMap.values()),
 }));

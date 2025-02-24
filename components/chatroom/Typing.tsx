@@ -1,18 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
 import { useAuthStore } from "@/store/auth";
 import { COLORS } from "@/constants";
+import { useChatroomStore } from "@/store/chatroom";
+import { Auth } from "@/types/auth";
+import { addCommasToNumber } from "@/utils";
 
 export const Typing: React.FC = () => {
   const users = useAuthStore((state) => state.users);
+  const getAllTypingStatuses = useChatroomStore(
+    (state) => state.getAllTypingStatuses
+  );
+  const [typingUsers, setTypingUsers] = useState<Auth["user"][]>();
+
+  useEffect(() => {
+    const updateTypingUsers = () => {
+      const now = Date.now();
+      const currentlyTypingUsers = getAllTypingStatuses()
+        .filter(
+          (status) => now - 5000 <= new Date(status.startedTypingAt).getTime()
+        )
+        .map((status) => {
+          return users.find((usr) => usr.id === status.userID)!;
+        });
+
+      setTypingUsers(() => currentlyTypingUsers);
+    };
+
+    updateTypingUsers();
+    const interval = setInterval(updateTypingUsers, 1000);
+
+    return () => clearInterval(interval);
+  }, [getAllTypingStatuses]);
+
+  const moreTypingUsers: number = typingUsers!?.length - 3;
+  const hasMoreTypingUsers: boolean = typingUsers!?.length > 3;
+  const hasTypingUser: boolean = typingUsers!?.length > 0;
+
   return (
     <View style={styles.container}>
-      <ProfileAvatar user={users[0]} width={20} height={20} fontSize={10} />
-      <ProfileAvatar user={users[1]} width={20} height={20} fontSize={10} />
-      <ProfileAvatar user={users[8]} width={20} height={20} fontSize={10} />
-      <ProfileAvatar user={users[3]} width={20} height={20} fontSize={10} />
-      <Text style={styles.typingText}>typing...</Text>
+      {typingUsers?.slice(0, 3).map((user, index) => (
+        <ProfileAvatar
+          key={index}
+          user={user}
+          width={20}
+          height={20}
+          fontSize={10}
+        />
+      ))}
+      {hasMoreTypingUsers && (
+        <View style={styles.moreTypingUsersCountContainer}>
+          <Text style={styles.moreTypingUsersCount}>
+            +{addCommasToNumber(moreTypingUsers)}
+          </Text>
+        </View>
+      )}
+      {hasTypingUser && <Text style={styles.typingText}>typing...</Text>}
     </View>
   );
 };
@@ -28,6 +72,19 @@ const styles = StyleSheet.create({
     marginLeft: 2,
     fontSize: 10,
     color: COLORS.primary,
+    fontWeight: 700,
+  },
+  moreTypingUsersCountContainer: {
+    width: 20,
+    height: 20,
+    backgroundColor: COLORS.gray7,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 999,
+  },
+  moreTypingUsersCount: {
+    color: COLORS.gray1,
+    fontSize: 10,
     fontWeight: 700,
   },
 });

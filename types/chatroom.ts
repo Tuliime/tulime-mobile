@@ -70,6 +70,13 @@ type MessageInput = {
   mention?: string[];
 };
 
+type OnlineStatus = {
+  id: string;
+  userID: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 type GetMessageAPIResponse = {
   data: {
     messages: Message[];
@@ -107,6 +114,8 @@ type TChatroomAction = {
   updateSwipedMessage: (message: OrganizedMessage) => void;
   clearSwipedMessage: () => void;
   updatePostingMessage: (postingMessage: PostingMessage) => void;
+  updateOnlineStatus: (status: OnlineStatus) => void;
+  getAllOnlineStatuses: () => OnlineStatus[];
 };
 
 export type TChatroom = {
@@ -117,6 +126,8 @@ export type TChatroom = {
   postingMessage: PostingMessage;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
+  onlineStatus: OnlineStatus;
+  onlineStatusMap: Map<string, OnlineStatus>;
   updateOnlineStatusInput: UpdateOnlineStatusInput;
   chatroomAction: TChatroomAction;
   sseData: SSEData;

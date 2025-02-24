@@ -64,6 +64,21 @@ class ChatroomAPI {
     }
     return await response.json();
   };
+
+  getOnlineStatus = async ({ token }: { token: string }) => {
+    const response = await fetch(`${serverURL}/chatroom/onlinestatus`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const chatroom = new ChatroomAPI();

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { TChatroom } from "@/types/chatroom";
+import { produce } from "immer";
 
 export const useChatroomStore = create<
   {
@@ -7,12 +8,14 @@ export const useChatroomStore = create<
     replies: TChatroom["message"][];
     swipedMessage: TChatroom["swipedMessage"];
     postingMessage: TChatroom["postingMessage"];
+    onlineStatusMap: TChatroom["onlineStatusMap"];
   } & TChatroom["chatroomAction"]
->((set) => ({
+>((set, get) => ({
   messages: [],
   replies: [],
   swipedMessage: null,
   postingMessage: { status: null, sentAt: "" },
+  onlineStatusMap: new Map(),
   // Message Actions
   updateAllMessages: (messages) =>
     set(() => ({
@@ -57,6 +60,17 @@ export const useChatroomStore = create<
   // PostingMessage action
   updatePostingMessage: (postingMessage) =>
     set(() => ({ postingMessage: postingMessage })),
+  // Online status action  TODO: To test use of immer js
+  updateOnlineStatus: (status) =>
+    set((state) => {
+      const newMap = new Map(state.onlineStatusMap);
+      newMap.set(status.userID, status);
+      return { onlineStatusMap: newMap };
+    }),
+  // set(
+  //   produce((state) => {
+  //     state.onlineStatusMap.set(status.userID, status);
+  //   })
+  // ),
+  getAllOnlineStatuses: () => Array.from(get().onlineStatusMap.values()),
 }));
-
-//

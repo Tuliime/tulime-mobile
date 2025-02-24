@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    padding: SIZES.medium,
+    paddingHorizontal: SIZES.medium,
   },
   chatInputFieldContainer: {
     // padding: SIZES.medium,

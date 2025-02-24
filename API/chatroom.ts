@@ -42,6 +42,28 @@ class ChatroomAPI {
     }
     return await response.json();
   };
+
+  updateOnlineStatus = async ({
+    userID,
+    token,
+  }: TChatroom["updateOnlineStatusInput"]) => {
+    const response = await fetch(`${serverURL}/chatroom/onlinestatus`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        userID: userID,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const chatroom = new ChatroomAPI();

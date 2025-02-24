@@ -79,6 +79,11 @@ type GetMessageAPIResponse = {
   status: string;
 };
 
+type UpdateOnlineStatusInput = {
+  userID: string;
+  token: string;
+};
+
 type PostingMessage = {
   status: "pending" | "success" | "error" | null;
   sentAt: string;
@@ -112,6 +117,7 @@ export type TChatroom = {
   postingMessage: PostingMessage;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
+  updateOnlineStatusInput: UpdateOnlineStatusInput;
   chatroomAction: TChatroomAction;
   sseData: SSEData;
 };

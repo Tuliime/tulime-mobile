@@ -10,6 +10,9 @@ export const useGetLiveChat = () => {
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
   const addMessage = useChatroomStore((state) => state.addMessage);
+  const updateOnlineStatus = useChatroomStore(
+    (state) => state.updateOnlineStatus
+  );
 
   useEffect(() => {
     if (effectRan.current == true) return;
@@ -30,6 +33,7 @@ export const useGetLiveChat = () => {
       console.log("parse Live sse data: ", parsedData);
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
+      const isOnlineStatusMsg = parsedData.type === "online-status";
       if (isKeepLiveMsg) return;
 
       if (isChatroomMessage) {
@@ -37,6 +41,10 @@ export const useGetLiveChat = () => {
         if (message.userID === userID) return;
 
         addMessage(parsedData.data);
+      }
+      if (isOnlineStatusMsg) {
+        const onlineStatus = parsedData.data as TChatroom["onlineStatus"];
+        updateOnlineStatus(onlineStatus);
       }
     };
 

@@ -1,22 +1,59 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { addCommasToNumber } from "@/utils";
 import { COLORS } from "@/constants";
+import { useAuthStore } from "@/store/auth";
+import { useChatroomStore } from "@/store/chatroom";
 
 export const ChatroomUsers: React.FC = () => {
-  return (
-    <View style={styles.container}>
-      <View style={styles.onlineUsersContainer}>
-        <Text style={styles.onlineUsersNumber}>{addCommasToNumber(235)} </Text>
-        <View style={styles.onlineDot}></View>
+  const users = useAuthStore((state) => state.users);
+  const getAllOnlineStatuses = useChatroomStore(
+    (state) => state.getAllOnlineStatuses
+  );
+  const [onlineUsers, setOnlineUsers] = useState<string[]>();
 
-        <Text style={styles.onlineUsersLabel}>Online</Text>
-      </View>
-      <View style={styles.seperationDot}></View>
-      <View style={styles.totalUsersContainer}>
-        <Text style={styles.totalUsersNumber}>{addCommasToNumber(2568)}</Text>
-        <Text style={styles.totalUsersLabel}>Total </Text>
-      </View>
+  useEffect(() => {
+    const updateTypingUsers = () => {
+      const now = Date.now();
+      const currentlyTypingUsers = getAllOnlineStatuses()
+        .filter((status) => now - 30000 <= new Date(status.updatedAt).getTime())
+        .map((status) => status.userID);
+
+      setOnlineUsers(() => currentlyTypingUsers);
+    };
+
+    updateTypingUsers();
+    const interval = setInterval(updateTypingUsers, 5000);
+
+    return () => clearInterval(interval);
+  }, [getAllOnlineStatuses]);
+
+  const currentOnlineUsers: number = onlineUsers!?.length;
+  const totalUsers: number = users!?.length;
+  const hasOnlineUsers: boolean = onlineUsers!?.length > 0;
+  const hasUsers: boolean = users!?.length > 0;
+  const showOnlineStatus: boolean = hasOnlineUsers && hasUsers;
+
+  return (
+    <View>
+      {showOnlineStatus && (
+        <View style={styles.container}>
+          <View style={styles.onlineUsersContainer}>
+            <Text style={styles.onlineUsersNumber}>
+              {addCommasToNumber(currentOnlineUsers)}
+            </Text>
+            <View style={styles.onlineDot}></View>
+            <Text style={styles.onlineUsersLabel}>Online</Text>
+          </View>
+          <View style={styles.seperationDot}></View>
+          <View style={styles.totalUsersContainer}>
+            <Text style={styles.totalUsersNumber}>
+              {addCommasToNumber(totalUsers)}
+            </Text>
+            <Text style={styles.totalUsersLabel}>Total </Text>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -50,10 +87,10 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   seperationDot: {
-    width: 8,
-    height: 8,
+    width: 6,
+    height: 6,
     borderRadius: 999,
-    backgroundColor: COLORS.gray7,
+    backgroundColor: COLORS.gray6,
   },
   totalUsersContainer: {
     flexDirection: "row",

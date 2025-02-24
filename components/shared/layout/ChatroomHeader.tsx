@@ -59,7 +59,7 @@ export const ChatroomHeader: React.FC<ChatroomHeaderProps> = (props) => {
               </View>
             </View>
             <TouchableOpacity
-              style={styles.leftArrowIconButton}
+              style={styles.searchIconButton}
               onPress={navigateToSearch}
             >
               <MaterialIcons name="search" size={24} color={COLORS.gray8} />
@@ -84,13 +84,14 @@ const styles = StyleSheet.create({
     height: 56,
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     gap: 0,
     paddingHorizontal: 4,
     paddingVertical: 8,
     marginLeft: -16,
   },
   chatroomIconContainer: {
+    alignSelf: "center",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -109,10 +110,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  searchIconButton: {
+    width: 36,
+    height: 36,
+    borderRadius: SIZES.small / 1.25,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   contentContainer: {
     paddingLeft: 8,
     flex: 1,
     alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   titleContainer: {
     width: "auto",

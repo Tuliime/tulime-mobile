@@ -75,8 +75,8 @@ const styles = StyleSheet.create({
     fontWeight: 700,
   },
   moreTypingUsersCountContainer: {
-    width: 20,
-    height: 20,
+    width: 24,
+    height: 24,
     backgroundColor: COLORS.gray7,
     justifyContent: "center",
     alignItems: "center",

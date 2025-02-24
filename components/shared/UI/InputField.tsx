@@ -66,8 +66,10 @@ export const InputField: React.FC<InputFieldProps> = (props) => {
               : isFocused
               ? COLORS.primary
               : COLORS.gray6,
-            borderRadius: 4,
+            borderRadius: 8,
             color: COLORS.gray8,
+            padding: 8,
+            height: 48,
           }}
           onChangeText={formik.handleChange(name)}
           onBlur={onBlurHandler}

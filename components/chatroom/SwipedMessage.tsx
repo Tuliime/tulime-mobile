@@ -7,6 +7,7 @@ import { truncateString } from "@/utils/truncateString";
 import { useAuthStore } from "@/store/auth";
 import { SwipedImageDisplay } from "./SwipedImageDisplay";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { TextMessage } from "./TextMessage";
 
 export const SwipedMessage: React.FC = () => {
   const swipedMessage = useChatroomStore((state) => state.swipedMessage);
@@ -40,9 +41,11 @@ export const SwipedMessage: React.FC = () => {
           {truncateString(username, 24)}
         </Text>
         {hasText && (
-          <Text style={styles.messageText}>
-            {truncateString(swipedMessage?.text!, 100)}
-          </Text>
+          <TextMessage
+            text={truncateString(swipedMessage?.text!, 100)}
+            style={styles.messageText}
+            tagStyle={styles.messageTextTag}
+          />
         )}
         {showPhotoIcon && (
           <View style={styles.imageIconContainer}>
@@ -91,6 +94,9 @@ const styles = StyleSheet.create({
   messageText: {
     color: COLORS.gray7,
     fontSize: 14,
+  },
+  messageTextTag: {
+    color: COLORS.blue4,
   },
   imageIconContainer: {
     height: "100%",

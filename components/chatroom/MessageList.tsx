@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { FlatList, View, StyleSheet, Text } from "react-native";
 import { SenderMessage } from "./SenderMessage";
 import { TChatroom } from "@/types/chatroom";
@@ -48,30 +48,26 @@ export const ChatroomMessageList: React.FC = () => {
   // console.log("replies: ", replies);
   // console.log("users: ", users);
 
-  const organizedMessages = new ChatroomMessages(
-    messages,
-    replies,
-    users,
-    currentUser
-  ).organize();
+  const organizedMessages = useMemo(() => {
+    return new ChatroomMessages(
+      messages,
+      replies,
+      users,
+      currentUser
+    ).organize();
+  }, [messages, replies, users, currentUser]);
 
   const renderMessageItem = useCallback(
-    ({ item }: { item: TChatroom["organizedMessage"] }) => {
-      if (item.isCurrentUserSender) {
-        return (
-          <View style={styles.messageWrapperContainer}>
-            {item.showDay && <MessageDay message={item} />}
-            <SenderMessage message={item} />
-          </View>
-        );
-      }
-      return (
-        <View style={styles.messageWrapperContainer}>
-          {item.showDay && <MessageDay message={item} />}
+    ({ item }: { item: TChatroom["organizedMessage"] }) => (
+      <View style={styles.messageWrapperContainer}>
+        {item.showDay && <MessageDay message={item} />}
+        {item.isCurrentUserSender ? (
+          <SenderMessage message={item} />
+        ) : (
           <RecipientMessage message={item} />
-        </View>
-      );
-    },
+        )}
+      </View>
+    ),
     []
   );
 
@@ -130,16 +126,11 @@ export const ChatroomMessageList: React.FC = () => {
         data={organizedMessages}
         keyExtractor={(item) => item.sentAt!}
         renderItem={renderMessageItem}
-        numColumns={1}
         contentContainerStyle={{
           rowGap: 12,
           flexGrow: 1,
           paddingBottom: SIZES.medium,
         }}
-        // onContentSizeChange={() =>
-        //   flatListRef.current?.scrollToEnd({ animated: true })
-        // }
-        // nestedScrollEnabled={true} // Allow FlatList to scroll if inside another ScrollView
         viewabilityConfigCallbackPairs={viewAbilityConfigCallbackPairs}
         onScrollBeginDrag={onScrollStartHandler}
         onScrollEndDrag={onScrollEndHandler}
@@ -156,7 +147,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
-    // backgroundColor: "lightyellow",
   },
   currentMessageContainer: {
     justifyContent: "center",

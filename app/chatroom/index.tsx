@@ -88,7 +88,7 @@ const Chatroom: React.FC = () => {
       updateAllReplies(incomingReplies);
     };
     updateMessageHandler();
-  }, [data, isPending]);
+  }, [data]);
 
   if (isError) {
     return (

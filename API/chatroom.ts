@@ -23,10 +23,11 @@ class ChatroomAPI {
     limit,
     cursor,
     includeCursor,
+    direction,
     token,
   }: TChatroom["getMessageInput"]) => {
     const response = await fetch(
-      `${serverURL}/chatroom?limit=${limit}&cursor=${cursor}&includeCursor=${includeCursor}`,
+      `${serverURL}/chatroom?limit=${limit}&cursor=${cursor}&includeCursor=${includeCursor}&direction=${direction}`,
       {
         method: "GET",
         headers: {

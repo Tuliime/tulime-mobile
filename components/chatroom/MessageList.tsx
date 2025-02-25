@@ -9,6 +9,7 @@ import { ChatroomMessages } from "@/utils/organizeChatroomMessage";
 import { MessageDay } from "./MessageDay";
 import { AppDate } from "@/utils/appDate";
 import { COLORS, SIZES } from "@/constants";
+import { router } from "expo-router";
 
 export const ChatroomMessageList: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
@@ -91,6 +92,30 @@ export const ChatroomMessageList: React.FC = () => {
     setTimeout(() => setShowDateOnScroll(() => false), 2000);
   };
 
+  const onScrollHandler = (event: any) => {
+    const { contentOffset, layoutMeasurement, contentSize } = event.nativeEvent;
+
+    if (contentOffset.y <= 0) {
+      console.log("Reached the top");
+      router.setParams({
+        cursor: organizedMessages[0].id,
+        includeCursor: "false",
+        direction: "BACKWARD",
+        urlUpdateAction: "SCROLL",
+      });
+    }
+
+    if (contentOffset.y + layoutMeasurement.height >= contentSize.height) {
+      console.log("Reached the bottom");
+      router.setParams({
+        cursor: organizedMessages[organizedMessages.length - 1].id,
+        includeCursor: "false",
+        direction: "FORWARD",
+        urlUpdateAction: "SCROLL",
+      });
+    }
+  };
+
   return (
     <View style={styles.container}>
       {showCurrentMessageDate && (
@@ -118,6 +143,8 @@ export const ChatroomMessageList: React.FC = () => {
         viewabilityConfigCallbackPairs={viewAbilityConfigCallbackPairs}
         onScrollBeginDrag={onScrollStartHandler}
         onScrollEndDrag={onScrollEndHandler}
+        onScroll={onScrollHandler}
+        scrollEventThrottle={16} // Adjust for performance
       />
     </View>
   );
@@ -129,6 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "relative",
+    // backgroundColor: "lightyellow",
   },
   currentMessageContainer: {
     justifyContent: "center",

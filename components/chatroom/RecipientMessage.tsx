@@ -10,6 +10,8 @@ import { truncateString } from "@/utils/truncateString";
 import { MessageOnSwipe } from "./MessageOnSwipe";
 import { ImageDisplay } from "../shared/UI/ImageDisplay";
 import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
+import { TextMessage } from "./TextMessage";
+// import { recoverTLMMSFromInvisible } from "@/utils/tlmmsVisibility";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -77,7 +79,11 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
           )}
           {hasText && (
             <View style={styles.messageTextContainer}>
-              <Text style={styles.messageText}>{props.message.text}</Text>
+              <TextMessage
+                text={props.message.text}
+                style={styles.messageText}
+                tagStyle={styles.messageTextTag}
+              />
             </View>
           )}
           <Text style={styles.messageTime}>{messageTime}</Text>
@@ -125,6 +131,9 @@ const styles = StyleSheet.create({
   messageText: {
     color: COLORS.gray9,
     fontSize: 16,
+  },
+  messageTextTag: {
+    color: COLORS.blue7,
   },
   messageTime: {
     color: COLORS.gray6,

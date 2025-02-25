@@ -9,6 +9,7 @@ import { MessageOnSwipe } from "./MessageOnSwipe";
 import Feather from "@expo/vector-icons/Feather";
 import { useChatroomStore } from "@/store/chatroom";
 import { ImageDisplay } from "../shared/UI/ImageDisplay";
+import { TextMessage } from "./TextMessage";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const maxWidth = screenWidth * 0.76;
@@ -68,7 +69,12 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
           )}
           {hasText && (
             <View style={styles.messageTextContainer}>
-              <Text style={styles.messageText}>{props.message.text}</Text>
+              {/* <Text style={styles.messageText}>{props.message.text}</Text> */}
+              <TextMessage
+                text={props.message.text}
+                style={styles.messageText}
+                tagStyle={styles.messageTextTag}
+              />
             </View>
           )}
           <View style={styles.messageTimeContainer}>
@@ -120,6 +126,9 @@ const styles = StyleSheet.create({
   messageText: {
     color: COLORS.gray9,
     fontSize: 16,
+  },
+  messageTextTag: {
+    color: COLORS.blue7,
   },
   messageTimeContainer: {
     flexDirection: "row",

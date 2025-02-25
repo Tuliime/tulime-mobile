@@ -6,6 +6,7 @@ import { COLORS } from "@/constants";
 import { truncateString } from "@/utils";
 import { RepliedImageDisplay } from "./RepliedImageDisplay";
 import { FontAwesome } from "@expo/vector-icons";
+import { TextMessage } from "./TextMessage";
 
 type RepliedMessageProps = {
   message: TChatroom["organizedMessage"];
@@ -64,9 +65,11 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
           {truncateString(getUsername(), 24)}
         </Text>
         {hasText && (
-          <Text style={styles.messageText}>
-            {truncateString(props.message.repliedMessage?.text!, 100)}
-          </Text>
+          <TextMessage
+            text={truncateString(props.message.repliedMessage?.text!, 100)}
+            style={styles.messageText}
+            tagStyle={styles.messageTextTag}
+          />
         )}
         {showPhotoIcon && (
           <View style={styles.imageIconContainer}>
@@ -116,6 +119,9 @@ const styles = StyleSheet.create({
     flex: 1,
     color: COLORS.gray7,
     fontSize: 14,
+  },
+  messageTextTag: {
+    color: COLORS.blue4,
   },
   imageIconContainer: {
     height: "100%",

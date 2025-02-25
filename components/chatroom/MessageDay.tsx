@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     width: "100%",
-    marginVertical: 32,
+    marginTop: 20,
+    marginBottom: 24,
     gap: 8,
   },
   dateContainer: {

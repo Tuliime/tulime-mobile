@@ -56,6 +56,7 @@ type GetMessageInput = {
   limit: number;
   cursor?: string;
   includeCursor?: boolean;
+  direction?: "FORWARD" | "BACKWARD";
   token: string;
 };
 

@@ -23,14 +23,17 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
   const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
   const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
   const hasText: boolean = !!props.message.text;
-  const postingMessage = useChatroomStore((state) => state.postingMessage);
+  // const postingMessage = useChatroomStore((state) => state.postingMessage);
+  const postingMessage = useChatroomStore((state) =>
+    state.getPostingMessage(props.message.sentAt!)
+  );
   const hasImage: boolean = !!props.message.file?.url;
   const hasLocalFile: boolean = !!props.message.localFile?.mimeType;
   const showLocalFile: boolean = hasLocalFile && !hasImage;
 
   const isPending: boolean =
-    props.message.sentAt === postingMessage.sentAt &&
-    postingMessage.status === "pending";
+    props.message.sentAt === postingMessage?.sentAt &&
+    postingMessage?.status === "pending";
 
   const buildLocalFileURI = (file: TChatroom["message"]["localFile"]) => {
     if (!file?.mimeType || !file?.base64) return;
@@ -69,7 +72,6 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
           )}
           {hasText && (
             <View style={styles.messageTextContainer}>
-              {/* <Text style={styles.messageText}>{props.message.text}</Text> */}
               <TextMessage
                 text={props.message.text}
                 style={styles.messageText}

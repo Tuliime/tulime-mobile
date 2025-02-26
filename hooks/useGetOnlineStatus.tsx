@@ -24,9 +24,6 @@ export const useGetOnlineStatus = () => {
   if (isError) {
     console.log("error:", error);
   }
-  console.log("getting online isPending: ", isPending);
-
-  console.log("onlineStatuses: ", onlineStatuses);
 
   useEffect(() => {
     const updateOnlineStatusHandler = () => {

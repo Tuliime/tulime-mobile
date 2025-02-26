@@ -33,7 +33,7 @@ export const useGetLiveChat = () => {
 
     const onmessage = async (event: any) => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
-      console.log("parse Live sse data: ", parsedData);
+      // console.log("parse Live sse data: ", parsedData);
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
       const isOnlineStatusMsg = parsedData.type === "online-status";

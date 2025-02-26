@@ -9,7 +9,9 @@ export const useChatroomStore = create<
     messages: TChatroom["message"][];
     replies: TChatroom["message"][];
     swipedMessage: TChatroom["swipedMessage"];
-    postingMessage: TChatroom["postingMessage"];
+    messageLoader: TChatroom["messageLoader"];
+    messageLoadingError: TChatroom["messageLoadingError"];
+    postingMessageMap: TChatroom["postingMessage"];
     onlineStatusMap: TChatroom["onlineStatusMap"];
     typingStatusMap: TChatroom["typingStatusMap"];
   } & TChatroom["chatroomAction"]
@@ -17,7 +19,10 @@ export const useChatroomStore = create<
   messages: [],
   replies: [],
   swipedMessage: null,
-  postingMessage: { status: null, sentAt: "" },
+  messageLoader: { type: "firstTimeMessageLoader", isLoading: false },
+  messageLoadingError: { message: "", isError: false },
+  // postingMessage: { status: null, sentAt: "" },
+  postingMessageMap: new Map(),
   onlineStatusMap: new Map(),
   typingStatusMap: new Map(),
   // Message Actions
@@ -60,10 +65,37 @@ export const useChatroomStore = create<
   clearReplies: () => set(() => ({ replies: [] })),
   // Swiped message actions
   updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
-  clearSwipedMessage: () => set(() => ({ swipedMessage: null })),
+  clearSwipedMessage: () =>
+    set(() => {
+      console.log("swipedMessage cleared");
+      return { swipedMessage: null };
+    }),
+  // Message Loader actions
+  updateMessageLoader: (messageLoader) =>
+    set(() => ({ messageLoader: messageLoader })),
+  // Message Loading Error
+  updateMessageLoadingError: (messageLoadingError) =>
+    set(() => ({ messageLoadingError: messageLoadingError })),
   // PostingMessage action
+  // updatePostingMessage: (postingMessage) =>
+  //   set(() => ({ postingMessage: postingMessage })),
   updatePostingMessage: (postingMessage) =>
-    set(() => ({ postingMessage: postingMessage })),
+    set(
+      produce((state) => {
+        console.log("postingMessage...: ", postingMessage);
+        state.postingMessageMap = new Map(state.postingMessageMap);
+        state.postingMessageMap.set(postingMessage.sentAt, postingMessage);
+      })
+    ),
+  // updatePostingMessage: (postingMessage) =>
+  //   set(
+  //     produce((state) => {
+  //       console.log("postingMessage...: ", postingMessage);
+  //       state.postingMessageMap.set(postingMessage.sentAt, postingMessage);
+  //     })
+  //   ),
+  getPostingMessage: (sentAt) => get().postingMessageMap.get(sentAt)!,
+  getAllPostingMessages: () => Array.from(get().postingMessageMap.values()),
   // Online status action
   updateOnlineStatus: (status) =>
     set(

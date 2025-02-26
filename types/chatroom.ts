@@ -71,6 +71,16 @@ type MessageInput = {
   mention?: string[];
 };
 
+type MessageLoader = {
+  type: "firstTimeMessageLoader" | "prevMessageLoader" | "nextMessageLoader";
+  isLoading: boolean;
+};
+
+type MessageLoadingError = {
+  message: string;
+  isError: boolean;
+};
+
 type OnlineStatus = {
   id: string;
   userID: string;
@@ -125,7 +135,11 @@ type TChatroomAction = {
   clearReplies: () => void;
   updateSwipedMessage: (message: OrganizedMessage) => void;
   clearSwipedMessage: () => void;
+  updateMessageLoader: (messageLoader: MessageLoader) => void;
+  updateMessageLoadingError: (messageLoadingError: MessageLoadingError) => void;
   updatePostingMessage: (postingMessage: PostingMessage) => void;
+  getPostingMessage: (sentAt: string) => PostingMessage;
+  getAllPostingMessages: () => PostingMessage[];
   updateOnlineStatus: (status: OnlineStatus) => void;
   getAllOnlineStatuses: () => OnlineStatus[];
   updateTypingStatus: (status: TypingStatus) => void;
@@ -137,9 +151,11 @@ export type TChatroom = {
   message: Message;
   organizedMessage: OrganizedMessage;
   swipedMessage: OrganizedMessage | null;
-  postingMessage: PostingMessage;
+  postingMessage: Map<string, PostingMessage>;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
+  messageLoader: MessageLoader;
+  messageLoadingError: MessageLoadingError;
   onlineStatus: OnlineStatus;
   typingStatus: TypingStatus;
   onlineStatusMap: Map<string, OnlineStatus>;

@@ -322,23 +322,26 @@ export const MessageForm: React.FC = () => {
               // value={formik.values["text"]}
               value={text}
               keyboardType={"default"}
+              multiline
             />
-            <ImagePicker
-              onPick={onPickImageHandler}
-              onLoading={onLoadImageHandler}
-            />
-            <TouchableOpacity
-              style={[
-                styles.button,
-                { opacity: disableSubmitButton(formik) ? 0.75 : 1 },
-              ]}
-              onPress={(_) => {
-                formikSubmitHandler(formik);
-              }}
-              disabled={disableSubmitButton(formik)}
-            >
-              <Ionicons name="send" size={20} color={COLORS.white} />
-            </TouchableOpacity>
+            <View style={styles.formActionsContainer}>
+              <ImagePicker
+                onPick={onPickImageHandler}
+                onLoading={onLoadImageHandler}
+              />
+              <TouchableOpacity
+                style={[
+                  styles.button,
+                  { opacity: disableSubmitButton(formik) ? 0.75 : 1 },
+                ]}
+                onPress={(_) => {
+                  formikSubmitHandler(formik);
+                }}
+                disabled={disableSubmitButton(formik)}
+              >
+                <Ionicons name="send" size={20} color={COLORS.white} />
+              </TouchableOpacity>
+            </View>
           </View>
         )}
       </Formik>
@@ -370,16 +373,17 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     backgroundColor: COLORS.gray4,
-    height: 56,
+    minHeight: 56,
     borderRadius: 32,
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-end",
     paddingHorizontal: 16,
     paddingRight: 8,
+    paddingVertical: 8,
     gap: 4,
   },
   input: {
-    // TODO: To input field height adjust with the number of words in
+    maxHeight: 112,
     flex: 1,
     width: inputFieldWith,
     borderWidth: 0,
@@ -387,6 +391,12 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     color: COLORS.gray8,
     outline: "none",
+    padding: 0,
+  },
+  formActionsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   button: {
     alignItems: "center",

@@ -336,13 +336,7 @@ export const MessageForm: React.FC = () => {
               }}
               disabled={disableSubmitButton(formik)}
             >
-              {isPending ? (
-                <View style={styles.loadingContainer}>
-                  <ActivityIndicator size="small" color={COLORS.white} />
-                </View>
-              ) : (
-                <Ionicons name="send" size={20} color={COLORS.white} />
-              )}
+              <Ionicons name="send" size={20} color={COLORS.white} />
             </TouchableOpacity>
           </View>
         )}

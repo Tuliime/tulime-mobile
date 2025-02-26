@@ -77,23 +77,12 @@ export const useChatroomStore = create<
   updateMessageLoadingError: (messageLoadingError) =>
     set(() => ({ messageLoadingError: messageLoadingError })),
   // PostingMessage action
-  // updatePostingMessage: (postingMessage) =>
-  //   set(() => ({ postingMessage: postingMessage })),
   updatePostingMessage: (postingMessage) =>
     set(
       produce((state) => {
-        console.log("postingMessage...: ", postingMessage);
-        state.postingMessageMap = new Map(state.postingMessageMap);
         state.postingMessageMap.set(postingMessage.sentAt, postingMessage);
       })
     ),
-  // updatePostingMessage: (postingMessage) =>
-  //   set(
-  //     produce((state) => {
-  //       console.log("postingMessage...: ", postingMessage);
-  //       state.postingMessageMap.set(postingMessage.sentAt, postingMessage);
-  //     })
-  //   ),
   getPostingMessage: (sentAt) => get().postingMessageMap.get(sentAt)!,
   getAllPostingMessages: () => Array.from(get().postingMessageMap.values()),
   // Online status action

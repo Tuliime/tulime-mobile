@@ -383,6 +383,7 @@ const styles = StyleSheet.create({
     gap: 4,
   },
   input: {
+    minHeight: 44,
     maxHeight: 112,
     flex: 1,
     width: inputFieldWith,

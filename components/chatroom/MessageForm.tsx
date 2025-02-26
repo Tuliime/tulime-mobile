@@ -56,6 +56,7 @@ export const MessageForm: React.FC = () => {
     (state) => state.clearSwipedMessage
   );
   const swipedMessage = useChatroomStore((state) => state.swipedMessage);
+  console.log("swipedMessage: ", swipedMessage);
   const showSwipedMessage: boolean = !!swipedMessage?.id;
   const showImagePreview: boolean = !!fileList[0]?.name;
 
@@ -171,12 +172,12 @@ export const MessageForm: React.FC = () => {
   ) => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
-    if (showSwipedMessage) values.reply = swipedMessage?.id!;
+    const reply = !!swipedMessage?.id! ? swipedMessage?.id! : "";
     const mentionList = getMentionListHandler(text, users);
 
     formData.append("userID", values.userID);
     formData.append("text", text);
-    formData.append("reply", values.reply);
+    formData.append("reply", reply);
     formData.append("sentAt", values.sentAt);
     formData.append("mention", JSON.stringify(mentionList));
 
@@ -198,7 +199,7 @@ export const MessageForm: React.FC = () => {
   ) => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
-    if (showSwipedMessage) values.reply = swipedMessage?.id!;
+    const reply = !!swipedMessage?.id! ? swipedMessage?.id! : "";
     values.localFile = { base64: file.base64, mimeType: file.mimeType };
     const mentionList = getMentionListHandler(text, users);
 
@@ -206,7 +207,7 @@ export const MessageForm: React.FC = () => {
     // Attach text and it's reply to the first image file only
     if (fileIndex === 0) {
       formData.append("text", text);
-      formData.append("reply", values.reply);
+      formData.append("reply", reply);
     } else {
       formData.append("text", "");
       formData.append("reply", "");

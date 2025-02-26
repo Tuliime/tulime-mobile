@@ -91,7 +91,7 @@ export default function Home() {
               <Logout />
             </View>
           </View>
-          <Link href={"/search"}>
+          <Link href={"/search"} style={styles.headerSearchContainer}>
             <View style={styles.headerSearch}>
               <Text style={styles.headerSearchText}>Search Tulime</Text>
               <View>
@@ -156,6 +156,9 @@ const styles = StyleSheet.create({
   headerTitleText: {
     fontSize: 24,
     color: COLORS.white,
+  },
+  headerSearchContainer: {
+    width: "100%",
   },
   headerSearch: {
     width: "100%",

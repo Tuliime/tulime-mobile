@@ -21,7 +21,6 @@ export const useChatroomStore = create<
   swipedMessage: null,
   messageLoader: { type: "firstTimeMessageLoader", isLoading: false },
   messageLoadingError: { message: "", isError: false },
-  // postingMessage: { status: null, sentAt: "" },
   postingMessageMap: new Map(),
   onlineStatusMap: new Map(),
   typingStatusMap: new Map(),
@@ -66,10 +65,11 @@ export const useChatroomStore = create<
   // Swiped message actions
   updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
   clearSwipedMessage: () =>
-    set(() => {
-      console.log("swipedMessage cleared");
-      return { swipedMessage: null };
-    }),
+    set(
+      produce((state) => {
+        state.swipedMessage = null;
+      })
+    ),
   // Message Loader actions
   updateMessageLoader: (messageLoader) =>
     set(() => ({ messageLoader: messageLoader })),

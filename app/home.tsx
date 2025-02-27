@@ -78,6 +78,10 @@ export default function Home() {
     router.push("/chatroom");
   };
 
+  const navigateToSearch = () => {
+    router.push("/search");
+  };
+
   return (
     <HomeLayout
       header={
@@ -91,14 +95,17 @@ export default function Home() {
               <Logout />
             </View>
           </View>
-          <Link href={"/search"} style={styles.headerSearchContainer}>
+          <TouchableOpacity
+            onPress={() => navigateToSearch()}
+            style={styles.headerSearchContainer}
+          >
             <View style={styles.headerSearch}>
               <Text style={styles.headerSearchText}>Search Tulime</Text>
               <View>
                 <MaterialIcons name="search" size={24} color={COLORS.primary} />
               </View>
             </View>
-          </Link>
+          </TouchableOpacity>
         </View>
       }
     >
@@ -145,7 +152,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     width: "100%",
     gap: 8,
-    marginTop: -10,
+    marginTop: -16,
   },
   headerTitleContainer: {
     width: "100%",

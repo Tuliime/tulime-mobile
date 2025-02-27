@@ -4,6 +4,8 @@ import { serverURL } from "@/constants/urls";
 import { useAuthStore } from "@/store/auth";
 import { useChatroomStore } from "@/store/chatroom";
 import { TChatroom } from "@/types/chatroom";
+import { Audio } from "expo-av";
+import { sounds } from "@/constants";
 
 export const useGetLiveChat = () => {
   const effectRan = useRef(false);
@@ -16,6 +18,12 @@ export const useGetLiveChat = () => {
   const updateTypingStatus = useChatroomStore(
     (state) => state.updateTypingStatus
   );
+
+  const playNewMessageSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(sounds.levelUpSound);
+    await sound.setVolumeAsync(0.5);
+    await sound.playAsync();
+  };
 
   useEffect(() => {
     if (effectRan.current == true) return;
@@ -45,6 +53,7 @@ export const useGetLiveChat = () => {
         if (message.userID === userID) return;
 
         addMessage(parsedData.data);
+        playNewMessageSound();
       }
       if (isOnlineStatusMsg) {
         const onlineStatus = parsedData.data as TChatroom["onlineStatus"];

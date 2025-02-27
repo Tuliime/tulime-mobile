@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Formik, FormikProps } from "formik";
 import * as yup from "yup";
-import { COLORS } from "@/constants";
+import { COLORS, sounds } from "@/constants";
 import { useMutation } from "@tanstack/react-query";
 import { TChatroom } from "@/types/chatroom";
 import { useAuthStore } from "@/store/auth";
@@ -34,6 +34,7 @@ import {
 } from "@/utils/tlmmsVisibility";
 import { extractUsernameMentionList } from "@/utils/extractUsernameMentionList";
 import { useKeypadInputTracker } from "@/hooks/useKeypadInputTracker";
+import { Audio } from "expo-av";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -56,7 +57,6 @@ export const MessageForm: React.FC = () => {
     (state) => state.clearSwipedMessage
   );
   const swipedMessage = useChatroomStore((state) => state.swipedMessage);
-  console.log("swipedMessage: ", swipedMessage);
   const showSwipedMessage: boolean = !!swipedMessage?.id;
   const showImagePreview: boolean = !!fileList[0]?.name;
 
@@ -104,6 +104,14 @@ export const MessageForm: React.FC = () => {
     return mentionList;
   };
 
+  const playSuccessPostSound = async () => {
+    const { sound } = await Audio.Sound.createAsync(
+      sounds.tapNotificationSound
+    );
+    await sound.setVolumeAsync(0.5);
+    await sound.playAsync();
+  };
+
   useEffect(() => {
     if (showSwipedMessage) {
       textInputRef.current?.focus();
@@ -135,6 +143,7 @@ export const MessageForm: React.FC = () => {
       updateMessageBySentAt(response.data);
       updatePostingMessage({ status: "success", sentAt: response.data.sentAt });
       setText(() => "");
+      playSuccessPostSound();
     },
     onError: (error) => {
       console.log("Error:", error);

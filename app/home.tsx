@@ -124,11 +124,6 @@ export default function Home() {
             backgroundColor: "",
           }}
         />
-        <Link href={"/chatbot"}>
-          <View>
-            <Text>Chatbot</Text>
-          </View>
-        </Link>
         <TouchableOpacity
           style={styles.chatroomContainer}
           onPress={() => navigateToChatroom()}

@@ -5,10 +5,13 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  TouchableOpacity,
+  Image,
 } from "react-native";
-import { COLORS, SIZES } from "@/constants";
+import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
 import { MainHeader } from "./MainHeader";
+import { router } from "expo-router";
 
 type MainLayoutProps = {
   children: ReactNode;
@@ -17,6 +20,9 @@ type MainLayoutProps = {
 
 /** MainLayout is for authenticated screens */
 export const MainLayout: React.FC<MainLayoutProps> = (props) => {
+  const navigateToChatBot = () => {
+    router.push("/chatbot");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -32,6 +38,16 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         >
           <View style={styles.contentContainer}>{props.children}</View>
         </ScrollView>
+        <TouchableOpacity
+          style={styles.botContainer}
+          onPress={() => navigateToChatBot()}
+        >
+          <Image
+            source={icons.bot}
+            resizeMode="contain"
+            style={styles.botIcon}
+          />
+        </TouchableOpacity>
         <Footer />
       </View>
     </SafeAreaView>
@@ -53,5 +69,24 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     padding: SIZES.medium,
+    position: "relative",
+  },
+  botContainer: {
+    backgroundColor: COLORS.gray4,
+    width: 44,
+    height: 44,
+    padding: 16,
+    borderRadius: 999,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 240,
+    right: 8,
+    zIndex: 100,
+  },
+  botIcon: {
+    width: 24,
+    height: 24,
+    objectFit: "contain",
   },
 });

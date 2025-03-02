@@ -6,9 +6,11 @@ import {
   StatusBar,
   StyleSheet,
   Dimensions,
+  TouchableOpacity,
+  Image,
 } from "react-native";
-import { Stack } from "expo-router";
-import { COLORS, SIZES } from "@/constants";
+import { router, Stack } from "expo-router";
+import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
@@ -19,6 +21,9 @@ type HomeLayoutProps = {
 };
 
 export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
+  const navigateToChatBot = () => {
+    router.push("/chatbot");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -40,6 +45,12 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.contentContainer}>{props.children}</View>
       </ScrollView>
+      <TouchableOpacity
+        style={styles.botContainer}
+        onPress={() => navigateToChatBot()}
+      >
+        <Image source={icons.bot} resizeMode="contain" style={styles.botIcon} />
+      </TouchableOpacity>
       <Footer />
     </SafeAreaView>
   );
@@ -64,5 +75,24 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     padding: SIZES.medium,
+    position: "relative",
+  },
+  botContainer: {
+    backgroundColor: COLORS.gray4,
+    width: 44,
+    height: 44,
+    padding: 16,
+    borderRadius: 1000,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 240,
+    right: 8,
+    zIndex: 100,
+  },
+  botIcon: {
+    width: 24,
+    height: 24,
+    objectFit: "contain",
   },
 });

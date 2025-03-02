@@ -78,7 +78,7 @@ const News: React.FC = () => {
 
   if (isPending) {
     return (
-      <MainLayout title="News, G.O.U & Conferences">
+      <MainLayout title="G.O.U News & Conferences">
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.blue7} />
         </View>
@@ -88,7 +88,7 @@ const News: React.FC = () => {
 
   if (isError) {
     return (
-      <MainLayout title="News, G.O.U & Conferences">
+      <MainLayout title="G.O.U News & Conferences">
         <View style={styles.errorContainer}>
           <ErrorCard message={error.message} />
         </View>
@@ -97,22 +97,22 @@ const News: React.FC = () => {
   }
 
   return (
-    <MainLayout title="News, G.O.U & Conferences">
+    <MainLayout title="G.O.U News & Conferences">
       <View style={{ flex: 1, gap: 16 }}>
         <View style={{ flexDirection: "row", gap: 8 }}>
-          <Button
-            handlePress={() => setCategory("news")}
-            isTransparent={true}
-            style={{ borderRadius: 24, paddingVertical: 8 }}
-            label="News"
-            isActive={isActiveCategory("news")}
-          />
           <Button
             handlePress={() => setCategory("G.O.U")}
             isTransparent={true}
             style={{ borderRadius: 24, paddingVertical: 8 }}
             label="G.O.U"
             isActive={isActiveCategory("G.O.U")}
+          />
+          <Button
+            handlePress={() => setCategory("news")}
+            isTransparent={true}
+            style={{ borderRadius: 24, paddingVertical: 8 }}
+            label="News"
+            isActive={isActiveCategory("news")}
           />
           <Button
             handlePress={() => setCategory("conference")}

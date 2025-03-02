@@ -42,13 +42,13 @@ export default function Home() {
       link: "/farminputs",
     },
     {
-      name: "Season Trends & Prediction",
+      name: "Vacancies  & Tenders",
       icon: icons.trend,
       backgroundColor: COLORS.blue5,
-      link: "/seasons",
+      link: "/vacancies",
     },
     {
-      name: "News, G.O.U & Conferences",
+      name: "G.O.U News, Conferences  & Workshops",
       icon: icons.education,
       backgroundColor: COLORS.yellow5,
       link: "/news",

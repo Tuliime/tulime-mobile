@@ -13,10 +13,16 @@ type Notification = {
   updatedAt: string;
 };
 
+type SSEData = {
+  type: string;
+  data: any;
+};
+
 type TNotificationAction = {
   updateAllNotificationCount: (count: number) => void;
   updateChatNotificationCount: (count: number) => void;
   updateAllNotifications: (notifications: Notification[]) => void;
+  addNotifications: (notification: Notification) => void;
   clearAllNotification: () => void;
 };
 
@@ -32,4 +38,5 @@ export type TNotification = {
   notification: Notification;
   notificationAction: TNotificationAction;
   notificationAPIResponse: NotificationAPIResponse;
+  sseData: SSEData;
 };

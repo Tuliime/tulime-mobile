@@ -33,6 +33,21 @@ export const useNotificationStore = create<
         state.notifications = notifications;
       })
     ),
+  addNotifications: (newNotification) =>
+    set(
+      produce((state) => {
+        const alreadyHasNotification: boolean = !!state.notifications.find(
+          (notification: TNotification["notification"]) =>
+            notification.id === newNotification.id
+        );
+        if (alreadyHasNotification) return;
+        state.notifications.push(newNotification);
+        state.allNotificationCount = state.allNotificationCount + 1;
+        if (newNotification.type === "chat") {
+          state.chatNotificationCount = state.chatNotificationCount + 1;
+        }
+      })
+    ),
   clearAllNotification: () =>
     set(
       produce((state) => {

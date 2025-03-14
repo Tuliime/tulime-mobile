@@ -16,6 +16,7 @@ const authInitialValues: Auth = {
     createdAt: "",
     updatedAt: "",
     profileBgColor: "",
+    chatroomColor: "",
   },
 };
 

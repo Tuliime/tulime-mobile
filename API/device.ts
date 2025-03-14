@@ -50,6 +50,44 @@ class DeviceAPI {
     }
     return await response.json();
   };
+
+  disable = async ({
+    deviceID,
+    token,
+  }: {
+    deviceID: string;
+    token: string;
+  }) => {
+    const response = await fetch(`${serverURL}/device/disable/${deviceID}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  enable = async ({ deviceID, token }: { deviceID: string; token: string }) => {
+    const response = await fetch(`${serverURL}/device/enable/${deviceID}`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
 }
 
 export const device = new DeviceAPI();

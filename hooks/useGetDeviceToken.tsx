@@ -32,15 +32,8 @@ export const useGetDeviceToken = () => {
       if (!!currentDevice.token) return;
       const deviceToken = await getExpoPushToken()!;
 
-      //   DeviceInfo.getDeviceName().then((name) => {
-      //     console.log("Device name: ", name);
-      //     setDeviceName(() => name);
-      //   });
+      if (Device.deviceName) setDeviceName(() => Device.deviceName!);
 
-      if (Device.deviceName) {
-        setDeviceName(() => Device.deviceName!);
-        console.log("deviceName: ", deviceName);
-      }
       if (!deviceToken || !deviceName) return;
 
       mutate({

@@ -36,7 +36,6 @@ export const PushNotification: React.FC = () => {
   } = useMutation({
     mutationFn: isEnabled ? device.disable : device.enable,
     onSuccess: (response: any) => {
-      console.log("Disable/Enable device successfully:", response);
       updateCurrentDevice(response.data);
       Toast.show({
         type: "success",
@@ -64,7 +63,6 @@ export const PushNotification: React.FC = () => {
     useMutation({
       mutationFn: device.post,
       onSuccess: (response: any) => {
-        console.log("Disable/Enable device successfully:", response);
         updateCurrentDevice(response.data);
         Toast.show({
           type: "success",

@@ -4,6 +4,7 @@ import { MainLayout } from "@/components/shared/layout";
 import { UpdateAvatar } from "@/components/settings/UpdateAvatar";
 import { UpdateUserBasicInfo } from "@/components/settings/updateUserBasicInfo";
 import { ChangePassword } from "@/components/settings/ChangePassword";
+import { PushNotification } from "@/components/settings/PushNotification";
 
 const Settings: React.FC = () => {
   return (
@@ -11,7 +12,7 @@ const Settings: React.FC = () => {
       <View style={styles.container}>
         <UpdateAvatar />
         <UpdateUserBasicInfo />
-        {/* Change password */}
+        <PushNotification />
         <ChangePassword />
       </View>
     </MainLayout>

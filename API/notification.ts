@@ -1,6 +1,6 @@
 import { serverURL } from "@/constants/urls";
 
-class notificationAPI {
+class NotificationAPI {
   // TODO: to include pagination  here
   get = async ({ userID, token }: { userID: string; token: string }) => {
     const response = await fetch(`${serverURL}/notification/user/${userID}`, {
@@ -47,4 +47,4 @@ class notificationAPI {
   };
 }
 
-export const notification = new notificationAPI();
+export const notification = new NotificationAPI();

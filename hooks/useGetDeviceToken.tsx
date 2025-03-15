@@ -4,7 +4,6 @@ import { useDeviceStore } from "@/store/device";
 import { useMutation } from "@tanstack/react-query";
 import { device } from "@/API/device";
 import { useAuthStore } from "@/store/auth";
-// import DeviceInfo from "react-native-device-info";
 import * as Device from "expo-device";
 
 export const useGetDeviceToken = () => {
@@ -29,20 +28,29 @@ export const useGetDeviceToken = () => {
 
   useEffect(() => {
     const postDeviceToken = async () => {
-      if (!!currentDevice.token) return;
+      console.log("inside post device start...");
+      if (currentDevice.token) return;
+      if (!accessToken) return;
+      console.log("inside post device get token start...");
       const deviceToken = await getExpoPushToken()!;
+      console.log("inside post device get token end...");
 
       if (Device.deviceName) setDeviceName(() => Device.deviceName!);
 
-      if (!deviceToken || !deviceName) return;
+      // if (!deviceToken || !deviceName) return;
+      if (!deviceToken) return;
 
+      // name: Device.modelName || "Unknown Device",
+      console.log("inside post device Request start...");
       mutate({
         userID: userID,
         deviceToken: deviceToken,
-        name: deviceName,
+        // name: deviceName,
+        name: Device.modelName || "Unknown Device",
         tokenType: "EXPO",
         accessToken: accessToken,
       });
+      console.log("inside post device Request end...");
     };
     postDeviceToken();
   }, [currentDevice, deviceName]);

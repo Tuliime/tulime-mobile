@@ -5,7 +5,14 @@ import { produce, enableMapSet } from "immer";
 import { TDevice } from "@/types/device";
 import { TStoreHydration } from "@/types/store";
 
-enableMapSet(); // Enable Map & Set support for Immer
+enableMapSet(); // Enable Map & Set support for
+
+const getStorageKey = () => {
+  const env = process.env.NODE_ENV;
+  if (env === "development") return "device-storage-dev";
+  if (env === "production") return "device-storage-prod";
+  return "device-storage-preview"; // Default to preview
+};
 
 const initialDevice = {
   id: "",
@@ -70,7 +77,8 @@ export const useDeviceStore = create(
       },
     }),
     {
-      name: "device-storage",
+      // name: "device-storage",
+      name: getStorageKey(),
       storage: {
         getItem: async (key) => {
           const value = await AsyncStorage.getItem(key);

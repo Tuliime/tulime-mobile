@@ -16,7 +16,7 @@ export const NotificationCount = () => {
   );
 
   const [notificationCount, setNotificationCount] = useState<number | string>(
-    allNotificationCount - chatNotificationCount
+    allNotificationCount
   );
 
   useEffect(() => {

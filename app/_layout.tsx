@@ -8,17 +8,33 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useCallback, useEffect } from "react";
 import "react-native-reanimated";
-// import { Provider } from "react";
 import { Providers } from "@/provider";
 import Toast from "react-native-toast-message";
 import { UseGlobalHooks } from "@/hooks/useGlobalHooks";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 
+// import * as Sentry from "@sentry/react-native";
+
+// const environment = process.env.EXPO_PUBLIC_ENV;
+
+// if (environment === "preview" || environment === "production") {
+//   Sentry.init({
+//     dsn: process.env.SENTRY_DSN,
+//     debug: true,
+//   });
+// }
+
+// Sentry.init({
+//   dsn: "https://ad71a8376d300daaa9d0e86008977954@o4508982538338304.ingest.de.sentry.io/4508982544957520",
+//   sendDefaultPii: true,
+// });
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+  // function RootLayout() {
   // const colorScheme = useColorScheme();
   // const [loaded] = useFonts({
   //   SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
@@ -61,3 +77,5 @@ export default function RootLayout() {
     </Providers>
   );
 }
+
+// export default Sentry.wrap(RootLayout);

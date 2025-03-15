@@ -8,7 +8,7 @@ import Feather from "@expo/vector-icons/Feather";
 
 export const NotificationCount = () => {
   const allNotificationCount = useNotificationStore(
-    (state) => state.allNotificationCount
+    (state) => state.allNotificationCount - state.chatNotificationCount
   );
 
   const chatNotificationCount = useNotificationStore(
@@ -21,7 +21,7 @@ export const NotificationCount = () => {
 
   useEffect(() => {
     const notificationCountStrBuilder = () => {
-      const notifyCount: number = allNotificationCount - chatNotificationCount;
+      const notifyCount: number = allNotificationCount;
       if (notifyCount > 9 && notifyCount < 99) {
         setNotificationCount(() => "9+");
         return;

@@ -14,6 +14,14 @@ export const useGetNotifications = () => {
     (state) => state.updateAllNotifications
   );
 
+  const updateAllNotificationCount = useNotificationStore(
+    (state) => state.updateAllNotificationCount
+  );
+
+  const updateChatNotificationCount = useNotificationStore(
+    (state) => state.updateChatNotificationCount
+  );
+
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`notifications-${userID}`],
     queryFn: () => {
@@ -29,7 +37,7 @@ export const useGetNotifications = () => {
     console.log("error:", error);
   }
 
-  //   console.log("notificationResponse: ", notificationResponse);
+  // console.log("notificationResponse: ", notificationResponse);
 
   useEffect(() => {
     const hasNotifications = isArrayWithElements(
@@ -37,6 +45,8 @@ export const useGetNotifications = () => {
     );
     if (!hasNotifications) return;
 
+    updateAllNotificationCount(notificationResponse?.allNotificationCount);
+    updateChatNotificationCount(notificationResponse?.chatNotificationCount);
     updateAllNotifications(notificationResponse?.notifications);
   }, [data, isPending]);
 };

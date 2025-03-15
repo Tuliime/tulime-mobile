@@ -6,6 +6,15 @@ import { TStoreHydration } from "@/types/store";
 
 const getStorageKey = () => {
   const env = process.env.NODE_ENV;
+
+  const environment = process.env.EXPO_PUBLIC_ENV;
+
+  console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
+  console.log("process.env.EXPO_PUBLIC_ENV: ", process.env.EXPO_PUBLIC_ENV);
+
+  if (environment === "preview") return "device-storage-preview";
+  if (environment === "production") return "device-storage-prod";
+
   if (env === "development") return "auth-storage-dev";
   if (env === "production") return "auth-storage-prod";
   return "auth-storage-preview"; // Default to preview

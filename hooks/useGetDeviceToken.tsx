@@ -5,6 +5,8 @@ import { useMutation } from "@tanstack/react-query";
 import { device } from "@/API/device";
 import { useAuthStore } from "@/store/auth";
 import * as Device from "expo-device";
+import Toast from "react-native-toast-message";
+import * as Notifications from "expo-notifications";
 
 export const useGetDeviceToken = () => {
   const currentDevice = useDeviceStore((state) => state.currentDevice);
@@ -26,31 +28,52 @@ export const useGetDeviceToken = () => {
     },
   });
 
+  const requestNotificationPermissions = async () => {
+    const { status } = await Notifications.requestPermissionsAsync();
+    if (status !== "granted") {
+      alert("Permission to receive notifications is required!");
+    }
+    console.log("Notification Permission status: ", status);
+  };
+
   useEffect(() => {
     const postDeviceToken = async () => {
-      console.log("inside post device start...");
-      if (currentDevice.token) return;
-      if (!accessToken) return;
-      console.log("inside post device get token start...");
-      const deviceToken = await getExpoPushToken()!;
-      console.log("inside post device get token end...");
+      try {
+        console.log("inside post device start...");
 
-      if (Device.deviceName) setDeviceName(() => Device.deviceName!);
+        if (currentDevice.userID === userID) return;
+        if (!accessToken) return;
+        console.log("inside post device get token start...");
+        const deviceToken = await getExpoPushToken()!;
+        console.log("inside post device get token end...");
 
-      // if (!deviceToken || !deviceName) return;
-      if (!deviceToken) return;
+        if (Device.deviceName) setDeviceName(() => Device.deviceName!);
 
-      // name: Device.modelName || "Unknown Device",
-      console.log("inside post device Request start...");
-      mutate({
-        userID: userID,
-        deviceToken: deviceToken,
-        // name: deviceName,
-        name: Device.modelName || "Unknown Device",
-        tokenType: "EXPO",
-        accessToken: accessToken,
-      });
-      console.log("inside post device Request end...");
+        // if (!deviceToken || !deviceName) return;
+        if (!deviceToken) return;
+
+        // name: Device.modelName || "Unknown Device",
+        console.log("inside post device Request start...");
+        mutate({
+          userID: userID,
+          deviceToken: deviceToken,
+          // name: deviceName,
+          name: Device.modelName || "Unknown Device",
+          tokenType: "EXPO",
+          accessToken: accessToken,
+        });
+        console.log("inside post device Request end...");
+        requestNotificationPermissions();
+      } catch (error: any) {
+        Toast.show({
+          type: "error",
+          text1: "Error!",
+          text2: error.message,
+          position: "top",
+          visibilityTime: 5000,
+          autoHide: true,
+        });
+      }
     };
     postDeviceToken();
   }, [currentDevice, deviceName]);

@@ -1,13 +1,33 @@
 {
-  "type": "service_account",
-  "project_id": "reserve-now-677ca",
-  "private_key_id": "8dfe3b8dd2aeef22a19fc0a26754fa5ba9338b32",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC0ygYM7NPAKZ/Y\n7i220uqfOzff5GZW+gnr1PpMuiTGrsChsZRPSiP1JI2bGvj1gxJpdbM1x+FjhhEt\nb9LA7a3rM8OqdN6vTVR43mj4yH+rU4AZif3+n/BA6ywTm4RCZb9muCtllhC1GHqB\nZwhv+9yLCg0YMAkj5KpSz8RUlexb4QyMc8o88wPBZqF+DuG/I5JbxNE3pirO2ZZR\nAVJXlCVh3zgHpriTiYd+76cV5Vlqpx7ye3G8utJf/YfYE0ewVzIc0p9eZlPNGTCg\n22LLfJOIun3vy1pzy1gUfI2QSsERHJ+FvcK6gq97i+hOzpowiH9N37BzwwKEaYdK\nDLdvCV3tAgMBAAECggEAKUvxjF/HseBAN3sWnam5tuQ9y+qeFvWYMRLuFvs5Pdo6\nveS0wlTm+E8geqLzZg+J8+WTKXCOU1/TSiv+OhxAy1aAdk4qdORG7LIvS87u3Nme\nzBapmpF5vbaKk7MFR+56hXIB1bts9xUPnMIGmx/u3aLO4WzNlbGc13xGtmSlwEm6\nDg7elRH4mLYqJ1biKzj3duJzMeYPGEll4GXd331WPUhd+HyVYQm0hjSznnANuMii\nNHiyPo2k1YX8QPO55YxRDnAxzPqdVPnoaD0KTyRPx+RAh21Vcmqz0vioJFXw6dQ0\n3DutdSLld/BhX3cGRnsndXBwDE7LhDp8moN8hNknGQKBgQDsWtn+Vo7ixactUGzH\nhw6GImR8x/RFvyj4TXALtbyWeNgXy2UoHuVfod2+AOKHx7MLqIW4p90qaoVEf++c\nmbkeAqvH6vXAjIix8dX2OXOIwnHGPXe8Lyp2lS4Li7Ncxa+ueX5Gl5J/N9RkNKby\nOlENpQCEuUQaNJnRg2cUGPStFQKBgQDD0NjSkxJoFaEg1HdC062YNkhVAwMXvLsX\nw9i3rq08Eq/zjL5MWKEIpvkBqFIvKque0KZnCp2vSsq9HC0tx3WjXLlqSDlHiJaG\nWc0kGFZC1vCAVJRNp+qIgL06WpJZ9P0VXKmvUCrhVdd/UQ/2ogb/wnbtBmdUKixF\nFC8NsR8TeQKBgEavpSJ7oKARnL3gn6fMrHtRLdxjsJprYUVhY3EdGRmnankzSz2E\nf/Tp4/c/LICPKO0DqXpgObTFxrWFzZN4JfTjt5xCmNzNKtSNDwBkjjkIbh5ro7OU\nJ47vbqXlUe8c8D2t+CYEjrudZtfRJ1yqNDNwdYc8ITH1KUuPkPRhwktBAoGAA8bT\nZ7xObpN8OBXg9vj+MCFb48fbF2occajlVSWZUb9KhXgBc5eCA5i01MNaUm6QQM/l\nZbdeszLOFjek520hZ7UyHkqmUCriPFUfD8MoZsGegdsfwR+r9lYFUErO581B1Fel\nLixtp0rwjRQTKr6VQ/mMMaYd+BGYKPzqq2jvIIECgYEAmcvzTPO4BvrHvRgZi7/C\nzW40nrmfmxmg7QK4MSAcquOmGMYGacrt6yDSumlWxLwuqHmqcKw5wl/aL104wHB0\n4VFuTfLr0Ynqd1hO9z/1mD7YNphyYmjZDOL/kseuMIjnB81FW5pHrxNWnseQzYRU\nU5hUzUlEfKel8/NBRJQnFjk=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-ww7uo@reserve-now-677ca.iam.gserviceaccount.com",
-  "client_id": "105261428743480338628",
-  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-  "token_uri": "https://oauth2.googleapis.com/token",
-  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-ww7uo%40reserve-now-677ca.iam.gserviceaccount.com",
-  "universe_domain": "googleapis.com"
+  "project_info": {
+    "project_id": "reserve-now-677ca",
+    "project_number": "105261428743480338628"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105261428743480338628:android:xxxxxxxxxxxxxxxx",
+        "android_client_info": {
+          "package_name": "your.package.name"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105261428743480338628.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "YOUR_API_KEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
 }

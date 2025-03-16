@@ -7,6 +7,7 @@ import { useAuthStore } from "@/store/auth";
 import * as Device from "expo-device";
 import Toast from "react-native-toast-message";
 import * as Notifications from "expo-notifications";
+import { Alert } from "react-native";
 
 export const useGetDeviceToken = () => {
   const currentDevice = useDeviceStore((state) => state.currentDevice);
@@ -15,7 +16,6 @@ export const useGetDeviceToken = () => {
   );
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
-  const [deviceName, setDeviceName] = useState("");
 
   const { isPending, mutate } = useMutation({
     mutationFn: device.post,
@@ -47,18 +47,23 @@ export const useGetDeviceToken = () => {
         const deviceToken = await getExpoPushToken()!;
         console.log("inside post device get token end...");
 
-        if (Device.deviceName) setDeviceName(() => Device.deviceName!);
+        let deviceName: string = Device.deviceName! || "Unknown Device";
 
-        // if (!deviceToken || !deviceName) return;
-        if (!deviceToken) return;
+        // if (Device.deviceName) {
+        //   setDeviceName(() => Device.deviceName!);
+        // }
 
-        // name: Device.modelName || "Unknown Device",
+        if (!deviceToken) {
+          Alert.alert("Device needed", "No Device token is obtained!.");
+          return;
+        }
+
         console.log("inside post device Request start...");
         mutate({
           userID: userID,
           deviceToken: deviceToken,
-          // name: deviceName,
-          name: Device.modelName || "Unknown Device",
+          name: deviceName,
+          // name: Device.modelName || "Unknown Device",
           tokenType: "EXPO",
           accessToken: accessToken,
         });
@@ -76,5 +81,5 @@ export const useGetDeviceToken = () => {
       }
     };
     postDeviceToken();
-  }, [currentDevice, deviceName]);
+  }, [currentDevice]);
 };

@@ -4,6 +4,7 @@ import {
   Switch,
   StyleSheet,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthStore } from "@/store/auth";
@@ -129,12 +130,24 @@ export const PushNotification: React.FC = () => {
   }, [allDevices, currentDevice]);
 
   const postDeviceHandler = async () => {
-    if (!!currentDevice.token) return;
+    if (currentDevice.token) {
+      Alert.alert("Current Device ", "Current Device already exists!.");
+      return;
+    }
     const deviceToken = await getExpoPushToken()!;
     let deviceName: string = "";
 
     if (Device.deviceName) deviceName = Device.deviceName;
-    if (!deviceToken || !deviceName) return;
+
+    if (!deviceToken) {
+      Alert.alert("Device needed", "No Device token is obtained!.");
+      return;
+    }
+    // if (!deviceToken || !deviceName) return;
+    if (!deviceName) {
+      Alert.alert("Device name needed", "No Device name is obtained!.");
+      return;
+    }
 
     postDeviceMutate({
       userID: userID,

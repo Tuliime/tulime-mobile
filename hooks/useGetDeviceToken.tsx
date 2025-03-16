@@ -49,12 +49,8 @@ export const useGetDeviceToken = () => {
 
         let deviceName: string = Device.deviceName! || "Unknown Device";
 
-        // if (Device.deviceName) {
-        //   setDeviceName(() => Device.deviceName!);
-        // }
-
         if (!deviceToken) {
-          Alert.alert("Device needed", "No Device token is obtained!.");
+          Alert.alert("Device token needed", "No Device token is obtained!.");
           return;
         }
 

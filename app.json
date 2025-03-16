@@ -23,7 +23,8 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.tulime.tulimeapp",
-      "permissions": ["NOTIFICATIONS"]
+      "permissions": ["NOTIFICATIONS"],
+      "googleServicesFile": "./path/to/google-services.json"
     },
     "web": {
       "bundler": "metro",

@@ -24,7 +24,7 @@
       },
       "package": "com.tulime.tulimeapp",
       "permissions": ["NOTIFICATIONS"],
-      "googleServicesFile": "./path/to/google-services.json"
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",

@@ -6,6 +6,7 @@ import { useChatroomStore } from "@/store/chatroom";
 import { TChatroom } from "@/types/chatroom";
 import { Audio } from "expo-av";
 import { sounds } from "@/constants";
+import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
 export const useGetLiveChat = () => {
   const effectRan = useRef(false);
@@ -19,6 +20,8 @@ export const useGetLiveChat = () => {
     (state) => state.updateTypingStatus
   );
 
+  const isExpiredAccessToken = isJWTTokenExpired(accessToken);
+
   const playNewMessageSound = async () => {
     const { sound } = await Audio.Sound.createAsync(sounds.levelUpSound);
     await sound.setVolumeAsync(0.5);
@@ -28,7 +31,7 @@ export const useGetLiveChat = () => {
   useEffect(() => {
     if (effectRan.current == true) return;
 
-    if (!accessToken || !userID) return;
+    if (!accessToken || isExpiredAccessToken || !userID) return;
     const eventSource = new EventSourcePolyfill(`${serverURL}/chatroom/live`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,

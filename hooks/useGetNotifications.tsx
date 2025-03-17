@@ -5,10 +5,12 @@ import { notification } from "@/API/notification";
 import { useNotificationStore } from "@/store/notification";
 import { TNotification } from "@/types/notification";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
+import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
 export const useGetNotifications = () => {
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
+  const isExpiredAccessToken = isJWTTokenExpired(accessToken);
 
   const updateAllNotifications = useNotificationStore(
     (state) => state.updateAllNotifications
@@ -25,7 +27,7 @@ export const useGetNotifications = () => {
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`notifications-${userID}`],
     queryFn: () => {
-      if (!accessToken) return {} as any;
+      if (!accessToken || isExpiredAccessToken) return {} as any;
       return notification.get({ userID: userID, token: accessToken });
     },
   });

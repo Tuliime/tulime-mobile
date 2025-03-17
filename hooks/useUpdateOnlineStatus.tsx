@@ -2,10 +2,12 @@ import { useEffect } from "react";
 import { useAuthStore } from "@/store/auth";
 import { useMutation } from "@tanstack/react-query";
 import { chatroom } from "@/API/chatroom";
+import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
 export const useUpdateOnlineStatus = () => {
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const user = useAuthStore((state) => state.auth.user);
+  const isExpiredAccessToken = isJWTTokenExpired(accessToken);
 
   const { isPending, mutate } = useMutation({
     mutationFn: chatroom.updateOnlineStatus,
@@ -18,7 +20,7 @@ export const useUpdateOnlineStatus = () => {
   });
 
   useEffect(() => {
-    if (!accessToken || !user.id) return;
+    if (!accessToken || isExpiredAccessToken || !user.id) return;
 
     const updateStatus = () => {
       mutate({ userID: user.id, token: accessToken });

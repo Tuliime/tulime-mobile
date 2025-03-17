@@ -8,6 +8,7 @@ import * as Device from "expo-device";
 import Toast from "react-native-toast-message";
 import * as Notifications from "expo-notifications";
 import { Alert } from "react-native";
+import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
 export const useGetDeviceToken = () => {
   const currentDevice = useDeviceStore((state) => state.currentDevice);
@@ -16,6 +17,7 @@ export const useGetDeviceToken = () => {
   );
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
+  const isExpiredAccessToken = isJWTTokenExpired(accessToken);
 
   const { isPending, mutate } = useMutation({
     mutationFn: device.post,
@@ -42,7 +44,7 @@ export const useGetDeviceToken = () => {
         console.log("inside post device start...");
 
         if (currentDevice.userID === userID) return;
-        if (!accessToken) return;
+        if (!accessToken || isExpiredAccessToken) return;
         console.log("inside post device get token start...");
         const deviceToken = await getExpoPushToken()!;
         console.log("inside post device get token end...");

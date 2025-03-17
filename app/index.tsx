@@ -14,7 +14,6 @@ export default function Index() {
   const isExpiredAccessToken = isJWTTokenExpired(accessToken);
   const isExpiredRefreshToken = isJWTTokenExpired(refreshToken);
 
-  // TODO: to introduce 3 hour check
   useEffect(() => {
     const authCheckHandler = async () => {
       if (!accessToken) {
@@ -31,12 +30,12 @@ export default function Index() {
       }
 
       if (isExpiredAccessToken && !isExpiredRefreshToken) {
-        const successfulSignin = await signInWithRT({
+        const signIn = await signInWithRT({
           userID: auth.user.id,
           refreshToken: refreshToken,
         });
 
-        if (!successfulSignin) {
+        if (!signIn.isSuccess) {
           console.log("Sign in with RT failed, redirecting to signin.");
           setRedirectPath("/auth/signin");
           return;

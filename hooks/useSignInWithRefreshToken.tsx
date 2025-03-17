@@ -23,12 +23,12 @@ export const useSignInWithRefreshToken = () => {
    */
   const signInWithRT = async (
     values: TAuth["signInWithRefreshToken"]
-  ): Promise<boolean> => {
+  ): Promise<{ isSuccess: boolean; response: TAuth["apiResponse"] | null }> => {
     try {
       const response = await mutateAsync(values);
-      return !!response;
+      return { isSuccess: !!response, response: response };
     } catch {
-      return false;
+      return { isSuccess: false, response: null };
     }
   };
 

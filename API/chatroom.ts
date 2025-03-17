@@ -8,7 +8,6 @@ class ChatroomAPI {
       body: formData,
       headers: {
         Authorization: `Bearer ${token}`,
-        // "Content-type": "multipart/form-data",
       },
     });
 

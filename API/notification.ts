@@ -1,15 +1,27 @@
 import { serverURL } from "@/constants/urls";
 
 class NotificationAPI {
-  // TODO: to include pagination  here
-  get = async ({ userID, token }: { userID: string; token: string }) => {
-    const response = await fetch(`${serverURL}/notification/user/${userID}`, {
-      method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  get = async ({
+    userID,
+    cursor,
+    limit,
+    token,
+  }: {
+    userID: string;
+    cursor: string;
+    limit: number;
+    token: string;
+  }) => {
+    const response = await fetch(
+      `${serverURL}/notification/user/${userID}?limit=${limit}&cursor=${cursor}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();

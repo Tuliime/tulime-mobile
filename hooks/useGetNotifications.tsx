@@ -28,7 +28,12 @@ export const useGetNotifications = () => {
     queryKey: [`notifications-${userID}`],
     queryFn: () => {
       if (!accessToken || isExpiredAccessToken) return {} as any;
-      return notification.get({ userID: userID, token: accessToken });
+      return notification.get({
+        userID: userID,
+        cursor: "",
+        limit: 20,
+        token: accessToken,
+      });
     },
   });
 

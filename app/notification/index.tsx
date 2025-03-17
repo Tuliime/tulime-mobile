@@ -1,23 +1,41 @@
-import React, { useEffect, useState } from "react";
-import { View, Text } from "react-native";
-import { getExpoPushToken } from "./getExpoPushToken"; // Import the function
+import React, { useCallback } from "react";
+import { FlatList, StyleSheet } from "react-native";
+import { useNotificationStore } from "@/store/notification";
+import { NotificationCard } from "@/components/notification/NotificationCard";
+import { TNotification } from "@/types/notification";
+import { MainLayout } from "@/components/shared/layout";
 
 const Notification = () => {
-  const [expoPushToken, setExpoPushToken] = useState<string | null>(null);
+  const notifications = useNotificationStore((state) => state.notifications);
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      const token = await getExpoPushToken();
-      setExpoPushToken(token);
-    };
-    fetchToken();
-  }, []);
+  const renderUserItem = useCallback(
+    ({ item }: { item: TNotification["notification"] }) => {
+      return <NotificationCard notification={item} />;
+    },
+    []
+  );
 
   return (
-    <View>
-      <Text>Expo Push Token: {expoPushToken ?? "Fetching..."}</Text>
-    </View>
+    <MainLayout title="Notifications">
+      <FlatList
+        data={notifications}
+        keyExtractor={(item) => item.id!}
+        renderItem={renderUserItem}
+        numColumns={1}
+        contentContainerStyle={styles.listContainer}
+      />
+    </MainLayout>
   );
 };
 
 export default Notification;
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+  },
+  listContainer: {
+    rowGap: 12,
+    flexGrow: 1,
+  },
+});

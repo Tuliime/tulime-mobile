@@ -11,7 +11,7 @@ import "react-native-reanimated";
 import { Providers } from "@/provider";
 import Toast from "react-native-toast-message";
 import { UseGlobalHooks } from "@/hooks/useGlobalHooks";
-import { UseGlobalRequestInterceptor } from "@/hooks/useGlobalNetworkInterceptor";
+import { UseGlobalRequestInterceptor } from "@/hooks/useGlobalRequestInterceptor";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
 

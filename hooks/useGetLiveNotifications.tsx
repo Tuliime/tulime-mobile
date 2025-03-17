@@ -4,6 +4,7 @@ import { serverURL } from "@/constants/urls";
 import { useAuthStore } from "@/store/auth";
 import { TNotification } from "@/types/notification";
 import { useNotificationStore } from "@/store/notification";
+import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
 export const useGetLiveNotifications = () => {
   const effectRan = useRef(false);
@@ -14,10 +15,12 @@ export const useGetLiveNotifications = () => {
     (state) => state.addNotifications
   );
 
+  const isExpiredAccessToken = isJWTTokenExpired(accessToken);
+
   useEffect(() => {
     if (effectRan.current == true) return;
 
-    if (!accessToken || !userID) return;
+    if (!accessToken || isExpiredAccessToken || !userID) return;
     const eventSource = new EventSourcePolyfill(
       `${serverURL}/notification/live`,
       {

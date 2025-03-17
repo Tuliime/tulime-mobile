@@ -4,17 +4,19 @@ import { useQuery } from "@tanstack/react-query";
 import { chatroom } from "@/API/chatroom";
 import { TChatroom } from "@/types/chatroom";
 import { useChatroomStore } from "@/store/chatroom";
+import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
 export const useGetOnlineStatus = () => {
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const updateOnlineStatus = useChatroomStore(
     (state) => state.updateOnlineStatus
   );
+  const isExpiredAccessToken = isJWTTokenExpired(accessToken);
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`onlineStatus`],
     queryFn: () => {
-      if (!accessToken) return {} as any;
+      if (!accessToken || isExpiredAccessToken) return {} as any;
       return chatroom.getOnlineStatus({ token: accessToken });
     },
   });

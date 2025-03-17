@@ -18,6 +18,11 @@ type SSEData = {
   data: any;
 };
 
+type Pagination = {
+  limit: number;
+  cursor: any;
+};
+
 type TNotificationAction = {
   updateAllNotificationCount: (count: number) => void;
   updateChatNotificationCount: (count: number) => void;
@@ -30,6 +35,7 @@ type NotificationAPIResponse = {
   allNotificationCount: number;
   chatNotificationCount: number;
   notifications: Notification[];
+  pagination: Pagination;
 };
 
 export type TNotification = {

@@ -1,5 +1,13 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  FlatList,
+} from "react-native";
+import React, { useRef, useState } from "react";
 import { COLORS } from "@/constants";
 import { addCommasToNumber } from "@/utils/addCommaNumber";
 import { MainLayout } from "@/components/shared/layout";
@@ -8,18 +16,56 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Foundation from "@expo/vector-icons/Foundation";
 
+const screenWidth = Dimensions.get("window").width * 0.99;
+
 const ProductDetailsScreen: React.FC = () => {
+  const flatListRef = useRef<FlatList>(null);
+  const [index, setIndex] = useState(0);
+
+  const handleScroll = (event: any) => {
+    const newIndex = Math.round(
+      event.nativeEvent.contentOffset.x / screenWidth
+    );
+    setIndex(newIndex);
+  };
+
   return (
     <MainLayout title="E-commerce">
       <View style={styles.container}>
-        {/* product Image */}
-        <View style={styles.imageContainer}>
-          <Image
-            source={{ uri: `${ads[0].imageUrl}` }}
-            resizeMode="contain"
-            style={styles.image}
-          />
-        </View>
+        {/* product Image slider */}
+        <FlatList
+          ref={flatListRef}
+          data={images}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item) => item.id}
+          onScroll={handleScroll}
+          renderItem={({ item, index }) => (
+            <View style={styles.imageContainer}>
+              <Image
+                source={{ uri: `${item.uri}` }}
+                resizeMode="contain"
+                style={styles.image}
+              />
+              <View
+                style={{
+                  backgroundColor: COLORS.gray9,
+                  borderRadius: 4,
+                  padding: 4,
+                  paddingHorizontal: 6,
+                  position: "absolute",
+                  top: 8,
+                  left: 8,
+                }}
+              >
+                <Text style={{ color: COLORS.white, fontSize: 10 }}>
+                  {`${index + 1}/${images.length}`}
+                </Text>
+              </View>
+            </View>
+          )}
+        />
 
         {/* product Content */}
         <View style={styles.contentContainer}>
@@ -189,7 +235,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   imageContainer: {
-    width: "100%",
+    width: screenWidth,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
@@ -203,6 +249,7 @@ const styles = StyleSheet.create({
     objectFit: "fill",
     padding: 4,
   },
+  slide: { borderRadius: 10, overflow: "hidden" },
   contentContainer: {
     width: "100%",
     position: "relative",
@@ -312,5 +359,20 @@ const ads = [
       "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
     price: "25000",
     priceCurrency: "UGX",
+  },
+];
+
+const images = [
+  {
+    id: 1,
+    uri: "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+  },
+  {
+    id: 2,
+    uri: "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+  },
+  {
+    id: 3,
+    uri: "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
   },
 ];

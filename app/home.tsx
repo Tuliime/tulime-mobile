@@ -59,6 +59,12 @@ export default function Home() {
       backgroundColor: COLORS.green5,
       link: "/farmmanagers",
     },
+    {
+      name: "E-commerce",
+      icon: icons.ecommerce2,
+      backgroundColor: COLORS.pink8,
+      link: "/ecommerce",
+    },
   ];
 
   const renderServiceItem = useCallback(({ item }: { item: TService }) => {

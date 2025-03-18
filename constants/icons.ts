@@ -42,6 +42,11 @@ const education = require("@/assets/icons/home/education.png");
 const manager = require("@/assets/icons/home/manager.png");
 const logoTemp = require("@/assets/icons/home/logo-temp.png");
 const bot = require("@/assets/icons/home/bot.png");
+const ecommerce1 = require("@/assets/icons/e-commerce-1.png");
+const ecommerce2 = require("@/assets/icons/e-commerce-2.png");
+const ecommerce3 = require("@/assets/icons/e-commerce-3.png");
+const ecommerce4 = require("@/assets/icons/e-commerce-4.png");
+const ecommerce5 = require("@/assets/icons/e-commerce-5.png");
 
 export default {
   heart,
@@ -87,4 +92,9 @@ export default {
   manager,
   logoTemp,
   bot,
+  ecommerce1,
+  ecommerce2,
+  ecommerce3,
+  ecommerce4,
+  ecommerce5,
 };

@@ -1,8 +1,9 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { COLORS } from "@/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { addCommasToNumber } from "@/utils";
+import { router } from "expo-router";
 
 type AdProductCardProps = {
   name: string;
@@ -13,8 +14,11 @@ type AdProductCardProps = {
 };
 
 export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
+  const navigateAdDetails = () => {
+    router.push("/ecommerce/:someDynamicID");
+  };
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={navigateAdDetails}>
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: props.imageUrl }}
@@ -42,7 +46,7 @@ export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
           props.priceCurrency
         } ${addCommasToNumber(parseInt(props.price))}`}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

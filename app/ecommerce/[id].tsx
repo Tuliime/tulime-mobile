@@ -16,7 +16,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Foundation from "@expo/vector-icons/Foundation";
 
-const screenWidth = Dimensions.get("window").width * 0.99;
+const screenWidth = Dimensions.get("window").width * 0.999;
 
 const ProductDetailsScreen: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   imageContainer: {
-    width: screenWidth,
+    width: screenWidth - 32,
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
@@ -261,7 +261,6 @@ const styles = StyleSheet.create({
   productContainer: {
     width: "100%",
     justifyContent: "center",
-    // padding: 8,
     padding: 16,
     gap: 4,
   },
@@ -373,6 +372,14 @@ const images = [
   },
   {
     id: 3,
+    uri: "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+  },
+  {
+    id: 4,
+    uri: "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+  },
+  {
+    id: 5,
     uri: "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
   },
 ];

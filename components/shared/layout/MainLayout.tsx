@@ -7,6 +7,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
@@ -16,6 +18,7 @@ import { router } from "expo-router";
 type MainLayoutProps = {
   children: ReactNode;
   title: string;
+  childrenStyles?: StyleProp<ViewStyle>;
 };
 
 /** MainLayout is for authenticated screens */
@@ -36,7 +39,9 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.scrollContentContainer}
         >
-          <View style={styles.contentContainer}>{props.children}</View>
+          <View style={[styles.contentContainer, props.childrenStyles]}>
+            {props.children}
+          </View>
         </ScrollView>
         <TouchableOpacity
           style={styles.botContainer}

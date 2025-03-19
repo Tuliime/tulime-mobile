@@ -13,15 +13,16 @@ import { COLORS, icons, SIZES } from "@/constants";
 import { AdProductCard } from "@/components/ecommerce/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
 
-const screenWidth = Dimensions.get("window").width * 0.99;
+const screenWidth = Dimensions.get("window").width * 0.999;
 const numColumns = 2;
+// const itemWidth = screenWidth / numColumns - SIZES.medium * 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const index = () => {
   const renderAdItems = useCallback(
     ({ item }: { item: TEcommerce["adProduct"] }) => {
       return (
-        <View style={{ width: itemWidth, marginHorizontal: 2 }}>
+        <View style={{ width: itemWidth - 2, marginHorizontal: 2 }}>
           <AdProductCard
             // id={item.id}
             name={item.name}
@@ -37,7 +38,10 @@ const index = () => {
   );
 
   return (
-    <MainLayout title="E-commerce">
+    <MainLayout
+      title="E-commerce"
+      childrenStyles={{ padding: 0, paddingVertical: 16 }}
+    >
       <View style={styles.container}>
         <ScrollView
           horizontal
@@ -67,19 +71,20 @@ const index = () => {
         </ScrollView>
         <View style={styles.adsContainer}>
           <Text style={styles.adsTitle}>All ads</Text>
-          <View style={styles.adsContainer}>
-            <FlatList
-              data={ads}
-              keyExtractor={(item) => item.name}
-              renderItem={renderAdItems}
-              scrollEnabled={false}
-              numColumns={numColumns}
-              contentContainerStyle={{
-                justifyContent: "center",
-                gap: 8,
-              }}
-            />
-          </View>
+          {/* <View style={styles.adsContainer}> */}
+          <FlatList
+            data={ads}
+            keyExtractor={(item) => item.name}
+            renderItem={renderAdItems}
+            scrollEnabled={false}
+            numColumns={numColumns}
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}
+          />
+          {/* </View> */}
         </View>
       </View>
     </MainLayout>
@@ -95,9 +100,11 @@ const styles = StyleSheet.create({
     gap: 8,
     height: 100,
     alignItems: "center",
+    paddingHorizontal: 16,
   },
   adsContainer: {
     gap: 16,
+    paddingHorizontal: 16,
   },
   adsTitle: {
     fontSize: 16,

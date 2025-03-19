@@ -19,6 +19,10 @@ export const NotificationCount = () => {
     allNotificationCount
   );
 
+  const [chatNotification, setChatNotification] = useState<number | string>(
+    chatNotificationCount
+  );
+
   useEffect(() => {
     const notificationCountStrBuilder = () => {
       const notifyCount: number = allNotificationCount;
@@ -35,6 +39,23 @@ export const NotificationCount = () => {
 
     notificationCountStrBuilder();
   }, [allNotificationCount]);
+
+  useEffect(() => {
+    const chatNotificationStrBuilder = () => {
+      const notifyCount: number = chatNotificationCount;
+      if (notifyCount > 9 && notifyCount < 99) {
+        setChatNotification(() => "9+");
+        return;
+      }
+      if (notifyCount > 99) {
+        setChatNotification(() => "99+");
+        return;
+      }
+      setNotificationCount(() => notifyCount);
+    };
+
+    chatNotificationStrBuilder();
+  }, [chatNotificationCount]);
 
   const navigateToNotification = () => {
     router.push("/notification");
@@ -56,9 +77,7 @@ export const NotificationCount = () => {
       >
         {showChatNotificationCount && (
           <View style={styles.notificationCountContainer}>
-            <Text style={styles.notificationCountText}>
-              {chatNotificationCount}
-            </Text>
+            <Text style={styles.notificationCountText}>{chatNotification}</Text>
           </View>
         )}
         <Feather name="message-circle" size={22} color={COLORS.white} />
@@ -74,7 +93,6 @@ export const NotificationCount = () => {
             <Text style={styles.notificationCountText}>
               {notificationCount}
             </Text>
-            {/* <Text style={styles.notificationCountText}>99+</Text> */}
           </View>
         )}
         <MaterialIcons
@@ -100,7 +118,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "relative",
-    // backgroundColor: "blue",
     width: 40,
   },
   notificationCountContainer: {
@@ -115,10 +132,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     paddingVertical: 2,
     zIndex: 10,
-    minWidth: 28,
   },
   notificationCountText: {
     color: COLORS.gray1,
-    fontSize: 12,
+    fontSize: 10,
   },
 });

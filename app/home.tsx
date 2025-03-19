@@ -105,7 +105,7 @@ export default function Home() {
               <TouchableOpacity onPress={() => navigateToBookmark()}>
                 <Ionicons
                   name="bookmark-outline"
-                  size={24}
+                  size={22}
                   color={COLORS.white}
                 />
               </TouchableOpacity>

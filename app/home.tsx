@@ -16,6 +16,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ServiceCard } from "@/components/shared/UI/ServiceCard";
 import { TService } from "@/types/service";
 import { Logout } from "@/components/auth/Logout";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
@@ -88,6 +89,10 @@ export default function Home() {
     router.push("/search");
   };
 
+  const navigateToBookmark = () => {
+    router.push("/ecommerce/bookmark");
+  };
+
   return (
     <HomeLayout
       header={
@@ -97,6 +102,13 @@ export default function Home() {
             <View
               style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
             >
+              <TouchableOpacity onPress={() => navigateToBookmark()}>
+                <Ionicons
+                  name="bookmark-outline"
+                  size={24}
+                  color={COLORS.white}
+                />
+              </TouchableOpacity>
               <NotificationCount />
               <Logout />
             </View>

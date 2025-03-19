@@ -144,19 +144,20 @@ const ProductDetailsScreen: React.FC = () => {
               </View>
             </View>
           </View>
-          <View style={styles.bookmarkIconContainer}>
-            {/* <Ionicons
+          {/* <View style={styles.bookmarkIconContainer}> */}
+          {/* <Ionicons
             name="bookmark"
             size={24}
             color={COLORS.primary}
             style={styles.bookmarkIcon}
           /> */}
-            <Ionicons
-              name="bookmark-outline"
-              size={24}
-              color={COLORS.primary}
-            />
-          </View>
+          <Ionicons
+            name="bookmark-outline"
+            size={24}
+            color={COLORS.primary}
+            style={styles.bookmarkIcon}
+          />
+          {/* </View> */}
         </View>
 
         {/* Safety Tips */}
@@ -295,6 +296,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 999,
     elevation: 5,
+  },
+  bookmarkIcon: {
+    position: "absolute",
+    top: 16,
+    right: 14,
   },
   actionsContainer: {
     marginTop: 8,

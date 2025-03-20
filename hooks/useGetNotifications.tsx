@@ -55,5 +55,5 @@ export const useGetNotifications = () => {
     updateAllNotificationCount(notificationResponse?.allNotificationCount);
     updateChatNotificationCount(notificationResponse?.chatNotificationCount);
     updateAllNotifications(notificationResponse?.notifications);
-  }, [data, isPending]);
+  }, [data, isPending, accessToken]);
 };

@@ -79,5 +79,5 @@ export const useGetDeviceToken = () => {
       }
     };
     postDeviceToken();
-  }, [currentDevice]);
+  }, [currentDevice, accessToken]);
 };

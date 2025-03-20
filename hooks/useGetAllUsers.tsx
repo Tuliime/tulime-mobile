@@ -26,7 +26,7 @@ export const useGetAllUsers = () => {
 
   useEffect(() => {
     updateAllUsers(users);
-  }, [data, isPending]);
+  }, [data, isPending, accessToken]);
 
   return {};
 };

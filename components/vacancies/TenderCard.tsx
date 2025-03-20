@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { COLORS, SIZES } from "@/constants";
+import { COLORS } from "@/constants";
 import { router } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { elapsedTime } from "@/utils/elapsedTime";
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   tenderTitle: {
     fontSize: 18,
-    fontWeight: 600,
+    // fontWeight: 500,
     color: COLORS.gray8,
   },
   orgContainer: {

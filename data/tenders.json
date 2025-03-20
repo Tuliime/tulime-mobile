@@ -1,0 +1,46 @@
+{
+  "tenders": [
+    {
+      "id": "b1f3a3e8-7d5a-4f7a-b8a2-9a7f5e36e1c2",
+      "organization": "Ministry of Agriculture, Animal Industry and Fisheries",
+      "title": "Supply of Agro-processing Equipment",
+      "createdAt": "2025-03-19T10:00:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34"
+    },
+    {
+      "id": "f4b2c9d0-8e77-4b21-9d7f-3f12a6c8b9d5",
+      "organization": "National Agricultural Research Organization (NARO)",
+      "title": "Provision of Agricultural Research Consultancy",
+      "createdAt": "2025-03-18T14:30:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34"
+    },
+    {
+      "id": "9c7d8a6e-5f2b-4e3d-987a-1a4f6b2c7d5e",
+      "organization": "Uganda Coffee Development Authority",
+      "title": "Supply and Delivery of Coffee Seedlings",
+      "createdAt": "2025-03-17T09:15:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34"
+    },
+    {
+      "id": "e2b4d6c8-7a5f-4b9d-8c3e-1f6a7d2b5c9e",
+      "organization": "Dairy Development Authority",
+      "title": "Construction of Milk Collection Centers",
+      "createdAt": "2025-03-16T12:45:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34"
+    },
+    {
+      "id": "d7a6b2c4-5e3f-4b9d-8a7f-1c6e2d5b9f4e",
+      "organization": "National Agricultural Advisory Services (NAADS)",
+      "title": "Supply of Fertilizers and Pesticides",
+      "createdAt": "2025-03-15T08:00:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34"
+    },
+    {
+      "id": "3f2b5c9e-7d4a-4b1d-8a6f-9c7e2d5b4f8e",
+      "organization": "Uganda National Farmers Federation",
+      "title": "Training Services for Farmers on Modern Techniques",
+      "createdAt": "2025-03-14T16:20:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fmatooke.png?alt=media&token=bfeb750b-861f-49c7-9bdf-76c9b0474f34"
+    }
+  ]
+}

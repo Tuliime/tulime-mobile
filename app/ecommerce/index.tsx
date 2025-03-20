@@ -12,10 +12,10 @@ import { ModuleCard } from "@/components/shared/UI/ModuleCard";
 import { COLORS, icons, SIZES } from "@/constants";
 import { AdProductCard } from "@/components/ecommerce/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
+import { TenderHomeSection } from "@/components/vacancies/TenderHomeSection";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 const numColumns = 2;
-// const itemWidth = screenWidth / numColumns - SIZES.medium * 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const index = () => {
@@ -71,7 +71,6 @@ const index = () => {
         </ScrollView>
         <View style={styles.adsContainer}>
           <Text style={styles.adsTitle}>All ads</Text>
-          {/* <View style={styles.adsContainer}> */}
           <FlatList
             data={ads}
             keyExtractor={(item) => item.name}
@@ -84,8 +83,8 @@ const index = () => {
               gap: 8,
             }}
           />
-          {/* </View> */}
         </View>
+        <TenderHomeSection />
       </View>
     </MainLayout>
   );

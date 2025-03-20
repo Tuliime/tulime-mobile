@@ -14,6 +14,7 @@ import { AdProductCard } from "@/components/ecommerce/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
 import { TenderHomeSection } from "@/components/vacancies/TenderHomeSection";
 import { VacancyHomeSection } from "@/components/vacancies/VacancyHomeSection";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 const numColumns = 2;
@@ -71,7 +72,14 @@ const index = () => {
           />
         </ScrollView>
         <View style={styles.adsContainer}>
-          <Text style={styles.adsTitle}>All ads</Text>
+          <View style={styles.adsTitleContainer}>
+            <MaterialIcons
+              name="workspace-premium"
+              size={24}
+              color={COLORS.gray7}
+            />
+            <Text style={styles.adsTitle}>All ads</Text>
+          </View>
           <FlatList
             data={ads}
             keyExtractor={(item) => item.name}
@@ -106,6 +114,11 @@ const styles = StyleSheet.create({
   adsContainer: {
     gap: 16,
     paddingHorizontal: 16,
+  },
+  adsTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
   },
   adsTitle: {
     fontSize: 16,

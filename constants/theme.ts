@@ -29,9 +29,16 @@ const COLORS = {
   blue4: "#4dabf7",
   blue5: "#339af0",
   blue7: "#1c7ed6",
+  blue8: "#1971c2",
+  blue9: "#1864ab",
   yellow5: "#fcc419",
   pink8: "#c2255c",
   teal7: "#0ca678",
+  violet5: "#845ef7",
+  violet6: "#7950f2",
+  violet7: "#7048e8",
+  violet8: "#6741d9",
+  violet9: "#5f3dc4",
 };
 
 const FONT = {

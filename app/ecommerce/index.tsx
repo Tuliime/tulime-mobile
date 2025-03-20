@@ -13,6 +13,7 @@ import { COLORS, icons, SIZES } from "@/constants";
 import { AdProductCard } from "@/components/ecommerce/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
 import { TenderHomeSection } from "@/components/vacancies/TenderHomeSection";
+import { VacancyHomeSection } from "@/components/vacancies/VacancyHomeSection";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 const numColumns = 2;
@@ -85,6 +86,7 @@ const index = () => {
           />
         </View>
         <TenderHomeSection />
+        <VacancyHomeSection />
       </View>
     </MainLayout>
   );

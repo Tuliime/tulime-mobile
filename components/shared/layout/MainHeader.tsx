@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
@@ -18,6 +19,8 @@ type MainHeaderProps = {
 };
 
 export const MainHeader: React.FC<MainHeaderProps> = (props) => {
+  const isOpenSlideUpPanel = useSlideUpPanelStore((state) => state.isOpen);
+
   const navigateToBack = () => router.back();
   const navigateToSearch = () => router.push("/search");
 
@@ -25,7 +28,7 @@ export const MainHeader: React.FC<MainHeaderProps> = (props) => {
     <Stack.Screen
       options={{
         headerStyle: styles.headerStyle,
-        headerShown: true,
+        headerShown: isOpenSlideUpPanel ? false : true,
         headerShadowVisible: true,
         headerLeft: () => (
           <View style={styles.headerLeftContainer}>

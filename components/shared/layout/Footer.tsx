@@ -9,10 +9,13 @@ import {
 import { COLORS, SIZES } from "@/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { router } from "expo-router";
+import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 
 const width = Dimensions.get("window").width * 0.999;
 
 export const Footer: React.FC = () => {
+  const openSlideUpPanel = useSlideUpPanelStore((state) => state.openPanel);
+
   const navigateToHome = () => router.push("/home");
 
   {
@@ -21,11 +24,6 @@ export const Footer: React.FC = () => {
 
   return (
     <View style={styles.footerContainer}>
-      {/* TODO: To test link on other screens apart from home */}
-      {/* <Link style={{ alignItems: "center" }} href="/home">
-        <Ionicons name="home-outline" size={20} color={COLORS.gray8} />
-        <Text style={{ fontSize: 12, color: COLORS.gray8 }}>Home</Text>
-      </Link> */}
       <TouchableOpacity
         style={styles.iconContainer}
         onPress={(_) => navigateToHome()}
@@ -37,7 +35,10 @@ export const Footer: React.FC = () => {
         <Ionicons name="globe-outline" size={20} color={COLORS.gray8} />
         <Text style={styles.iconText}>Language</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.iconContainer}>
+      <TouchableOpacity
+        style={styles.iconContainer}
+        onPress={(_) => openSlideUpPanel()}
+      >
         <Ionicons name="menu-outline" size={20} color={COLORS.gray8} />
         <Text style={styles.iconText}>More</Text>
       </TouchableOpacity>

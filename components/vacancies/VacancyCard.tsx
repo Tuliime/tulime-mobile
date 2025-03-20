@@ -3,15 +3,15 @@ import React from "react";
 import { COLORS } from "@/constants";
 import { router } from "expo-router";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { elapsedTime } from "@/utils/elapsedTime";
 import { TVacancy } from "@/types/vacancies";
 import Octicons from "@expo/vector-icons/Octicons";
+import { AppDate } from "@/utils/appDate";
 
-type TenderCardProps = {
-  tender: TVacancy["tender"];
+type VacancyCardProps = {
+  vacancy: TVacancy["vacancy"];
 };
 
-export const TenderCard: React.FC<TenderCardProps> = (props) => {
+export const VacancyCard: React.FC<VacancyCardProps> = (props) => {
   const navigateToVacancies = () => {
     router.push("/vacancies");
   };
@@ -19,17 +19,17 @@ export const TenderCard: React.FC<TenderCardProps> = (props) => {
     <TouchableOpacity style={styles.container} onPress={navigateToVacancies}>
       <View style={styles.imageContainer}>
         <Image
-          source={{ uri: props.tender.imageUrl }}
+          source={{ uri: props.vacancy.imageUrl }}
           resizeMode="contain"
           style={styles.image}
         />
-        <View style={styles.tenderBanner}>
-          <Text style={styles.tenderBannerText}>Tender</Text>
+        <View style={styles.vacancyBanner}>
+          <Text style={styles.tenderBannerText}>Vacancy</Text>
         </View>
       </View>
       <View style={styles.tenderContentContainer}>
         <View style={styles.tenderPostedAtContainer}>
-          <Text style={styles.tenderPostedAtText}>Posted</Text>
+          <Text style={styles.tenderPostedAtText}>Deadline</Text>
           <View style={styles.tenderPostedAtElapseContainer}>
             <MaterialCommunityIcons
               name="timer-outline"
@@ -37,14 +37,17 @@ export const TenderCard: React.FC<TenderCardProps> = (props) => {
               color={COLORS.gray6}
             />
             <Text style={styles.tenderPostedAtText}>
-              {elapsedTime(props.tender.createdAt)}
+              {new AppDate(props.vacancy.deadline).dayMonthYear()}
             </Text>
           </View>
         </View>
-        <Text style={styles.tenderTitle}>{props.tender.title}</Text>
+        <Text style={styles.vacancyTitle}>{props.vacancy.title}</Text>
+        <Text style={styles.vacancyDescription}>
+          {props.vacancy.description}
+        </Text>
         <View style={styles.orgContainer}>
-          <Octicons name="organization" size={24} color={COLORS.blue7} />
-          <Text style={styles.orgText}>{props.tender.organization}</Text>
+          <Octicons name="organization" size={24} color={COLORS.violet5} />
+          <Text style={styles.orgText}>{props.vacancy.organization}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderRadius: 8,
     borderWidth: 2,
-    borderColor: COLORS.blue5,
+    borderColor: COLORS.violet7,
   },
   imageContainer: {
     width: "100%",
@@ -74,11 +77,11 @@ const styles = StyleSheet.create({
     aspectRatio: "4/3",
     objectFit: "fill",
   },
-  tenderBanner: {
+  vacancyBanner: {
     position: "absolute",
     top: 4,
     left: 4,
-    backgroundColor: COLORS.blue9,
+    backgroundColor: COLORS.violet9,
     borderRadius: 6,
     alignItems: "center",
     justifyContent: "center",
@@ -113,10 +116,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: 8,
   },
-  tenderTitle: {
+  vacancyTitle: {
     fontSize: 18,
     // fontWeight: 500,
     color: COLORS.gray8,
+  },
+  vacancyDescription: {
+    fontSize: 14,
+    color: COLORS.gray6,
   },
   orgContainer: {
     marginTop: 8,
@@ -126,7 +133,7 @@ const styles = StyleSheet.create({
   },
   orgText: {
     flex: 1,
-    color: COLORS.blue7,
+    color: COLORS.violet7,
     fontSize: 14,
     textAlign: "left",
   },

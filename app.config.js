@@ -24,8 +24,8 @@ module.exports = {
       },
       package: "com.tulime.tulimeapp",
       permissions: ["NOTIFICATIONS"],
-      googleServicesFile:
-        process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
+      googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
+      // process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
     },
     web: {
       bundler: "metro",

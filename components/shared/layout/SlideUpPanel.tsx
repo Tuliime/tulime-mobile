@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import {
   View,
   Dimensions,
@@ -9,7 +9,6 @@ import {
   StyleProp,
   ViewStyle,
 } from "react-native";
-import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 import { SlideUpPanelContent } from "./SlideUpPanelContent";
 import { COLORS } from "@/constants";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -24,29 +23,8 @@ type SlideUpPanelProp = {
 
 export const SlideUpPanel: React.FC<SlideUpPanelProp> = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const isOpenPanel = useSlideUpPanelStore((state) => state.isOpen);
-  const openPanel = useSlideUpPanelStore((state) => state.openPanel);
-  const closePanel = useSlideUpPanelStore((state) => state.closePanel);
-
-  const openModalHandler = () => {
-    setModalVisible(() => true);
-    // openPanel();
-  };
-
-  const closeModalHandler = () => {
-    setModalVisible(() => false);
-    closePanel();
-  };
-
-  useEffect(() => {
-    const autoModalVisibilityHandler = () => {
-      if (modalVisible) return;
-      if (isOpenPanel) {
-        setModalVisible(() => true);
-      }
-    };
-    autoModalVisibilityHandler();
-  }, [isOpenPanel]);
+  const openModalHandler = () => setModalVisible(() => true);
+  const closeModalHandler = () => setModalVisible(() => false);
 
   return (
     <View>

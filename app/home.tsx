@@ -18,7 +18,7 @@ import { TService } from "@/types/service";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 import { useAuthStore } from "@/store/auth";
-import { useSlideUpPanelStore } from "@/store/slideUpPanel";
+import { SlideUpPanel } from "@/components/shared/layout/SlideUpPanel";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
@@ -26,7 +26,6 @@ const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 export default function Home() {
   const user = useAuthStore((state) => state.auth.user);
-  const openPanel = useSlideUpPanelStore((state) => state.openPanel);
 
   const services: TService[] = [
     {
@@ -115,14 +114,16 @@ export default function Home() {
                 />
               </TouchableOpacity>
               <NotificationCount />
-              <TouchableOpacity onPress={() => openPanel()}>
-                <ProfileAvatar
-                  user={user}
-                  width={36}
-                  height={36}
-                  fontWeight={500}
-                />
-              </TouchableOpacity>
+              <SlideUpPanel
+                openSlideUpPanelElement={
+                  <ProfileAvatar
+                    user={user}
+                    width={36}
+                    height={36}
+                    fontWeight={500}
+                  />
+                }
+              />
             </View>
           </View>
           <TouchableOpacity

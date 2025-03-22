@@ -15,6 +15,8 @@ import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Foundation from "@expo/vector-icons/Foundation";
+import { AppModal } from "@/components/shared/UI/Modal";
+import { PostFeedback } from "@/components/ecommerce/PostFeedback";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -99,48 +101,67 @@ const ProductDetailsScreen: React.FC = () => {
                 <Text style={styles.actionsText}>Start Chat</Text>
               </TouchableOpacity>
               <View style={styles.actionsFeedbackReport}>
-                <TouchableOpacity
-                  style={[
-                    styles.actionsBtn,
-                    {
-                      backgroundColor: COLORS.white,
-                      borderWidth: 1,
-                      borderColor: COLORS.blue7,
-                      width: "50%",
-                    },
-                  ]}
+                {/* Give feedback */}
+                <AppModal
+                  openModalElement={
+                    <View
+                      style={[
+                        styles.actionsBtn,
+                        {
+                          backgroundColor: COLORS.white,
+                          borderWidth: 1,
+                          borderColor: COLORS.blue7,
+                        },
+                      ]}
+                    >
+                      <MaterialIcons
+                        name="feedback"
+                        size={20}
+                        color={COLORS.blue7}
+                        style={styles.actionsIcon}
+                      />
+                      <Text
+                        style={[styles.actionsText, { color: COLORS.blue7 }]}
+                      >
+                        Give Feedback
+                      </Text>
+                    </View>
+                  }
                 >
-                  <MaterialIcons
-                    name="feedback"
-                    size={20}
-                    color={COLORS.blue7}
-                    style={styles.actionsIcon}
-                  />
-                  <Text style={[styles.actionsText, { color: COLORS.blue7 }]}>
-                    Give Feedback
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.actionsBtn,
-                    {
-                      backgroundColor: COLORS.white,
-                      borderWidth: 1,
-                      borderColor: COLORS.red7,
-                      width: "48%",
-                    },
-                  ]}
+                  <PostFeedback />
+                </AppModal>
+
+                {/* Report Abuse  */}
+                <AppModal
+                  openModalElement={
+                    <View
+                      style={[
+                        styles.actionsBtn,
+                        {
+                          backgroundColor: COLORS.white,
+                          borderWidth: 1,
+                          borderColor: COLORS.red7,
+                        },
+                      ]}
+                    >
+                      <Foundation
+                        name="flag"
+                        size={20}
+                        color={COLORS.red7}
+                        style={styles.actionsIcon}
+                      />
+                      <Text
+                        style={[styles.actionsText, { color: COLORS.red7 }]}
+                      >
+                        Report Abuse
+                      </Text>
+                    </View>
+                  }
                 >
-                  <Foundation
-                    name="flag"
-                    size={20}
-                    color={COLORS.red7}
-                    style={styles.actionsIcon}
-                  />
                   <Text style={[styles.actionsText, { color: COLORS.red7 }]}>
-                    Report Abuse
+                    Report Abuse Form here
                   </Text>
-                </TouchableOpacity>
+                </AppModal>
               </View>
             </View>
           </View>

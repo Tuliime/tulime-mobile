@@ -17,6 +17,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Foundation from "@expo/vector-icons/Foundation";
 import { AppModal } from "@/components/shared/UI/Modal";
 import { PostFeedback } from "@/components/ecommerce/PostFeedback";
+import { ReportAbuse } from "@/components/ecommerce/ReportAbuse";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -158,9 +159,7 @@ const ProductDetailsScreen: React.FC = () => {
                     </View>
                   }
                 >
-                  <Text style={[styles.actionsText, { color: COLORS.red7 }]}>
-                    Report Abuse Form here
-                  </Text>
+                  <ReportAbuse />
                 </AppModal>
               </View>
             </View>

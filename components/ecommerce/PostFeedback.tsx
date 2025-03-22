@@ -225,7 +225,6 @@ const styles = StyleSheet.create({
   experienceQtnText: {
     color: COLORS.gray8,
     fontSize: 20,
-    fontWeight: 500,
   },
   experienceBtnContainer: {
     width: "100%",

@@ -50,7 +50,6 @@ export const ProfileAvatar: React.FC<ProfileAvatarProps> = (props) => {
           <Text
             style={[
               styles.profileBgText,
-              // { fontSize: isFontSizeGiven ? props.fontSize : 16, fontWeight: isFontWeightGiven ? props.fontWeight : 700 },
               {
                 fontSize: isFontSizeGiven ? props.fontSize : 16,
                 fontWeight: isFontWeightGiven ? props.fontWeight : 700,

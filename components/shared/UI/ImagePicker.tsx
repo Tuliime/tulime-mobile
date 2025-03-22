@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { TouchableOpacity } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
@@ -10,10 +10,13 @@ import Toast from "react-native-toast-message";
 type ImagePickerProps = {
   onPick: (files: Asset["file"][]) => void;
   onLoading: (isLoading: boolean) => void;
+  pickElement?: ReactNode;
+  limit?: number;
 };
 
 export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
   const MAX_FILE_LIMIT = 5 * 1024 * 1024; /* 5 MB */
+  const limit = props.limit ? props.limit : 10; //Default limit is 10
 
   const pickImageHandler = async () => {
     try {
@@ -28,9 +31,9 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
       if (result.canceled || !result.assets) return;
 
       props.onLoading(true);
-      if (result.assets.length > 10) {
+      if (result.assets.length > limit) {
         props.onLoading(false);
-        throw new Error(`Cannot upload more than 10 images at once!`);
+        throw new Error(`Cannot upload more than ${limit} images at once!`);
       }
 
       for (let i = 0; i < result.assets.length; i++) {
@@ -73,7 +76,11 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
 
   return (
     <TouchableOpacity onPress={pickImageHandler}>
-      <Ionicons name="attach" size={28} color={COLORS.gray7} />
+      {!!props.pickElement ? (
+        props.pickElement
+      ) : (
+        <Ionicons name="attach" size={28} color={COLORS.gray7} />
+      )}
     </TouchableOpacity>
   );
 };

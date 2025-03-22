@@ -76,9 +76,9 @@ export const PostFeedback: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.feedbackCautionContainer}>
+      <View style={styles.cautionContainer}>
         <Entypo name="chat" size={40} color={COLORS.gray8} />
-        <Text>
+        <Text style={styles.cautionText}>
           Your feedback is very important for the seller review. Please leave
           the honest review to help other buyers and the seller in customer
           attraction.
@@ -91,6 +91,55 @@ export const PostFeedback: React.FC = () => {
       >
         {(formik) => (
           <View style={styles.formContainer}>
+            <View style={styles.experienceContainer}>
+              <Text style={styles.experienceQtnText}>
+                How was your experience?
+              </Text>
+              <View style={styles.experienceBtnContainer}>
+                <TouchableOpacity
+                  style={[
+                    styles.experienceBtn,
+                    {
+                      backgroundColor: COLORS.primary,
+                      borderColor: COLORS.primary,
+                    },
+                  ]}
+                >
+                  <Entypo name="emoji-happy" size={20} color={COLORS.white} />
+                  <Text style={styles.experienceBtnText}>Positive</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[
+                    styles.experienceBtn,
+                    { borderColor: COLORS.yellow7 },
+                  ]}
+                >
+                  <Entypo
+                    name="emoji-neutral"
+                    size={20}
+                    color={COLORS.yellow7}
+                  />
+                  <Text
+                    style={[
+                      styles.experienceBtnText,
+                      { color: COLORS.yellow7 },
+                    ]}
+                  >
+                    Neutral
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.experienceBtn, { borderColor: COLORS.red7 }]}
+                >
+                  <Entypo name="emoji-sad" size={20} color={COLORS.red7} />
+                  <Text
+                    style={[styles.experienceBtnText, { color: COLORS.red7 }]}
+                  >
+                    Negative
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
             <InputSelect
               options={feedbackTitleOptions}
               initialValue="How was it"
@@ -162,10 +211,41 @@ const styles = StyleSheet.create({
     marginTop: 16,
     gap: 16,
   },
-  feedbackCautionContainer: {
+  cautionContainer: {
     width: "100%",
     gap: 8,
     alignItems: "center",
+  },
+  cautionText: {
+    color: COLORS.gray8,
+  },
+  experienceContainer: {
+    gap: 8,
+  },
+  experienceQtnText: {
+    color: COLORS.gray8,
+    fontSize: 20,
+    fontWeight: 500,
+  },
+  experienceBtnContainer: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 8,
+  },
+  experienceBtn: {
+    padding: 6,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 4,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+  experienceBtnText: {
+    fontWeight: 500,
+    color: COLORS.white,
   },
   formContainer: {
     gap: 16,

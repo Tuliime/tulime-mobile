@@ -2,7 +2,6 @@ import React, { ReactNode, useEffect, useRef, useState } from "react";
 import {
   View,
   Dimensions,
-  Animated,
   StyleSheet,
   Modal,
   Pressable,
@@ -19,12 +18,35 @@ const screenWidth = Dimensions.get("window").width * 0.999;
 const screenHeight = Dimensions.get("window").height * 0.999;
 
 type SlideUpPanelProp = {
-  openSlideUpElement: ReactNode;
-  openSlideUpElementStyles?: StyleProp<ViewStyle>;
+  openSlideUpPanelElement: ReactNode;
+  openSlideUpPanelElementStyles?: StyleProp<ViewStyle>;
 };
 
 export const SlideUpPanel: React.FC<SlideUpPanelProp> = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const isOpenPanel = useSlideUpPanelStore((state) => state.isOpen);
+  const openPanel = useSlideUpPanelStore((state) => state.openPanel);
+  const closePanel = useSlideUpPanelStore((state) => state.closePanel);
+
+  const openModalHandler = () => {
+    setModalVisible(() => true);
+    openPanel();
+  };
+
+  const closeModalHandler = () => {
+    setModalVisible(() => false);
+    closePanel();
+  };
+
+  useEffect(() => {
+    const autoModalVisibilityHandler = () => {
+      if (modalVisible) return;
+      if (isOpenPanel) {
+        setModalVisible(() => true);
+      }
+    };
+    autoModalVisibilityHandler();
+  }, [isOpenPanel]);
 
   return (
     <View>
@@ -32,10 +54,13 @@ export const SlideUpPanel: React.FC<SlideUpPanelProp> = (props) => {
         <SafeAreaView style={styles.safeAreaCenteredView}>
           {/* Open Modal */}
           <Pressable
-            style={[styles.openSlideUpElement, props.openSlideUpElementStyles]}
-            onPress={() => setModalVisible(() => true)}
+            style={[
+              styles.openSlideUpElement,
+              props.openSlideUpPanelElementStyles,
+            ]}
+            onPress={() => openModalHandler()}
           >
-            {props.openSlideUpElement}
+            {props.openSlideUpPanelElement}
           </Pressable>
 
           {/* Modal */}
@@ -59,7 +84,7 @@ export const SlideUpPanel: React.FC<SlideUpPanelProp> = (props) => {
               {/* Backdrop */}
               <Pressable
                 style={styles.backdrop}
-                onPress={() => setModalVisible(() => false)}
+                onPress={() => closeModalHandler()}
               />
             </View>
           </Modal>

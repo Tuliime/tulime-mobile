@@ -15,14 +15,19 @@ import { NotificationCount } from "@/components/notification/NotificationCount";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ServiceCard } from "@/components/shared/UI/ServiceCard";
 import { TService } from "@/types/service";
-import { Logout } from "@/components/auth/Logout";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
+import { useAuthStore } from "@/store/auth";
+import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 export default function Home() {
+  const user = useAuthStore((state) => state.auth.user);
+  const openPanel = useSlideUpPanelStore((state) => state.openPanel);
+
   const services: TService[] = [
     {
       name: "My Profile",
@@ -110,7 +115,14 @@ export default function Home() {
                 />
               </TouchableOpacity>
               <NotificationCount />
-              <Logout />
+              <TouchableOpacity onPress={() => openPanel()}>
+                <ProfileAvatar
+                  user={user}
+                  width={36}
+                  height={36}
+                  fontWeight={500}
+                />
+              </TouchableOpacity>
             </View>
           </View>
           <TouchableOpacity

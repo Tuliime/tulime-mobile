@@ -14,8 +14,6 @@ import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
 import { MainHeader } from "./MainHeader";
 import { router } from "expo-router";
-import { SlideUpPanel } from "./SlideUpPanel";
-import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 
 type MainLayoutProps = {
   children: ReactNode;
@@ -25,8 +23,6 @@ type MainLayoutProps = {
 
 /** MainLayout is for authenticated screens */
 export const MainLayout: React.FC<MainLayoutProps> = (props) => {
-  const isOpenSlideUpPanel = useSlideUpPanelStore((state) => state.isOpen);
-
   const navigateToChatBot = () => {
     router.push("/chatbot");
   };
@@ -59,7 +55,6 @@ export const MainLayout: React.FC<MainLayoutProps> = (props) => {
         </TouchableOpacity>
         <Footer />
       </View>
-      {isOpenSlideUpPanel && <SlideUpPanel />}
     </SafeAreaView>
   );
 };

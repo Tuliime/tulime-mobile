@@ -12,8 +12,6 @@ import {
 import { router, Stack } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
-import { SlideUpPanel } from "./SlideUpPanel";
-import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
@@ -23,8 +21,6 @@ type HomeLayoutProps = {
 };
 
 export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
-  const isOpenSlideUpPanel = useSlideUpPanelStore((state) => state.isOpen);
-
   const navigateToChatBot = () => {
     router.push("/chatbot");
   };
@@ -38,7 +34,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
       <Stack.Screen
         options={{
           headerStyle: styles.headerStyle,
-          headerShown: isOpenSlideUpPanel ? false : true,
+          headerShown: true,
           headerShadowVisible: false,
           headerLeft: () => (
             <View style={styles.headerLeftContainer}>{props.header}</View>
@@ -56,7 +52,6 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
         <Image source={icons.bot} resizeMode="contain" style={styles.botIcon} />
       </TouchableOpacity>
       <Footer />
-      {isOpenSlideUpPanel && <SlideUpPanel />}
     </SafeAreaView>
   );
 };
@@ -66,7 +61,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.gray1,
     position: "relative",
-    // height: "100%",
   },
   headerStyle: {
     backgroundColor: COLORS.primary,

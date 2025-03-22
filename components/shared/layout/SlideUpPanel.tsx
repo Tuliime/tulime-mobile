@@ -1,88 +1,108 @@
-import React, { useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import {
   View,
   Dimensions,
   Animated,
   StyleSheet,
-  TouchableOpacity,
+  Modal,
+  Pressable,
+  Alert,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 import { SlideUpPanelContent } from "./SlideUpPanelContent";
 import { COLORS } from "@/constants";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
-const screenHeight = Dimensions.get("window").height;
-const panelHeight = screenHeight * 0.8;
+const screenWidth = Dimensions.get("window").width * 0.999;
+const screenHeight = Dimensions.get("window").height * 0.999;
 
-export const SlideUpPanel: React.FC = () => {
-  const closePanel = useSlideUpPanelStore((state) => state.closePanel);
-  const isOpenPanel = useSlideUpPanelStore((state) => state.isOpen);
+type SlideUpPanelProp = {
+  openSlideUpElement: ReactNode;
+  openSlideUpElementStyles?: StyleProp<ViewStyle>;
+};
 
-  const translateY = useRef(new Animated.Value(panelHeight)).current;
-
-  useEffect(() => {
-    Animated.spring(translateY, {
-      toValue: 0,
-      useNativeDriver: true,
-      friction: 8,
-      tension: 40,
-    }).start();
-  }, []);
-
-  const handleClosePanel = () => {
-    Animated.spring(translateY, {
-      toValue: panelHeight,
-      useNativeDriver: true,
-      friction: 8,
-      tension: 40,
-    }).start();
-    setTimeout(() => {
-      closePanel();
-    }, 200);
-  };
+export const SlideUpPanel: React.FC<SlideUpPanelProp> = (props) => {
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View style={styles.container}>
-      {/* Panel */}
-      <Animated.View style={[styles.panel, { transform: [{ translateY }] }]}>
-        <SlideUpPanelContent />
-      </Animated.View>
+    <View>
+      <SafeAreaProvider>
+        <SafeAreaView style={styles.safeAreaCenteredView}>
+          {/* Open Modal */}
+          <Pressable
+            style={[styles.openSlideUpElement, props.openSlideUpElementStyles]}
+            onPress={() => setModalVisible(() => true)}
+          >
+            {props.openSlideUpElement}
+          </Pressable>
 
-      {/* Backdrop */}
-      {isOpenPanel && (
-        <TouchableOpacity
-          style={styles.backdrop}
-          onPress={handleClosePanel}
-          activeOpacity={1}
-        />
-      )}
+          {/* Modal */}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(() => !modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              {/* Content */}
+              {modalVisible && (
+                <View style={styles.contentView}>
+                  <SlideUpPanelContent />
+                </View>
+              )}
+
+              {/* Backdrop */}
+              <Pressable
+                style={styles.backdrop}
+                onPress={() => setModalVisible(() => false)}
+              />
+            </View>
+          </Modal>
+        </SafeAreaView>
+      </SafeAreaProvider>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    width: "100%",
-    position: "absolute",
+  safeAreaCenteredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  panel: {
+  openSlideUpElement: {
     width: "100%",
-    height: panelHeight,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  contentView: {
+    width: screenWidth,
     backgroundColor: COLORS.white,
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    zIndex: 1500,
+    minHeight: screenHeight * 0.2,
+    height: "auto",
+    maxHeight: screenHeight * 0.9,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    overflow: "hidden",
+    zIndex: 1500,
+    position: "absolute",
+    left: 0,
+    bottom: 0,
   },
   backdrop: {
-    ...StyleSheet.absoluteFillObject,
-    width: "100%",
-    backgroundColor: "rgba(0,0,0,0.5)",
+    position: "absolute",
     top: 0,
     left: 0,
-    zIndex: 1300,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
   },
 });

@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, Text, StyleSheet } from "react-native";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { useAuthStore } from "@/store/auth";
 import { router } from "expo-router";
@@ -16,12 +16,23 @@ export const Logout: React.FC = () => {
     router.push("/auth/signin");
   };
   return (
-    <TouchableOpacity
-      style={{ flexDirection: "row", gap: 4 }}
-      onPress={logoutHandler}
-    >
-      <MaterialCommunityIcons name="logout" size={24} color={COLORS.white} />
-      {/* <Text>Log out</Text> */}
+    <TouchableOpacity style={styles.container} onPress={logoutHandler}>
+      <MaterialCommunityIcons name="logout" size={24} color={COLORS.gray8} />
+      <Text style={styles.logoutText}>Log out</Text>
     </TouchableOpacity>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    flexDirection: "row",
+    gap: 16,
+    padding: 20,
+  },
+  logoutText: {
+    color: COLORS.gray9,
+    fontWeight: 500,
+    fontSize: 16,
+  },
+});

@@ -37,7 +37,7 @@ export const Footer: React.FC = () => {
         <Text style={styles.iconText}>Language</Text>
       </TouchableOpacity>
       <SlideUpPanel
-        openSlideUpElement={
+        openSlideUpPanelElement={
           <View style={styles.iconContainer}>
             <Ionicons name="menu-outline" size={20} color={COLORS.gray8} />
             <Text style={styles.iconText}>More</Text>

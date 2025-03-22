@@ -1,8 +1,9 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { icons, SIZES, COLORS } from "@/constants";
 import { router } from "expo-router";
 import { useSlideUpPanelStore } from "@/store/slideUpPanel";
+import { Logout } from "@/components/auth/Logout";
 
 export const SlideUpPanelContent: React.FC = () => {
   const closePanel = useSlideUpPanelStore((state) => state.closePanel);
@@ -14,100 +15,74 @@ export const SlideUpPanelContent: React.FC = () => {
   };
 
   return (
-    <View style={{}}>
+    <View style={styles.container}>
       {/* Logo */}
-      <View
-        style={{ borderBottomWidth: 1, borderColor: "#adb5bd", padding: 20 }}
-      >
-        <Text
-          style={{
-            fontSize: SIZES.xLarge,
-            fontWeight: "600",
-            color: COLORS.primary,
-          }}
-        >
-          Tulime
-        </Text>
+      <View style={styles.contentView}>
+        <Text style={styles.logoText}>Tulime</Text>
       </View>
       {/* Content */}
-      <View
-        style={{
-          borderBottomWidth: 1,
-          borderColor: "#adb5bd",
-          padding: 20,
-          gap: SIZES.xLarge,
-        }}
-      >
+      <View style={styles.contentView}>
         {sidebarContentList.map((item, index) => (
           <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              gap: SIZES.large,
-            }}
+            style={styles.button}
             activeOpacity={1}
             key={index}
             onPress={(_) => navigateToScreen(item.link)}
           >
-            <Image
-              source={item.icon}
-              resizeMode="cover"
-              style={{
-                width: 28,
-                height: 28,
-              }}
-            />
-            <Text
-              style={{
-                color: COLORS.gray8,
-                fontSize: SIZES.medium,
-                fontWeight: 500,
-              }}
-            >
-              {item.name}
-            </Text>
+            <Image source={item.icon} resizeMode="cover" style={styles.icon} />
+            <Text style={styles.buttonText}>{item.name}</Text>
           </TouchableOpacity>
         ))}
       </View>
       {/* Others like settings */}
-      <View
-        style={{
-          padding: 20,
-          gap: SIZES.xLarge,
-        }}
-      >
+      <View style={styles.contentView}>
         {otherContentList.map((item, index) => (
           <TouchableOpacity
-            style={{
-              flexDirection: "row",
-              gap: SIZES.large,
-            }}
+            style={styles.button}
             activeOpacity={1}
             key={index}
             onPress={(_) => navigateToScreen(item.link)}
           >
-            <Image
-              source={item.icon}
-              resizeMode="cover"
-              style={{
-                width: 28,
-                height: 28,
-              }}
-            />
-            <Text
-              style={{
-                color: COLORS.gray8,
-                fontSize: SIZES.medium,
-                fontWeight: 500,
-              }}
-            >
-              {item.name}
-            </Text>
+            <Image source={item.icon} resizeMode="cover" style={styles.icon} />
+            <Text style={styles.buttonText}>{item.name}</Text>
           </TouchableOpacity>
         ))}
+      </View>
+      {/* Logout */}
+      <View>
+        <Logout />
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {},
+  contentView: {
+    borderBottomWidth: 1,
+    borderColor: "#adb5bd",
+    padding: 20,
+    gap: 20,
+  },
+  logoText: {
+    fontSize: SIZES.xLarge,
+    fontWeight: "600",
+    color: COLORS.primary,
+  },
+  button: {
+    flexDirection: "row",
+    gap: SIZES.large,
+  },
+  icon: {
+    width: 28,
+    height: 28,
+  },
+  buttonText: {
+    color: COLORS.gray8,
+    fontSize: SIZES.medium,
+    fontWeight: 500,
+  },
+});
 
 const sidebarContentList = [
   {

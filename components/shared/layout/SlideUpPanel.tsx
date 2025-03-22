@@ -30,7 +30,7 @@ export const SlideUpPanel: React.FC<SlideUpPanelProp> = (props) => {
 
   const openModalHandler = () => {
     setModalVisible(() => true);
-    openPanel();
+    // openPanel();
   };
 
   const closeModalHandler = () => {

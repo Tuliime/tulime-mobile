@@ -18,6 +18,7 @@ import Foundation from "@expo/vector-icons/Foundation";
 import { AppModal } from "@/components/shared/UI/Modal";
 import { PostFeedback } from "@/components/ecommerce/PostFeedback";
 import { ReportAbuse } from "@/components/ecommerce/ReportAbuse";
+import { router } from "expo-router";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -30,6 +31,10 @@ const ProductDetailsScreen: React.FC = () => {
       event.nativeEvent.contentOffset.x / screenWidth
     );
     setIndex(newIndex);
+  };
+
+  const navigateToMessenger = () => {
+    router.push("/ecommerce/messenger");
   };
 
   return (
@@ -88,6 +93,7 @@ const ProductDetailsScreen: React.FC = () => {
             </View>
             <View style={styles.actionsContainer}>
               <TouchableOpacity
+                onPress={navigateToMessenger}
                 style={[
                   styles.actionsBtn,
                   { backgroundColor: COLORS.primary, paddingVertical: 10 },

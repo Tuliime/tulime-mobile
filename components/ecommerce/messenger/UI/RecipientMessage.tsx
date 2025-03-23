@@ -1,0 +1,144 @@
+import React from "react";
+import { View, Text, StyleSheet, Image, Dimensions } from "react-native";
+import { COLORS } from "@/constants";
+import { AppDate } from "@/utils/appDate";
+import { useAuthStore } from "@/store/auth";
+import { RepliedMessage } from "./RepliedMessage";
+import { truncateString } from "@/utils/truncateString";
+import { MessageOnSwipe } from "./MessageOnSwipe";
+import { TextMessage } from "./TextMessage";
+import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
+import { RightAngledTriangle } from "@/components/shared/icons/RightAngledTriangle";
+import { ImageDisplay } from "@/components/shared/UI/ImageDisplay";
+import { TMessenger } from "@/types/messenger";
+
+const screenWidth = Dimensions.get("window").width * 0.98;
+const maxWidth = screenWidth * 0.76;
+
+type RecipientMessageProps = {
+  message: TMessenger["organizedMessage"];
+};
+
+export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
+  const messageTime = new AppDate(props.message.arrivedAt!).time();
+  const user = useAuthStore((state) => state.auth.user);
+
+  const hasImage: boolean = !!props.message.file?.url;
+  const isPrimaryMessage: boolean = props.message.isPrimaryMessage;
+  const hasReplyMessage: boolean = !!props.message.repliedMessage?.id;
+  const hasText: boolean = !!props.message.text;
+
+  return (
+    <MessageOnSwipe message={props.message}>
+      <View style={styles.Container}>
+        <View style={{ opacity: isPrimaryMessage ? 1 : 0 }}>
+          <ProfileAvatar
+            user={props.message.user}
+            width={32}
+            height={32}
+            fontWeight={500}
+          />
+        </View>
+        <View
+          style={[
+            styles.messageContainer,
+            {
+              borderTopLeftRadius: isPrimaryMessage ? 0 : 16,
+              width: hasReplyMessage ? maxWidth : "auto",
+            },
+          ]}
+        >
+          <RightAngledTriangle
+            style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
+          />
+          {isPrimaryMessage && (
+            <Text
+              style={[
+                styles.usernameText,
+                {
+                  color: props.message.user.chatroomColor,
+                  marginBottom: hasReplyMessage ? 4 : 0,
+                },
+              ]}
+            >
+              {truncateString(props.message.user.name, 24)}
+            </Text>
+          )}
+          {hasReplyMessage && (
+            <RepliedMessage
+              message={props.message}
+              displayUnder={"recipient"}
+            />
+          )}
+          {hasImage && (
+            <ImageDisplay
+              uri={props.message.file!.url}
+              style={{ marginBottom: hasText ? 0 : 8 }}
+            />
+          )}
+          {hasText && (
+            <View style={styles.messageTextContainer}>
+              <TextMessage
+                text={props.message.text}
+                style={styles.messageText}
+                tagStyle={styles.messageTextTag}
+              />
+            </View>
+          )}
+          <Text style={styles.messageTime}>{messageTime}</Text>
+        </View>
+      </View>
+    </MessageOnSwipe>
+  );
+};
+
+const styles = StyleSheet.create({
+  Container: {
+    width: "100%",
+    gap: 16,
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+  messageContainer: {
+    width: "auto",
+    minWidth: 96,
+    maxWidth: maxWidth,
+    backgroundColor: COLORS.gray3,
+    padding: 4,
+    paddingBottom: 18,
+    borderRadius: 12,
+    borderTopLeftRadius: 0,
+    position: "relative",
+  },
+  triangleIcon: {
+    borderBottomColor: COLORS.gray3,
+    position: "absolute",
+    left: -12,
+    top: 0,
+    transform: [{ rotate: "180deg" }],
+  },
+  usernameText: {
+    color: COLORS.blue4,
+    fontWeight: 700,
+    paddingLeft: 6,
+  },
+  messageTextContainer: {
+    padding: 4,
+    paddingLeft: 8,
+  },
+  messageText: {
+    color: COLORS.gray9,
+    fontSize: 16,
+  },
+  messageTextTag: {
+    color: COLORS.blue7,
+  },
+  messageTime: {
+    color: COLORS.gray6,
+    position: "absolute",
+    right: 8,
+    bottom: 4,
+    fontWeight: 400,
+    fontSize: 12,
+  },
+});

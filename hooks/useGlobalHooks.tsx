@@ -7,14 +7,16 @@ import { useNotificationListener } from "./useNotificationListener";
 import { useGetNotifications } from "./useGetNotifications";
 import { useGetLiveNotifications } from "./useGetLiveNotifications";
 import { useGetDeviceToken } from "./useGetDeviceToken";
+import { useGetEventStream } from "./useGetEventStream";
 
 export const UseGlobalHooks = () => {
   useGetAllUsers();
-  useGetLiveChat();
+  useGetLiveChat(); //To be removed
+  useGetEventStream();
   useGetOnlineStatus();
   useGetDeviceToken();
   useGetNotifications();
-  useGetLiveNotifications();
+  useGetLiveNotifications(); //To be removed
   useUpdateOnlineStatus();
   useNotificationListener();
   return <View></View>;

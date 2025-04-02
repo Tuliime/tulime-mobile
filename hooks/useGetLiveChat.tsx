@@ -8,6 +8,9 @@ import { Audio } from "expo-av";
 import { sounds } from "@/constants";
 import { isJWTTokenExpired } from "@/utils/expiredJWT";
 
+/**
+ * @deprecated Use `useGetEventStream` instead.
+ */
 export const useGetLiveChat = () => {
   const effectRan = useRef(false);
   const accessToken = useAuthStore((state) => state.auth.accessToken);

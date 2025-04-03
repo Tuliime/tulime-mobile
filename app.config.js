@@ -1,6 +1,29 @@
+const IS_DEV = process.env.APP_VARIANT === "development";
+const IS_PREVIEW = process.env.APP_VARIANT === "preview";
+
+const getUniqueIdentifier = () => {
+  if (IS_DEV) {
+    return "com.tulime.tulimeapp.dev";
+  }
+  if (IS_PREVIEW) {
+    return "com.tulime.tulimeapp.preview";
+  }
+  return "com.tulime.tulimeapp";
+};
+
+const getAppName = () => {
+  if (IS_DEV) {
+    return "Tulime (Dev)";
+  }
+  if (IS_PREVIEW) {
+    return "Tulime (Preview)";
+  }
+  return "Tulime";
+};
+
 module.exports = {
   expo: {
-    name: "Tulime",
+    name: getAppName(),
     slug: "tulime-app",
     description: "All in one for your agricultural needs",
     version: "1.0.0",
@@ -15,17 +38,16 @@ module.exports = {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.tulime.tulimeapp",
+      bundleIdentifier: getUniqueIdentifier(),
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
-      package: "com.tulime.tulimeapp",
+      package: getUniqueIdentifier(),
       permissions: ["NOTIFICATIONS"],
       googleServicesFile: process.env.GOOGLE_SERVICES_JSON,
-      // process.env.GOOGLE_SERVICES_JSON || "./google-services.json",
     },
     web: {
       bundler: "metro",

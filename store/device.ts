@@ -85,8 +85,8 @@ export const useDeviceStore = create(
       },
     }),
     {
-      // name: "device-storage",
-      name: getStorageKey(),
+      name: "device-storage",
+      // name: getStorageKey(),
       storage: {
         getItem: async (key) => {
           const value = await AsyncStorage.getItem(key);

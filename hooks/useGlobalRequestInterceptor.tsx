@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import { useSignInWithRefreshToken } from "./useSignInWithRefreshToken";
 import { router } from "expo-router";
+import * as Device from "expo-device";
 
 export const UseGlobalRequestInterceptor = () => {
   const { auth, deleteAuth } = useAuthStore();
@@ -18,8 +19,13 @@ export const UseGlobalRequestInterceptor = () => {
         const headers: any = args[1]?.headers;
         if (!headers.Authorization) {
           headers.Authorization = `Bearer ${auth.accessToken}`;
-          args[1]!["headers"] = headers;
         }
+
+        // Attach X-Device header
+        let deviceName: string = Device.deviceName! || "Unknown Device";
+        headers["X-Device"] = `${deviceName}`;
+
+        args[1]!["headers"] = headers;
 
         let response = await originalFetch(...args);
 

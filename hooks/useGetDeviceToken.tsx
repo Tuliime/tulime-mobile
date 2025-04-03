@@ -61,7 +61,6 @@ export const useGetDeviceToken = () => {
           userID: userID,
           deviceToken: deviceToken,
           name: deviceName,
-          // name: Device.modelName || "Unknown Device",
           tokenType: "EXPO",
           accessToken: accessToken,
         });

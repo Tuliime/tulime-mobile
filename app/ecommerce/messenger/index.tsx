@@ -1,12 +1,12 @@
 import { MessengerContentLayout } from "@/components/ecommerce/messenger/layout/MessengerContentLayout";
-import { FetchMessengerThreads } from "@/components/ecommerce/messenger/UI/FetchMessengerThreads";
+import { FetchMessengerMessages } from "@/components/ecommerce/messenger/UI/FetchMessengerMessages";
 import React from "react";
 import { View } from "react-native";
 
 const Messenger: React.FC = () => {
   return (
     <View style={{ flex: 1 }}>
-      <FetchMessengerThreads />
+      <FetchMessengerMessages />
       <MessengerContentLayout />
     </View>
   );

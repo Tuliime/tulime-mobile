@@ -13,14 +13,13 @@ import * as yup from "yup";
 import { COLORS, sounds } from "@/constants";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth";
-import { useChatroomStore } from "@/store/chatroom";
-import { chatroom } from "@/API/chatroom";
+import { messenger } from "@/API/messenger";
 import Toast from "react-native-toast-message";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { SwipedMessage } from "./SwipedMessage";
 import uuid from "react-native-uuid";
 import { Asset } from "@/types/assets";
-import { MentionList } from "./MentionList";
+import { TagList } from "./TagList";
 import { Auth } from "@/types/auth";
 import { extractMention } from "@/utils/extractMention";
 import { appendMention } from "@/utils/appendMention";
@@ -34,6 +33,7 @@ import { Audio } from "expo-av";
 import { ImagePreview } from "@/components/shared/UI/ImagePreview";
 import { ImagePicker } from "@/components/shared/UI/ImagePicker";
 import { TMessenger } from "@/types/messenger";
+import { useMessengerStore } from "@/store/messenger";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const formContainerWidth = screenWidth - 2 * 16;
@@ -44,18 +44,22 @@ export const MessengerForm: React.FC = () => {
   const [fileList, setFileList] = useState<Asset["file"][]>([]);
   const auth = useAuthStore((state) => state.auth);
   const users = useAuthStore((state) => state.users);
-  const addMessage = useChatroomStore((state) => state.addMessage);
-  const addRepliedMessage = useChatroomStore((state) => state.addReply);
-  const updateMessageBySentAt = useChatroomStore(
+  const addMessage = useMessengerStore((state) => state.addMessage);
+  const updateMessageBySentAt = useMessengerStore(
     (state) => state.updateMessageBySentAt
   );
-  const updatePostingMessage = useChatroomStore(
+  const updatePostingMessage = useMessengerStore(
     (state) => state.updatePostingMessage
   );
-  const clearSwipedMessage = useChatroomStore(
+  const clearSwipedMessage = useMessengerStore(
     (state) => state.clearSwipedMessage
   );
-  const swipedMessage = useChatroomStore((state) => state.swipedMessage);
+  const swipedMessage = useMessengerStore((state) => state.swipedMessage);
+  const recipient = useMessengerStore((state) => state.currentRecipient);
+  const sender = auth.user;
+  const messengerRoomID = useMessengerStore(
+    (state) => state.messages[0]?.messengerRoomID ?? ""
+  );
   const showSwipedMessage: boolean = !!swipedMessage?.id;
   const showImagePreview: boolean = !!fileList[0]?.name;
 
@@ -88,19 +92,16 @@ export const MessengerForm: React.FC = () => {
     setShowMentionList(() => false);
   };
 
-  const getMentionListHandler = (
-    text: string,
-    users: Auth["user"][]
-  ): string[] => {
-    const mentionList: string[] = [];
+  const getTagListHandler = (text: string, users: Auth["user"][]): string[] => {
+    const tagList: string[] = [];
     const usernameMentionList = extractUsernameMentionList(text);
 
     usernameMentionList.map((usernameMention) => {
       const user = users.find((user) => user.name === usernameMention);
       if (!user?.id) return;
-      mentionList.push(user!.id);
+      tagList.push(user!.id);
     });
-    return mentionList;
+    return tagList;
   };
 
   const playSuccessPostSound = async () => {
@@ -118,17 +119,16 @@ export const MessengerForm: React.FC = () => {
   }, [showSwipedMessage]);
 
   const initialFormValues: TMessenger["messageInput"] = {
-    userID: auth.user.id,
+    messengerRoomID: messengerRoomID,
+    senderID: sender.id,
+    recipientID: recipient.id,
     text: "",
     reply: "",
     file: null,
-    localFile: { base64: "", mimeType: "" },
+    localFile: { base64: "", mimeType: "", name: "", uri: "" },
     sentAt: "",
-    mention: [""],
-    values: {
-      //To be investigated and removed
-      base64: "",
-    },
+    tag: [""],
+    isRead: false,
   };
 
   const messageValidationSchema = yup.object().shape({
@@ -136,7 +136,7 @@ export const MessengerForm: React.FC = () => {
   });
 
   const { isPending, mutate } = useMutation({
-    mutationFn: chatroom.post,
+    mutationFn: messenger.post,
     onSuccess: (response: any) => {
       console.log("chatroom response:", response);
       updateMessageBySentAt(response.data);
@@ -162,15 +162,22 @@ export const MessengerForm: React.FC = () => {
   ): TMessenger["message"] => {
     const message: TMessenger["message"] = {
       id: uuid.v4(),
-      userID: auth.user.id,
+      messengerRoomID: messengerRoomID,
+      senderID: sender.id,
+      recipientID: recipient.id,
       text: values.text,
       reply: values.text,
-      mention: values.mention as any,
+      repliedMessage: swipedMessage,
+      tag: values.tag as any,
       sentAt: values.sentAt,
+      isRead: false,
+      localFile: values.localFile,
+      file: {} as any,
       arrivedAt: values.sentAt,
       createdAt: values.sentAt,
       updatedAt: values.sentAt,
-      deletedAt: null,
+      sender: sender,
+      recipient: recipient,
     };
     return message;
   };
@@ -181,22 +188,23 @@ export const MessengerForm: React.FC = () => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
     const reply = !!swipedMessage?.id! ? swipedMessage?.id! : "";
-    const mentionList = getMentionListHandler(text, users);
+    const tagList = getTagListHandler(text, users);
 
-    formData.append("userID", values.userID);
+    formData.append("senderID", values.senderID);
+    formData.append("recipientID", values.recipientID);
     formData.append("text", text);
     formData.append("reply", reply);
     formData.append("sentAt", values.sentAt);
-    formData.append("mention", JSON.stringify(mentionList));
+    formData.append("tag", JSON.stringify(tagList));
 
     if (values.file) {
       formData.append("file", new Blob([values.file]));
     }
 
     addMessage(genInitialMessageValues(values));
-    addRepliedMessage(swipedMessage!);
+    // addRepliedMessage(swipedMessage!);
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
-    mutate({ formData: formData, token: auth.accessToken });
+    mutate({ formData: formData });
     clearSwipedMessage();
   };
 
@@ -208,11 +216,14 @@ export const MessengerForm: React.FC = () => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
     const reply = !!swipedMessage?.id! ? swipedMessage?.id! : "";
-    values.localFile = { base64: file.base64, mimeType: file.mimeType };
-    const mentionList = getMentionListHandler(text, users);
+    // values.localFile = { base64: file.base64, mimeType: file.mimeType };
+    values.localFile = file;
+    const tagList = getTagListHandler(text, users);
 
-    formData.append("userID", values.userID);
+    formData.append("senderID", values.senderID);
+    formData.append("recipientID", values.recipientID);
     // Attach text and it's reply to the first image file only
+    // Though this logic might change on the messenger implementation
     if (fileIndex === 0) {
       formData.append("text", text);
       formData.append("reply", reply);
@@ -221,17 +232,21 @@ export const MessengerForm: React.FC = () => {
       formData.append("reply", "");
     }
     formData.append("sentAt", values.sentAt);
-    formData.append("mention", JSON.stringify(mentionList));
-    formData.append("file", {
-      uri: file.uri,
-      name: "media",
-      type: file.mimeType,
-    } as any);
+    formData.append("tag", JSON.stringify(tagList));
+    formData.append(
+      "file",
+      {
+        uri: file.uri,
+        name: "media",
+        type: file.mimeType,
+      } as any,
+      file.name
+    );
 
     addMessage(genInitialMessageValues(values));
-    addRepliedMessage(swipedMessage!);
+    // addRepliedMessage(swipedMessage!);
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
-    mutate({ formData: formData, token: auth.accessToken });
+    mutate({ formData: formData });
     clearSwipedMessage();
   };
 
@@ -307,10 +322,7 @@ export const MessengerForm: React.FC = () => {
         <ImagePreview files={fileList} onDelete={onDeleteImageHandler} />
       )}
       {showMentionList && (
-        <MentionList
-          onSelect={onMentionSelectHandler}
-          mentionValue={mentionValue}
-        />
+        <TagList onSelect={onMentionSelectHandler} tagValue={mentionValue} />
       )}
       <Formik
         validationSchema={messageValidationSchema}
@@ -319,6 +331,7 @@ export const MessengerForm: React.FC = () => {
       >
         {(formik) => (
           <View style={[styles.formContainer, {}]}>
+            {/* TODO: To add a camera here */}
             <TextInput
               ref={textInputRef}
               placeholder={"Please be polite"}

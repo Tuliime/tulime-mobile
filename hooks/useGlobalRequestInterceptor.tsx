@@ -14,6 +14,13 @@ export const UseGlobalRequestInterceptor = () => {
       const originalFetch = global.fetch;
 
       global.fetch = async (...args) => {
+        // Attach Authorization header if  missing
+        const headers: any = args[1]?.headers;
+        if (!headers.Authorization) {
+          headers.Authorization = `Bearer ${auth.accessToken}`;
+          args[1]!["headers"] = headers;
+        }
+
         let response = await originalFetch(...args);
 
         console.log(`API Call: ${args[0]} | Status Code: ${response.status}`);

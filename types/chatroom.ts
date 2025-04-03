@@ -27,6 +27,7 @@ type Mention = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  user?: Auth["user"];
 };
 
 type Message = {

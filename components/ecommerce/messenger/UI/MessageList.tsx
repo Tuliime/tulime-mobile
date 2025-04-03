@@ -6,28 +6,26 @@ import React, {
   useState,
 } from "react";
 import { FlatList, View, StyleSheet, Text } from "react-native";
-import { SenderMessage } from "./SenderMessage";
 import { useAuthStore } from "@/store/auth";
+import { SenderMessage } from "./SenderMessage";
 import { RecipientMessage } from "./RecipientMessage";
-import { useChatroomStore } from "@/store/chatroom";
-import { ChatroomMessages } from "@/utils/organizeChatroomMessage";
 import { MessageDay } from "./MessageDay";
 import { AppDate } from "@/utils/appDate";
 import { COLORS, SIZES } from "@/constants";
 import { router } from "expo-router";
 import { TMessenger } from "@/types/messenger";
+import { MessengerMessages } from "@/utils/organizeMessengerMessage";
+import { useMessengerStore } from "@/store/messenger";
 
-export const ChatroomMessageList: React.FC = () => {
+export const MessengerMessageList: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const [isAtTop, setIsAtTop] = useState(true);
   const currentUser = useAuthStore((state) => state.auth.user);
-  const users = useAuthStore((state) => state.users) ?? [];
-  const messages = useChatroomStore((state) => state.messages) ?? [];
-  const replies = useChatroomStore((state) => state.replies) ?? [];
-  const getAllPostingMessages = useChatroomStore(
+  const messages = useMessengerStore((state) => state.messages) ?? [];
+  const getAllPostingMessages = useMessengerStore(
     (state) => state.getAllPostingMessages
   );
-  const postingMessageMap = useChatroomStore(
+  const postingMessageMap = useMessengerStore(
     (state) => state.postingMessageMap
   );
   const [currentMessageDate, setCurrentMessageDate] = useState<string | null>(
@@ -57,17 +55,10 @@ export const ChatroomMessageList: React.FC = () => {
   ]).current;
 
   // console.log("messages: ", messages);
-  // console.log("replies: ", replies);
-  // console.log("users: ", users);
 
   const organizedMessages = useMemo(() => {
-    return new ChatroomMessages(
-      messages,
-      replies,
-      users,
-      currentUser
-    ).organize();
-  }, [messages, replies, users, currentUser]);
+    return new MessengerMessages(messages, currentUser).organize();
+  }, [messages, currentUser]);
 
   const renderMessageItem = useCallback(
     ({ item }: { item: TMessenger["organizedMessage"] }) => (

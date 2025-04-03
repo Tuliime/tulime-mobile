@@ -1,19 +1,19 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
 import { COLORS } from "@/constants";
-import { ChatroomMessageList } from "@/components/chatroom/MessageList";
-import { useChatroomStore } from "@/store/chatroom";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { useGlobalSearchParams } from "expo-router";
 import { MessengerLayout } from "./MessengerLayout";
 import { MessengerForm } from "../UI/MessengerForm";
+import { MessengerMessageList } from "../UI/MessageList";
+import { useMessengerStore } from "@/store/messenger";
 
 export const MessengerContentLayout: React.FC = () => {
-  const messageLoader = useChatroomStore((state) => state.messageLoader);
-  const messageLoadingError = useChatroomStore(
+  const messageLoader = useMessengerStore((state) => state.messageLoader);
+  const messageLoadingError = useMessengerStore(
     (state) => state.messageLoadingError
   );
-  const messagesFromStore = useChatroomStore((state) => state.messages);
+  const messagesFromStore = useMessengerStore((state) => state.messages);
   const { direction } = useGlobalSearchParams<{
     cursor: string;
     includeCursor: string;
@@ -69,7 +69,7 @@ export const MessengerContentLayout: React.FC = () => {
             <ActivityIndicator size={28} color={COLORS.gray6} />
           </View>
         )}
-        {showMessageList && <ChatroomMessageList />}
+        {showMessageList && <MessengerMessageList />}
         {showNextMessageLoader && (
           <View style={[styles.loadingContainer, { height: 30 }]}>
             <ActivityIndicator size={28} color={COLORS.gray6} />
@@ -78,7 +78,7 @@ export const MessengerContentLayout: React.FC = () => {
         {showNoMessage && (
           <View style={styles.noMessagesContainer}>
             <Text style={styles.noMessagesText}>
-              ChatFarm Conversations will appear here
+              Chats messages will appear here
             </Text>
           </View>
         )}

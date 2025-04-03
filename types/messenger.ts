@@ -1,55 +1,68 @@
 import { Auth } from "./auth";
+import { TAdvert } from "./advert";
+import { Asset } from "./assets";
 
-type Pagination = {
-  limit: number;
-  prevCursor: string;
-};
-
-type TFile = {
+type MessengerTag = {
   id: string;
-  chatroomID: string;
-  url: string;
-  path: string;
+  messengerID: string;
+  advertID: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string | null;
-};
-
-type TLocalFile = {
-  base64: string;
-  mimeType: string;
-};
-
-type Mention = {
-  id: string;
-  chatroomID: string;
-  userID: string;
-  createdAt: string;
-  updatedAt: string;
-  deletedAt: string | null;
+  advert?: TAdvert["advert"];
 };
 
 type Message = {
   id: string;
-  userID: string;
+  messengerRoomID: string;
+  senderID: string;
+  recipientID: string;
   text: string;
   reply: string;
-  file?: TFile;
+  repliedMessage: Message | null;
+  file: TFile | null;
   localFile?: TLocalFile;
-  mention: Mention[];
+  tag: MessengerTag[] | null;
+  isRead: boolean;
   sentAt: string;
   arrivedAt: string;
   createdAt: string;
   updatedAt: string;
-  deletedAt: string | null;
+  sender: Auth["user"] | null;
+  recipient: Auth["user"] | null;
 };
 
+type ImageDimensions = {
+  width: number;
+  height: number;
+};
+
+export type TFile = {
+  id: string;
+  messengerID: string;
+  url: string;
+  path: string;
+  dimensions: ImageDimensions;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string;
+};
+
+export type Pagination = {
+  limit: number;
+  prevCursor: string | null;
+  nextCursor: string | null;
+  includeCursor: boolean;
+  hasNextItems: boolean;
+  hasPrevItems: boolean;
+  direction: string;
+};
+
+type TLocalFile = Asset["file"];
+
 type OrganizedMessage = Message & {
-  repliedMessage: Message;
   isPrimaryMessage: boolean;
   isCurrentUserSender: boolean;
   showDay: boolean;
-  user: Auth["user"];
 };
 
 type GetMessageInput = {
@@ -57,18 +70,22 @@ type GetMessageInput = {
   cursor?: string;
   includeCursor?: boolean;
   direction?: "FORWARD" | "BACKWARD";
-  token: string;
+  messengerRoomID: string;
+  userOneID: string;
+  userTwoID: string;
 };
 
 type MessageInput = {
-  values: { base64: string };
-  userID: string;
+  messengerRoomID: string;
+  senderID: string;
+  recipientID: string;
   text: string;
   reply: string;
   file: Blob | null;
   localFile?: TLocalFile;
   sentAt: string;
-  mention?: string[];
+  tag?: string[];
+  isRead: boolean;
 };
 
 type MessageLoader = {
@@ -94,23 +111,20 @@ type TypingStatus = {
 };
 
 type GetMessageAPIResponse = {
-  data: {
-    messages: Message[];
-    replies: Message[] | null;
-  };
+  data: Message[];
   pagination: Pagination;
   status: string;
 };
 
-type UpdateOnlineStatusInput = {
+type GetRoomsByUserInput = {
+  limit: number;
+  cursor?: string;
   userID: string;
-  token: string;
 };
 
 type UpdateTypingStatusInput = {
   userID: string;
   startedTypingAt: string;
-  token: string;
 };
 
 type PostingMessage = {
@@ -129,10 +143,8 @@ type TMessengerAction = {
   updateMessage: (message: Message) => void;
   updateMessageBySentAt: (message: Message) => void;
   clearMessages: () => void;
-  updateAllReplies: (messages: Message[]) => void;
-  addReply: (message: Message) => void;
-  updateReply: (message: Message) => void;
-  clearReplies: () => void;
+  updatePagination: (pagination: Pagination) => void;
+  clearPagination: () => void;
   updateSwipedMessage: (message: OrganizedMessage) => void;
   clearSwipedMessage: () => void;
   updateMessageLoader: (messageLoader: MessageLoader) => void;
@@ -144,24 +156,32 @@ type TMessengerAction = {
   getAllOnlineStatuses: () => OnlineStatus[];
   updateTypingStatus: (status: TypingStatus) => void;
   getAllTypingStatuses: () => TypingStatus[];
+  updateCurrentRecipient: (user: Auth["user"]) => void;
+  clearCurrentRecipient: () => void;
+  updateUserRooms: (rooms: Message[]) => void;
+  clearUserRooms: () => void;
 };
 
 export type TMessenger = {
   messageInput: MessageInput;
   message: Message;
+  pagination: Pagination;
   organizedMessage: OrganizedMessage;
+  userRooms: Message[];
   swipedMessage: OrganizedMessage | null;
   postingMessage: Map<string, PostingMessage>;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
+  getRoomsByUserInput: GetRoomsByUserInput;
   messageLoader: MessageLoader;
   messageLoadingError: MessageLoadingError;
   onlineStatus: OnlineStatus;
   typingStatus: TypingStatus;
   onlineStatusMap: Map<string, OnlineStatus>;
   typingStatusMap: Map<string, TypingStatus>;
-  updateOnlineStatusInput: UpdateOnlineStatusInput;
   updateTypingStatusInput: UpdateTypingStatusInput;
   messengerAction: TMessengerAction;
   sseData: SSEData;
+  messengerTag: MessengerTag;
+  currentRecipient: Auth["user"];
 };

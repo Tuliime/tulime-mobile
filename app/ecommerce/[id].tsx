@@ -19,12 +19,17 @@ import { AppModal } from "@/components/shared/UI/Modal";
 import { PostFeedback } from "@/components/ecommerce/PostFeedback";
 import { ReportAbuse } from "@/components/ecommerce/ReportAbuse";
 import { router } from "expo-router";
+import { useMessengerStore } from "@/store/messenger";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
 const ProductDetailsScreen: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const [index, setIndex] = useState(0);
+
+  const updateCurrentRecipient = useMessengerStore(
+    (state) => state.updateCurrentRecipient
+  );
 
   const handleScroll = (event: any) => {
     const newIndex = Math.round(
@@ -34,6 +39,20 @@ const ProductDetailsScreen: React.FC = () => {
   };
 
   const navigateToMessenger = () => {
+    const currentRecipient = {
+      chatroomColor: "#D50000",
+      createdAt: "2025-01-18T17:59:49.263694Z",
+      id: "20c37fba-fc3b-41b4-874a-81f1b411c8b1",
+      imageUrl:
+        "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fprod%2F1265_vet3.png?alt=media&token=b21ac963-9ecb-44a4-8f38-ef9a58f75828",
+      name: "Tibs Dankan2",
+      profileBgColor: "#D93025",
+      role: "user",
+      telNumber: 256761839754,
+      updatedAt: "2025-03-30T23:40:08.959286Z",
+    };
+    updateCurrentRecipient(currentRecipient);
+
     router.push("/ecommerce/messenger");
   };
 

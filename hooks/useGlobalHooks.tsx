@@ -11,12 +11,12 @@ import { useGetEventStream } from "./useGetEventStream";
 
 export const UseGlobalHooks = () => {
   useGetAllUsers();
-  useGetLiveChat(); //To be removed
+  // useGetLiveChat(); //To be removed
   useGetEventStream();
   useGetOnlineStatus();
-  useGetDeviceToken();
+  // useGetDeviceToken();  //To fix the bug
   useGetNotifications();
-  useGetLiveNotifications(); //To be removed
+  // useGetLiveNotifications(); //To be removed
   useUpdateOnlineStatus();
   useNotificationListener();
   return <View></View>;

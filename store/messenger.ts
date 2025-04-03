@@ -2,28 +2,54 @@ import { create } from "zustand";
 import { produce, enableMapSet } from "immer";
 import { TMessenger } from "@/types/messenger";
 
+const defaultPagination: TMessenger["pagination"] = {
+  limit: 0,
+  prevCursor: null,
+  nextCursor: null,
+  includeCursor: false,
+  hasNextItems: false,
+  hasPrevItems: false,
+  direction: "",
+};
+
+const defaultRecipient: TMessenger["currentRecipient"] = {
+  id: "",
+  name: "",
+  role: "",
+  telNumber: 0,
+  imageUrl: "",
+  createdAt: "",
+  updatedAt: "",
+  profileBgColor: "",
+  chatroomColor: "",
+};
+
 enableMapSet(); // Enable Map & Set support for Immer
 
-export const useChatroomStore = create<
+export const useMessengerStore = create<
   {
     messages: TMessenger["message"][];
-    replies: TMessenger["message"][];
+    pagination: TMessenger["pagination"];
     swipedMessage: TMessenger["swipedMessage"];
     messageLoader: TMessenger["messageLoader"];
     messageLoadingError: TMessenger["messageLoadingError"];
     postingMessageMap: TMessenger["postingMessage"];
     onlineStatusMap: TMessenger["onlineStatusMap"];
     typingStatusMap: TMessenger["typingStatusMap"];
+    currentRecipient: TMessenger["currentRecipient"];
+    userRooms: TMessenger["userRooms"];
   } & TMessenger["messengerAction"]
 >((set, get) => ({
   messages: [],
-  replies: [],
+  pagination: defaultPagination,
   swipedMessage: null,
   messageLoader: { type: "firstTimeMessageLoader", isLoading: false },
   messageLoadingError: { message: "", isError: false },
   postingMessageMap: new Map(),
   onlineStatusMap: new Map(),
   typingStatusMap: new Map(),
+  currentRecipient: defaultRecipient,
+  userRooms: [],
   // Message Actions
   updateAllMessages: (messages) =>
     set(() => ({
@@ -39,6 +65,9 @@ export const useChatroomStore = create<
         msg.id === message.id ? { ...msg, ...message } : msg
       ),
     })),
+  // Pagination actions
+  updatePagination: (pagination) => set(() => ({ pagination: pagination })),
+  clearPagination: () => set(() => ({ pagination: defaultPagination })),
   updateMessageBySentAt: (message) =>
     set((state) => ({
       messages: state.messages.map((msg) =>
@@ -46,22 +75,6 @@ export const useChatroomStore = create<
       ),
     })),
   clearMessages: () => set(() => ({ messages: [] })),
-  // Replies Actions
-  updateAllReplies: (messages) =>
-    set(() => ({
-      replies: messages,
-    })),
-  addReply: (message) =>
-    set((state) => ({
-      replies: [...state.messages, message],
-    })),
-  updateReply: (message) =>
-    set((state) => ({
-      replies: state.messages.map((msg) =>
-        msg.id === message.id ? { ...msg, ...message } : msg
-      ),
-    })),
-  clearReplies: () => set(() => ({ replies: [] })),
   // Swiped message actions
   updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
   clearSwipedMessage: () =>
@@ -101,4 +114,9 @@ export const useChatroomStore = create<
       })
     ),
   getAllTypingStatuses: () => Array.from(get().typingStatusMap.values()),
+  updateCurrentRecipient: (user) => set(() => ({ currentRecipient: user })),
+  clearCurrentRecipient: () =>
+    set(() => ({ currentRecipient: defaultRecipient })),
+  updateUserRooms: (rooms) => set(() => ({ userRooms: rooms })),
+  clearUserRooms: () => set(() => ({ userRooms: [] })),
 }));

@@ -7,7 +7,7 @@ import { RepliedMessage } from "./RepliedMessage";
 import { truncateString } from "@/utils/truncateString";
 import { MessageOnSwipe } from "./MessageOnSwipe";
 import { TextMessage } from "./TextMessage";
-import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
+// import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 import { RightAngledTriangle } from "@/components/shared/icons/RightAngledTriangle";
 import { ImageDisplay } from "@/components/shared/UI/ImageDisplay";
 import { TMessenger } from "@/types/messenger";
@@ -31,14 +31,14 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
   return (
     <MessageOnSwipe message={props.message}>
       <View style={styles.Container}>
-        <View style={{ opacity: isPrimaryMessage ? 1 : 0 }}>
+        {/* <View style={{ opacity: isPrimaryMessage ? 1 : 0 }}>
           <ProfileAvatar
-            user={props.message.user}
+            user={props.message.recipient!}
             width={32}
             height={32}
             fontWeight={500}
           />
-        </View>
+        </View> */}
         <View
           style={[
             styles.messageContainer,
@@ -56,12 +56,12 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
               style={[
                 styles.usernameText,
                 {
-                  color: props.message.user.chatroomColor,
+                  color: props.message.recipient!.chatroomColor,
                   marginBottom: hasReplyMessage ? 4 : 0,
                 },
               ]}
             >
-              {truncateString(props.message.user.name, 24)}
+              {truncateString(props.message.recipient!.name, 24)}
             </Text>
           )}
           {hasReplyMessage && (

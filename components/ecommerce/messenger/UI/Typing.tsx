@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useAuthStore } from "@/store/auth";
 import { COLORS } from "@/constants";
-import { useChatroomStore } from "@/store/chatroom";
 import { Auth } from "@/types/auth";
+import { useMessengerStore } from "@/store/messenger";
 
 // TODO: To taylor this Typing to the current messenger recipient
 export const Typing: React.FC = () => {
   const users = useAuthStore((state) => state.users);
-  const getAllTypingStatuses = useChatroomStore(
+  const getAllTypingStatuses = useMessengerStore(
     (state) => state.getAllTypingStatuses
   );
   const [typingUsers, setTypingUsers] = useState<Auth["user"][]>();

@@ -7,12 +7,13 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Typing } from "@/components/chatroom/Typing";
 import { truncateString } from "@/utils";
 import { UserOnlineStatus } from "../UI/UserOnlineStatus";
+import { useMessengerStore } from "@/store/messenger";
+import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
@@ -22,6 +23,7 @@ type MessengerHeaderProps = {
 
 export const MessengerHeader: React.FC<MessengerHeaderProps> = (props) => {
   const navigateToBack = () => router.back();
+  const currentRecipient = useMessengerStore((state) => state.currentRecipient);
 
   // TODO: To change the header content depending on the current user (buyer or seller)
 
@@ -44,11 +46,7 @@ export const MessengerHeader: React.FC<MessengerHeaderProps> = (props) => {
                   color={COLORS.gray8}
                 />
               </TouchableOpacity>
-              <Image
-                source={icons.logoTemp}
-                resizeMode="contain"
-                style={styles.chatroomIcon}
-              />
+              <ProfileAvatar user={currentRecipient} />
             </View>
             <View style={styles.contentContainer}>
               <Text style={styles.titleText}>

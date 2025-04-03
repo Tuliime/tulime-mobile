@@ -14,7 +14,7 @@ export const UseGlobalHooks = () => {
   // useGetLiveChat(); //To be removed
   useGetEventStream();
   useGetOnlineStatus();
-  // useGetDeviceToken();  //To fix the bug
+  useGetDeviceToken(); //To fix the bug
   useGetNotifications();
   // useGetLiveNotifications(); //To be removed
   useUpdateOnlineStatus();

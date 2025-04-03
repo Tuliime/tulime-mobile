@@ -14,6 +14,7 @@ export const MessengerContentLayout: React.FC = () => {
     (state) => state.messageLoadingError
   );
   const messagesFromStore = useMessengerStore((state) => state.messages);
+  const currentRecipient = useMessengerStore((state) => state.currentRecipient);
   const { direction } = useGlobalSearchParams<{
     cursor: string;
     includeCursor: string;
@@ -47,8 +48,9 @@ export const MessengerContentLayout: React.FC = () => {
     !!messageLoadingError.message && messageLoadingError.isError;
 
   return (
+    // TODO: To improve messenger title when user has business
     <MessengerLayout
-      title="kampala Agro Enterprises"
+      title={currentRecipient.name}
       messengerInputField={<MessengerForm />}
     >
       <View style={{ flex: 1, gap: 0 }}>

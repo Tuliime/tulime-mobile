@@ -1,6 +1,5 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import { useChatroomStore } from "@/store/chatroom";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { COLORS } from "@/constants";
 import { truncateString } from "@/utils/truncateString";
@@ -8,22 +7,25 @@ import { useAuthStore } from "@/store/auth";
 import { SwipedImageDisplay } from "./SwipedImageDisplay";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { TextMessage } from "./TextMessage";
+import { useMessengerStore } from "@/store/messenger";
 
 export const SwipedMessage: React.FC = () => {
-  const swipedMessage = useChatroomStore((state) => state.swipedMessage);
-  const clearSwipedMessage = useChatroomStore(
+  const swipedMessage = useMessengerStore((state) => state.swipedMessage);
+  const clearSwipedMessage = useMessengerStore(
     (state) => state.clearSwipedMessage
   );
 
   const currentUser = useAuthStore((state) => state.auth.user);
-  const isSenderCurrentUser = swipedMessage?.userID === currentUser.id;
-  const username = isSenderCurrentUser ? "You" : swipedMessage?.user.name!;
+  const currentRecipient = useMessengerStore((state) => state.currentRecipient);
+  const isSenderCurrentUser = swipedMessage?.senderID === currentUser.id;
+
+  const username = isSenderCurrentUser ? "You" : currentRecipient.name!;
   const hasImage: boolean = !!swipedMessage?.file?.url;
   const hasText: boolean = !!swipedMessage?.text;
   const showPhotoIcon: boolean = hasImage && !hasText;
   const chatroomColor = isSenderCurrentUser
     ? COLORS.blue4
-    : swipedMessage?.user.chatroomColor!;
+    : currentRecipient.chatroomColor!;
 
   return (
     <View style={styles.container}>

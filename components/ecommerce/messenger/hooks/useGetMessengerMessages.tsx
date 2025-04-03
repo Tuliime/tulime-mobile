@@ -1,26 +1,31 @@
 import { useEffect } from "react";
-import { chatroom } from "@/API/chatroom";
+import { messenger } from "@/API/messenger";
 import { useAuthStore } from "@/store/auth";
 import { useQuery } from "@tanstack/react-query";
-import { useChatroomStore } from "@/store/chatroom";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { useGlobalSearchParams } from "expo-router";
 import { parseBool } from "@/utils/parseBool";
 import { TMessenger } from "@/types/messenger";
+import { useMessengerStore } from "@/store/messenger";
 
-export const useGetMessengerThreads = () => {
+export const useGetMessengerMessages = () => {
   const auth = useAuthStore((state) => state.auth);
-  const updateAllMessages = useChatroomStore(
+  const updateAllMessages = useMessengerStore(
     (state) => state.updateAllMessages
   );
-  const updateAllReplies = useChatroomStore((state) => state.updateAllReplies);
-  const messagesFromStore = useChatroomStore((state) => state.messages) ?? [];
-  const repliesFromStore = useChatroomStore((state) => state.replies) ?? [];
-  const updateMessageLoader = useChatroomStore(
+  const updatePagination = useMessengerStore((state) => state.updatePagination);
+  const messagesFromStore = useMessengerStore((state) => state.messages) ?? [];
+  const updateMessageLoader = useMessengerStore(
     (state) => state.updateMessageLoader
   );
-  const updateMessageLoadingError = useChatroomStore(
+  const updateMessageLoadingError = useMessengerStore(
     (state) => state.updateMessageLoadingError
+  );
+
+  const recipient = useMessengerStore((state) => state.currentRecipient);
+  const sender = auth.user;
+  const messengerRoomID = useMessengerStore(
+    (state) => state.messages[0]?.messengerRoomID ?? ""
   );
 
   const { cursor, includeCursor, direction, urlUpdateAction } =
@@ -34,25 +39,26 @@ export const useGetMessengerThreads = () => {
   const isForwardDirection: boolean = direction === "FORWARD";
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: [`chatroom-${auth.user.id}-${cursor}-${direction}`],
+    queryKey: [`messengerRoom-${auth.user.id}-${cursor}-${direction}`],
     queryFn: () => {
-      return chatroom.get({
+      return messenger.getMessagesByRoom({
         limit: 20,
         cursor: !!cursor ? cursor : "",
         includeCursor: parseBool(includeCursor),
         direction: isForwardDirection ? "FORWARD" : "BACKWARD",
-        token: auth.accessToken,
+        userOneID: sender.id,
+        userTwoID: recipient.id, // To be the current recipient
+        messengerRoomID: messengerRoomID, // To gotten from the first message
       });
     },
   });
 
   const msgAPIResponse: TMessenger["getMessageAPIResponse"] = data;
-  const incomingMessages: TMessenger["message"][] =
-    msgAPIResponse?.data?.messages ?? [];
-  const incomingReplies: TMessenger["message"][] =
-    msgAPIResponse?.data?.replies ?? [];
+  const incomingMessages: TMessenger["message"][] = msgAPIResponse?.data ?? [];
+  const pagination: TMessenger["pagination"] = msgAPIResponse?.pagination;
 
-  //   console.log("msgAPIResponse:", msgAPIResponse);
+  console.log("msgAPIResponse: ", msgAPIResponse);
+  console.log("incomingMessages: ", incomingMessages);
 
   const hasMessages = isArrayWithElements(messagesFromStore);
 
@@ -69,9 +75,7 @@ export const useGetMessengerThreads = () => {
           return;
         }
         const resultingMessages = [...messagesFromStore, ...incomingMessages];
-        const resultingReplies = [...repliesFromStore, ...incomingReplies];
         updateAllMessages(resultingMessages);
-        updateAllReplies(resultingReplies);
         return;
       }
       if (!isForwardDirection) {
@@ -79,14 +83,17 @@ export const useGetMessengerThreads = () => {
           return;
         }
         const resultingMessages = [...incomingMessages, ...messagesFromStore];
-        const resultingReplies = [...incomingReplies, ...repliesFromStore];
         updateAllMessages(resultingMessages);
-        updateAllReplies(resultingReplies);
         return;
       }
       updateAllMessages(incomingMessages);
-      updateAllReplies(incomingReplies);
     };
+
+    const updatePaginationHandler = () => {
+      updatePagination(pagination);
+    };
+
+    updatePaginationHandler();
     updateMessageHandler();
   }, [data]);
 

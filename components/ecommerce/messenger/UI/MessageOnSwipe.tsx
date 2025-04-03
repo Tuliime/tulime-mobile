@@ -11,8 +11,8 @@ import {
   GestureDetector,
   GestureHandlerRootView,
 } from "react-native-gesture-handler";
-import { useChatroomStore } from "@/store/chatroom";
 import { TMessenger } from "@/types/messenger";
+import { useMessengerStore } from "@/store/messenger";
 
 type MessageOnSwipeProps = {
   message: TMessenger["organizedMessage"];
@@ -20,7 +20,7 @@ type MessageOnSwipeProps = {
 };
 
 export const MessageOnSwipe: React.FC<MessageOnSwipeProps> = (props) => {
-  const updateSwipedMessage = useChatroomStore(
+  const updateSwipedMessage = useMessengerStore(
     (state) => state.updateSwipedMessage
   );
   const translateX = useSharedValue(0);

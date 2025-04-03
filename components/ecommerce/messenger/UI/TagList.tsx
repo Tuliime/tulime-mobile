@@ -8,26 +8,27 @@ import {
   Text,
   FlatList,
   StyleSheet,
-  Image,
   TouchableOpacity,
 } from "react-native";
 
-type MentionListProps = {
+type TagListProps = {
   onSelect: (user: Auth["user"]) => void;
-  mentionValue: string;
+  tagValue: string;
 };
 
-export const MentionList: React.FC<MentionListProps> = (props) => {
+export const TagList: React.FC<TagListProps> = (props) => {
   const currentUser = useAuthStore((state) => state.auth.user);
   const users = useAuthStore((state) => state.users);
-  const hasMentionValue: boolean = !!props.mentionValue;
+  const hasTagValue: boolean = !!props.tagValue;
+
+  // TODO: To make api call to fetch the recipients products
 
   const filteredUsers = users.filter((user) => {
-    if (!hasMentionValue) return user.id !== currentUser.id;
+    if (!hasTagValue) return user.id !== currentUser.id;
 
     return (
       user.id !== currentUser.id &&
-      user.name.toLowerCase().includes(props.mentionValue.toLowerCase())
+      user.name.toLowerCase().includes(props.tagValue.toLowerCase())
     );
   });
 

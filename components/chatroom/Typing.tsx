@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
-import { useAuthStore } from "@/store/auth";
 import { COLORS } from "@/constants";
 import { useChatroomStore } from "@/store/chatroom";
 import { Auth } from "@/types/auth";
@@ -9,7 +8,6 @@ import { addCommasToNumber } from "@/utils";
 import { SyncLoader } from "../shared/loaders/SyncLoader";
 
 export const Typing: React.FC = () => {
-  const users = useAuthStore((state) => state.users);
   const getAllTypingStatuses = useChatroomStore(
     (state) => state.getAllTypingStatuses
   );
@@ -22,9 +20,7 @@ export const Typing: React.FC = () => {
         .filter(
           (status) => now - 3000 <= new Date(status.startedTypingAt).getTime()
         )
-        .map((status) => {
-          return users.find((usr) => usr.id === status.userID)!;
-        });
+        .map((status) => status.user);
 
       setTypingUsers(() => currentlyTypingUsers);
     };

@@ -145,6 +145,7 @@ type TChatroomAction = {
   getPostingMessage: (sentAt: string) => PostingMessage;
   getAllPostingMessages: () => PostingMessage[];
   updateOnlineStatus: (status: OnlineStatus) => void;
+  getOnlineStatusByUser: (userID: string) => OnlineStatus;
   getAllOnlineStatuses: () => OnlineStatus[];
   updateTypingStatus: (status: TypingStatus) => void;
   getAllTypingStatuses: () => TypingStatus[];

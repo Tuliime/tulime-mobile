@@ -158,6 +158,7 @@ type TMessengerAction = {
   getAllOnlineStatuses: () => OnlineStatus[];
   updateTypingStatus: (status: TypingStatus) => void;
   getAllTypingStatuses: () => TypingStatus[];
+  getTypingStatusByUser: (userID: string) => TypingStatus;
   updateCurrentRecipient: (user: Auth["user"]) => void;
   clearCurrentRecipient: () => void;
   updateUserRooms: (rooms: Message[]) => void;

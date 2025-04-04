@@ -38,6 +38,7 @@ export const useGetDeviceToken = () => {
     console.log("Notification Permission status: ", status);
   };
 
+  // TODO: TO revise this logic
   useEffect(() => {
     const postDeviceToken = async () => {
       try {

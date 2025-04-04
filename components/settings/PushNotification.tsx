@@ -129,6 +129,7 @@ export const PushNotification: React.FC = () => {
     updateNotificationStateHandler();
   }, [allDevices, currentDevice]);
 
+  // TODO: TO revise this logic
   const postDeviceHandler = async () => {
     if (currentDevice.token) {
       Alert.alert("Current Device ", "Current Device already exists!.");
@@ -136,6 +137,8 @@ export const PushNotification: React.FC = () => {
     }
     const deviceToken = await getExpoPushToken()!;
     let deviceName: string = "";
+
+    console.log("deviceToken :", deviceToken);
 
     if (Device.deviceName) deviceName = Device.deviceName;
 

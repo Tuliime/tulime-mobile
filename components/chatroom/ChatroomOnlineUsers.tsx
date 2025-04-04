@@ -2,11 +2,9 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { addCommasToNumber } from "@/utils";
 import { COLORS } from "@/constants";
-import { useAuthStore } from "@/store/auth";
 import { useChatroomStore } from "@/store/chatroom";
 
-export const ChatroomUsers: React.FC = () => {
-  const users = useAuthStore((state) => state.users);
+export const ChatroomOnlineUsers: React.FC = () => {
   const getAllOnlineStatuses = useChatroomStore(
     (state) => state.getAllOnlineStatuses
   );
@@ -29,10 +27,7 @@ export const ChatroomUsers: React.FC = () => {
   }, [getAllOnlineStatuses]);
 
   const currentOnlineUsers: number = onlineUsers!?.length;
-  const totalUsers: number = users!?.length;
-  const hasOnlineUsers: boolean = onlineUsers!?.length > 0;
-  const hasUsers: boolean = users!?.length > 0;
-  const showOnlineStatus: boolean = hasOnlineUsers && hasUsers;
+  const showOnlineStatus: boolean = onlineUsers!?.length > 0;
 
   return (
     <View>
@@ -44,13 +39,6 @@ export const ChatroomUsers: React.FC = () => {
             </Text>
             <View style={styles.onlineDot}></View>
             <Text style={styles.onlineUsersLabel}>Online</Text>
-          </View>
-          <View style={styles.seperationDot}></View>
-          <View style={styles.totalUsersContainer}>
-            <Text style={styles.totalUsersNumber}>
-              {addCommasToNumber(totalUsers)}
-            </Text>
-            <Text style={styles.totalUsersLabel}>Total </Text>
           </View>
         </View>
       )}
@@ -85,25 +73,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: COLORS.gray6,
     marginLeft: 4,
-  },
-  seperationDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 999,
-    backgroundColor: COLORS.gray6,
-  },
-  totalUsersContainer: {
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    gap: 4,
-  },
-  totalUsersNumber: {
-    fontSize: 12,
-    color: COLORS.gray6,
-  },
-  totalUsersLabel: {
-    fontSize: 12,
-    color: COLORS.gray6,
   },
 });

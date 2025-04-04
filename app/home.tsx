@@ -24,6 +24,7 @@ const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
+// TODO: To use primary layout to for the home screen
 export default function Home() {
   const user = useAuthStore((state) => state.auth.user);
 
@@ -95,6 +96,10 @@ export default function Home() {
 
   const navigateToBookmark = () => {
     router.push("/ecommerce/bookmark");
+  };
+
+  const navigateToMessengerRooms = () => {
+    router.push("/ecommerce/messenger");
   };
 
   return (

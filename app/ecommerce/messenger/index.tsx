@@ -1,15 +1,21 @@
-import { MessengerContentLayout } from "@/components/ecommerce/messenger/layout/MessengerContentLayout";
-import { FetchMessengerMessages } from "@/components/ecommerce/messenger/UI/FetchMessengerMessages";
+// import { MessengerContentLayout } from "@/components/ecommerce/messenger/layout/MessengerContentLayout";
+// import { FetchMessengerMessages } from "@/components/ecommerce/messenger/UI/FetchMessengerMessages";
 import React from "react";
-import { View } from "react-native";
+import { View, Text } from "react-native";
+import { PrimaryLayout } from "@/components/shared/layout/PrimaryLayout";
 
-const Messenger: React.FC = () => {
+const MessengerRoomList: React.FC = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <FetchMessengerMessages />
-      <MessengerContentLayout />
-    </View>
+    // <View style={{ flex: 1 }}>
+    //   <FetchMessengerMessages />
+    //   <MessengerContentLayout />
+    // </View>
+    <PrimaryLayout>
+      <View>
+        <Text>MessengerRoomList here</Text>
+      </View>
+    </PrimaryLayout>
   );
 };
 
-export default Messenger;
+export default MessengerRoomList;

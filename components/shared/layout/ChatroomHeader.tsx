@@ -12,7 +12,7 @@ import {
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { Typing } from "@/components/chatroom/Typing";
-import { ChatroomUsers } from "@/components/chatroom/ChatroomUsers";
+import { ChatroomOnlineUsers } from "@/components/chatroom/ChatroomOnlineUsers";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
@@ -55,7 +55,7 @@ export const ChatroomHeader: React.FC<ChatroomHeaderProps> = (props) => {
                 <Typing />
               </View>
               <View style={styles.chatroomUsersContainer}>
-                <ChatroomUsers />
+                <ChatroomOnlineUsers />
               </View>
             </View>
             <TouchableOpacity

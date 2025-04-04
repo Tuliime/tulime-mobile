@@ -12,16 +12,15 @@ import {
 import { router, Stack } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "@/components/shared/layout";
+import { PrimaryHeader } from "./PrimaryHeader";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
-type HomeLayoutProps = {
+type PrimaryLayoutProps = {
   children: ReactNode;
-  header: ReactNode;
 };
 
-// TODO: To be changed to Primary layout
-export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
+export const PrimaryLayout: React.FC<PrimaryLayoutProps> = (props) => {
   const navigateToChatBot = () => {
     router.push("/chatbot");
   };
@@ -32,17 +31,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
         backgroundColor={COLORS.green9}
         translucent={false}
       />
-      <Stack.Screen
-        options={{
-          headerStyle: styles.headerStyle,
-          headerShown: true,
-          headerShadowVisible: false,
-          headerLeft: () => (
-            <View style={styles.headerLeftContainer}>{props.header}</View>
-          ),
-          headerTitle: "",
-        }}
-      />
+      <PrimaryHeader />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.contentContainer}>{props.children}</View>
       </ScrollView>

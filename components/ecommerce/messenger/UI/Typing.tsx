@@ -1,41 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { useAuthStore } from "@/store/auth";
 import { COLORS } from "@/constants";
-import { Auth } from "@/types/auth";
 import { useMessengerStore } from "@/store/messenger";
+import { SyncLoader } from "@/components/shared/loaders/SyncLoader";
 
 export const Typing: React.FC = () => {
-  const users = useAuthStore((state) => state.users);
-  const getAllTypingStatuses = useMessengerStore(
-    (state) => state.getAllTypingStatuses
+  const getTypingStatusByUser = useMessengerStore(
+    (state) => state.getTypingStatusByUser
   );
   const currentRecipient = useMessengerStore((state) => state.currentRecipient);
-  const [typingUsers, setTypingUsers] = useState<Auth["user"][]>();
+  const [showTypingStatus, setShowTypingStatus] = useState<boolean>(false);
 
   useEffect(() => {
     const updateTypingUsers = () => {
       const now = Date.now();
-      const currentlyTypingUsers = getAllTypingStatuses().filter(
-        (status) =>
-          now - 3000 <= new Date(status.startedTypingAt).getTime() &&
-          status.userID === currentRecipient.id
-      );
+      const userTypingStatus = getTypingStatusByUser(currentRecipient.id);
+      if (!userTypingStatus) return;
 
-      setTypingUsers(() => [currentlyTypingUsers[0]?.user]);
+      if (now - 3000 <= new Date(userTypingStatus.startedTypingAt).getTime()) {
+        setShowTypingStatus(() => true);
+        return;
+      }
+      setShowTypingStatus(() => false);
     };
 
     updateTypingUsers();
     const interval = setInterval(updateTypingUsers, 1000);
 
     return () => clearInterval(interval);
-  }, [getAllTypingStatuses]);
+  }, [getTypingStatusByUser]);
 
-  const hasTypingUser: boolean = typingUsers!?.length > 0;
-
+  console.log("showTypingStatus: ", showTypingStatus);
   return (
-    <View style={styles.container}>
-      {hasTypingUser && <Text style={styles.typingText}>Typing...</Text>}
+    <View>
+      {showTypingStatus && (
+        <View style={styles.container}>
+          <Text style={styles.typingText}>Typing</Text>
+          <SyncLoader color={COLORS.primary} size={4.5} speed={480} />
+        </View>
+      )}
     </View>
   );
 };
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
   },
   typingText: {
     marginLeft: 2,
-    fontSize: 10,
+    fontSize: 11,
     color: COLORS.primary,
     fontWeight: 700,
   },

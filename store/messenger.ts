@@ -114,6 +114,7 @@ export const useMessengerStore = create<
       })
     ),
   getAllTypingStatuses: () => Array.from(get().typingStatusMap.values()),
+  getTypingStatusByUser: (userID) => get().typingStatusMap.get(userID)!,
   updateCurrentRecipient: (user) => set(() => ({ currentRecipient: user })),
   clearCurrentRecipient: () =>
     set(() => ({ currentRecipient: defaultRecipient })),

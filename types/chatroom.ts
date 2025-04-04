@@ -92,6 +92,8 @@ type OnlineStatus = {
 type TypingStatus = {
   userID: string;
   startedTypingAt: string;
+  recipientID: string;
+  user: Auth["user"];
 };
 
 type GetMessageAPIResponse = {
@@ -111,7 +113,8 @@ type UpdateOnlineStatusInput = {
 type UpdateTypingStatusInput = {
   userID: string;
   startedTypingAt: string;
-  token: string;
+  recipientID: string;
+  type: "messenger" | "chatroom";
 };
 
 type PostingMessage = {

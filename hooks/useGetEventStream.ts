@@ -9,16 +9,22 @@ import { sounds } from "@/constants";
 import { isJWTTokenExpired } from "@/utils/expiredJWT";
 import { TNotification } from "@/types/notification";
 import { useNotificationStore } from "@/store/notification";
+import { useMessengerStore } from "@/store/messenger";
+import { TMessenger } from "@/types/messenger";
 
 export const useGetEventStream = () => {
   const effectRan = useRef(false);
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
-  const addMessage = useChatroomStore((state) => state.addMessage);
+  const addChatroomMessage = useChatroomStore((state) => state.addMessage);
   const updateOnlineStatus = useChatroomStore(
     (state) => state.updateOnlineStatus
   );
-  const updateTypingStatus = useChatroomStore(
+  const updateTypingStatusChatroom = useChatroomStore(
+    (state) => state.updateTypingStatus
+  );
+  const addMessengerMessage = useMessengerStore((state) => state.addMessage);
+  const updateTypingStatusMessenger = useMessengerStore(
     (state) => state.updateTypingStatus
   );
 
@@ -52,8 +58,12 @@ export const useGetEventStream = () => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
+      const isMessengerMessage = parsedData.type === "messenger";
       const isOnlineStatusMsg = parsedData.type === "online-status";
-      const isTypingStatusMsg = parsedData.type === "typing-status";
+      const isTypingStatusChatroom =
+        parsedData.type === "typing-status-chatroom";
+      const isTypingStatusMessenger =
+        parsedData.type === "typing-status-messenger";
       const isNotification = parsedData.type === "notification";
 
       if (isKeepLiveMsg) return;
@@ -62,16 +72,29 @@ export const useGetEventStream = () => {
         const message = parsedData.data as TChatroom["organizedMessage"];
         if (message.userID === userID) return;
 
-        addMessage(parsedData.data);
+        addChatroomMessage(parsedData.data);
+        playNewMessageSound();
+      }
+      if (isMessengerMessage) {
+        const message = parsedData.data as TMessenger["organizedMessage"];
+        if (message.senderID === userID) return;
+
+        addMessengerMessage(parsedData.data);
         playNewMessageSound();
       }
       if (isOnlineStatusMsg) {
         const onlineStatus = parsedData.data as TChatroom["onlineStatus"];
         updateOnlineStatus(onlineStatus);
       }
-      if (isTypingStatusMsg) {
+
+      if (isTypingStatusChatroom) {
         const typingStatus = parsedData.data as TChatroom["typingStatus"];
-        updateTypingStatus(typingStatus);
+        updateTypingStatusChatroom(typingStatus);
+      }
+
+      if (isTypingStatusMessenger) {
+        const typingStatus = parsedData.data as TMessenger["typingStatus"];
+        updateTypingStatusMessenger(typingStatus);
       }
 
       if (isNotification) {

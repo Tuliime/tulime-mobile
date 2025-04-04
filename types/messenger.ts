@@ -108,6 +108,8 @@ type OnlineStatus = {
 type TypingStatus = {
   userID: string;
   startedTypingAt: string;
+  recipientID: string;
+  user: Auth["user"];
 };
 
 type GetMessageAPIResponse = {

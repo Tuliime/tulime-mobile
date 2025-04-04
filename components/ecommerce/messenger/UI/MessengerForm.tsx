@@ -294,7 +294,7 @@ export const MessengerForm: React.FC = () => {
       setShowMentionList(() => true);
       setMentionValue(() => mentionExtract.mention!);
     }
-    keypadInputTracker(text);
+    keypadInputTracker(text, "messenger", recipient.id);
   };
 
   const disableSubmitButton = (

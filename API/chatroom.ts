@@ -83,17 +83,20 @@ class ChatroomAPI {
   updateTypingStatus = async ({
     userID,
     startedTypingAt,
-    token,
+    recipientID,
+    type,
   }: TChatroom["updateTypingStatusInput"]) => {
     const response = await fetch(`${serverURL}/chatroom/typingstatus`, {
       method: "PATCH",
       body: JSON.stringify({
         userID: userID,
         startedTypingAt: startedTypingAt,
+        recipientID: recipientID,
+        type: type,
       }),
       headers: {
         "Content-type": "application/json",
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
       },
     });
 

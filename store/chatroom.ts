@@ -93,6 +93,7 @@ export const useChatroomStore = create<
       })
     ),
   getAllOnlineStatuses: () => Array.from(get().onlineStatusMap.values()),
+  getOnlineStatusByUser: (userID) => get().onlineStatusMap.get(userID)!,
   // Typing status action
   updateTypingStatus: (status) =>
     set(

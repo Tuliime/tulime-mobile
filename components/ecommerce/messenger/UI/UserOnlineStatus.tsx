@@ -1,52 +1,55 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { addCommasToNumber } from "@/utils";
 import { COLORS } from "@/constants";
-import { useAuthStore } from "@/store/auth";
 import { useChatroomStore } from "@/store/chatroom";
+import { useMessengerStore } from "@/store/messenger";
+import { elapsedTime } from "@/utils/elapsedTime";
 
-// TODO: To show user online status("online" or "last seen")
 export const UserOnlineStatus: React.FC = () => {
-  const users = useAuthStore((state) => state.users);
-  const getAllOnlineStatuses = useChatroomStore(
-    (state) => state.getAllOnlineStatuses
+  const getOnlineStatusByUser = useChatroomStore(
+    (state) => state.getOnlineStatusByUser
   );
-  const [onlineUsers, setOnlineUsers] = useState<string[]>();
+  const currentRecipient = useMessengerStore((state) => state.currentRecipient);
+  const [showOnlineStatus, setShowOnlineStatus] = useState<boolean>(false);
+  const [updatedAt, setUpdatedAt] = useState<string>("");
 
   useEffect(() => {
     const updateUserOnlineStatus = () => {
       const now = Date.now();
-      const currentlyTypingUsers = getAllOnlineStatuses()
-        .filter((status) => now - 30000 <= new Date(status.updatedAt).getTime())
-        .map((status) => status.userID);
+      const userOnlineStatus = getOnlineStatusByUser(currentRecipient.id);
+      if (!userOnlineStatus) return;
+      setUpdatedAt(() => userOnlineStatus.updatedAt);
 
-      setOnlineUsers(() => currentlyTypingUsers);
+      if (now - 30000 <= new Date(userOnlineStatus.updatedAt).getTime()) {
+        setShowOnlineStatus(() => true);
+        return;
+      }
+      setShowOnlineStatus(() => false);
     };
 
     updateUserOnlineStatus();
     const interval = setInterval(updateUserOnlineStatus, 5000);
 
     return () => clearInterval(interval);
-  }, [getAllOnlineStatuses]);
+  }, [getOnlineStatusByUser]);
 
-  const currentOnlineUsers: number = onlineUsers!?.length;
-  const hasOnlineUsers: boolean = onlineUsers!?.length > 0;
-  const hasUsers: boolean = users!?.length > 0;
-  const showOnlineStatus: boolean = hasOnlineUsers && hasUsers;
-
-  // TODO: To show online or last seen
+  const showLastSeen = !showOnlineStatus && !!updatedAt;
 
   return (
     <View>
       {showOnlineStatus && (
         <View style={styles.container}>
           <View style={styles.onlineUsersContainer}>
-            <Text style={styles.onlineUsersNumber}>
-              {addCommasToNumber(currentOnlineUsers)}
-            </Text>
             <View style={styles.onlineDot}></View>
             <Text style={styles.onlineText}>Online</Text>
           </View>
+        </View>
+      )}
+      {showLastSeen && (
+        <View style={styles.container}>
+          <Text style={styles.lastSeenText}>
+            Last seen {elapsedTime(updatedAt, "short")}
+          </Text>
         </View>
       )}
     </View>
@@ -81,24 +84,8 @@ const styles = StyleSheet.create({
     color: COLORS.gray6,
     marginLeft: 4,
   },
-  // seperationDot: {
-  //   width: 6,
-  //   height: 6,
-  //   borderRadius: 999,
-  //   backgroundColor: COLORS.gray6,
-  // },
-  // totalUsersContainer: {
-  //   flexDirection: "row",
-  //   justifyContent: "flex-start",
-  //   alignItems: "center",
-  //   gap: 4,
-  // },
-  // totalUsersNumber: {
-  //   fontSize: 12,
-  //   color: COLORS.gray6,
-  // },
-  // totalUsersLabel: {
-  //   fontSize: 12,
-  //   color: COLORS.gray6,
-  // },
+  lastSeenText: {
+    fontSize: 12,
+    color: COLORS.gray6,
+  },
 });

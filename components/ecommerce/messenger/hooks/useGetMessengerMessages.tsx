@@ -57,8 +57,8 @@ export const useGetMessengerMessages = () => {
   const incomingMessages: TMessenger["message"][] = msgAPIResponse?.data ?? [];
   const pagination: TMessenger["pagination"] = msgAPIResponse?.pagination;
 
-  console.log("msgAPIResponse: ", msgAPIResponse);
-  console.log("incomingMessages: ", incomingMessages);
+  // console.log("msgAPIResponse: ", msgAPIResponse);
+  // console.log("incomingMessages: ", incomingMessages);
 
   const hasMessages = isArrayWithElements(messagesFromStore);
 

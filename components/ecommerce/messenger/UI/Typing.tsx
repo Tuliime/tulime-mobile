@@ -5,26 +5,24 @@ import { COLORS } from "@/constants";
 import { Auth } from "@/types/auth";
 import { useMessengerStore } from "@/store/messenger";
 
-// TODO: To taylor this Typing to the current messenger recipient
 export const Typing: React.FC = () => {
   const users = useAuthStore((state) => state.users);
   const getAllTypingStatuses = useMessengerStore(
     (state) => state.getAllTypingStatuses
   );
+  const currentRecipient = useMessengerStore((state) => state.currentRecipient);
   const [typingUsers, setTypingUsers] = useState<Auth["user"][]>();
 
   useEffect(() => {
     const updateTypingUsers = () => {
       const now = Date.now();
-      const currentlyTypingUsers = getAllTypingStatuses()
-        .filter(
-          (status) => now - 3000 <= new Date(status.startedTypingAt).getTime()
-        )
-        .map((status) => {
-          return users.find((usr) => usr.id === status.userID)!;
-        });
+      const currentlyTypingUsers = getAllTypingStatuses().filter(
+        (status) =>
+          now - 3000 <= new Date(status.startedTypingAt).getTime() &&
+          status.userID === currentRecipient.id
+      );
 
-      setTypingUsers(() => currentlyTypingUsers);
+      setTypingUsers(() => [currentlyTypingUsers[0]?.user]);
     };
 
     updateTypingUsers();
@@ -37,7 +35,7 @@ export const Typing: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {hasTypingUser && <Text style={styles.typingText}>typing...</Text>}
+      {hasTypingUser && <Text style={styles.typingText}>Typing...</Text>}
     </View>
   );
 };

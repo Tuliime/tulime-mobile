@@ -7,7 +7,7 @@ import * as Device from "expo-device";
 
 export const UseGlobalRequestInterceptor = () => {
   const { auth, deleteAuth } = useAuthStore();
-  const { refreshToken } = auth;
+  const { refreshToken, accessToken } = auth;
   const { signInWithRT } = useSignInWithRefreshToken();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ export const UseGlobalRequestInterceptor = () => {
         // Attach Authorization header if  missing
         const headers: any = args[1]?.headers;
         if (!headers.Authorization) {
-          headers.Authorization = `Bearer ${auth.accessToken}`;
+          headers.Authorization = `Bearer ${accessToken}`;
         }
 
         // Attach X-Device header
@@ -63,7 +63,7 @@ export const UseGlobalRequestInterceptor = () => {
       };
     };
     fetchInterceptorHandler();
-  }, []);
+  }, [refreshToken, accessToken]);
 
   return <View></View>;
 };

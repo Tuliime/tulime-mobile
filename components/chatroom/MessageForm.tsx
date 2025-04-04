@@ -280,7 +280,7 @@ export const MessageForm: React.FC = () => {
       setShowMentionList(() => true);
       setMentionValue(() => mentionExtract.mention!);
     }
-    keypadInputTracker(text);
+    keypadInputTracker(text, "chatroom", "*");
   };
 
   const disableSubmitButton = (

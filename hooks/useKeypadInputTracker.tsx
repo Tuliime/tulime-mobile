@@ -2,9 +2,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { chatroom } from "@/API/chatroom";
 import { useMutation } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth";
+import { TChatroom } from "@/types/chatroom";
 
 export const useKeypadInputTracker = () => {
   const [isTyping, setIsTyping] = useState(false);
+  const [typingType, setTypingType] =
+    useState<TChatroom["updateTypingStatusInput"]["type"]>("chatroom");
+  const [recipientID, setRecipientID] = useState("");
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const requestIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const hasSentFirstRequest = useRef(false);
@@ -27,7 +31,9 @@ export const useKeypadInputTracker = () => {
       mutate({
         userID: user.id,
         startedTypingAt: new Date().toISOString(),
-        token: accessToken,
+        // token: accessToken,
+        type: typingType,
+        recipientID: recipientID,
       });
     };
 
@@ -63,7 +69,14 @@ export const useKeypadInputTracker = () => {
     };
   }, [isTyping]);
 
-  const keypadInputTracker = (text: string) => {
+  const keypadInputTracker = (
+    text: string,
+    typingType: TChatroom["updateTypingStatusInput"]["type"],
+    recipientID: string
+  ) => {
+    setTypingType(() => typingType!);
+    setRecipientID(() => recipientID!);
+
     if (!isTyping) {
       // Start typing detection only if it was previously stopped
       setIsTyping(() => true);

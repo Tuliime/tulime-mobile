@@ -8,12 +8,14 @@ export const useNotificationStore = create<
   {
     allNotificationCount: number;
     chatNotificationCount: number;
+    messengerNotificationCount: number;
     notifications: TNotification["notification"][];
   } & TNotification["notificationAction"]
 >((set) => ({
   notifications: [],
   allNotificationCount: 0,
   chatNotificationCount: 0,
+  messengerNotificationCount: 0,
   // Notification Actions
   updateAllNotificationCount: (count) =>
     set(
@@ -46,6 +48,10 @@ export const useNotificationStore = create<
         if (newNotification.type === "chat") {
           state.chatNotificationCount = state.chatNotificationCount + 1;
         }
+        if (newNotification.type === "messenger") {
+          state.messengerNotificationCount =
+            state.messengerNotificationCount + 1;
+        }
       })
     ),
   clearAllNotification: () =>
@@ -54,6 +60,7 @@ export const useNotificationStore = create<
         state.notifications = [];
         state.allNotificationCount = 0;
         state.chatNotificationCount = 0;
+        state.messengerNotificationCount = 0;
       })
     ),
 }));

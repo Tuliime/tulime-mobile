@@ -5,27 +5,49 @@ import { COLORS } from "@/constants";
 import { router } from "expo-router";
 import { useNotificationStore } from "@/store/notification";
 import Feather from "@expo/vector-icons/Feather";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
+// TODO: To mark notifications as read
 export const NotificationCount = () => {
-  const allNotificationCount = useNotificationStore(
-    (state) => state.allNotificationCount - state.chatNotificationCount
+  const otherNotificationCount = useNotificationStore(
+    (state) =>
+      state.notifications.filter((notification) => {
+        let isNonChatOrMessengerNotification: boolean = true;
+        if (notification.type === "chat" || notification.type === "messenger") {
+          isNonChatOrMessengerNotification = false;
+        }
+        return isNonChatOrMessengerNotification;
+      }).length
   );
 
-  const chatNotificationCount = useNotificationStore(
-    (state) => state.chatNotificationCount
+  const chatroomNotificationCount = useNotificationStore(
+    (state) =>
+      state.notifications.filter((notification) => notification.type === "chat")
+        .length
+  );
+
+  const messengerNotificationCount = useNotificationStore(
+    (state) =>
+      state.notifications.filter(
+        (notification) => notification.type === "messenger"
+      ).length
   );
 
   const [notificationCount, setNotificationCount] = useState<number | string>(
-    allNotificationCount
+    otherNotificationCount
   );
 
-  const [chatNotification, setChatNotification] = useState<number | string>(
-    chatNotificationCount
-  );
+  const [chatroomNotification, setChatroomNotification] = useState<
+    number | string
+  >(chatroomNotificationCount);
+
+  const [messengerNotification, setMessengerNotification] = useState<
+    number | string
+  >(messengerNotificationCount);
 
   useEffect(() => {
     const notificationCountStrBuilder = () => {
-      const notifyCount: number = allNotificationCount;
+      const notifyCount: number = otherNotificationCount;
       if (notifyCount > 9 && notifyCount < 99) {
         setNotificationCount(() => "9+");
         return;
@@ -38,24 +60,41 @@ export const NotificationCount = () => {
     };
 
     notificationCountStrBuilder();
-  }, [allNotificationCount]);
+  }, [otherNotificationCount]);
 
   useEffect(() => {
     const chatNotificationStrBuilder = () => {
-      const notifyCount: number = chatNotificationCount;
+      const notifyCount: number = chatroomNotificationCount;
       if (notifyCount > 9 && notifyCount < 99) {
-        setChatNotification(() => "9+");
+        setChatroomNotification(() => "9+");
         return;
       }
       if (notifyCount > 99) {
-        setChatNotification(() => "99+");
+        setChatroomNotification(() => "99+");
         return;
       }
       setNotificationCount(() => notifyCount);
     };
 
     chatNotificationStrBuilder();
-  }, [chatNotificationCount]);
+  }, [chatroomNotificationCount]);
+
+  useEffect(() => {
+    const messengerNotificationStrBuilder = () => {
+      const notifyCount: number = messengerNotificationCount;
+      if (notifyCount > 9 && notifyCount < 99) {
+        setMessengerNotification(() => "9+");
+        return;
+      }
+      if (notifyCount > 99) {
+        setMessengerNotification(() => "99+");
+        return;
+      }
+      setMessengerNotification(() => notifyCount);
+    };
+
+    messengerNotificationStrBuilder();
+  }, [messengerNotification]);
 
   const navigateToNotification = () => {
     router.push("/notification");
@@ -65,22 +104,48 @@ export const NotificationCount = () => {
     router.push("/chatroom");
   };
 
-  const showAllNotificationCount: boolean = !!allNotificationCount;
-  const showChatNotificationCount: boolean = !!chatNotificationCount;
+  const navigateToMessengerRooms = () => {
+    router.push("/ecommerce/messenger");
+  };
+
+  const showAllNotificationCount: boolean = !!otherNotificationCount;
+  const showChatroomNotificationCount: boolean = !!chatroomNotificationCount;
+  const showMessengerNotificationCount: boolean = !!messengerNotificationCount;
 
   return (
     <View style={styles.container}>
       {/* Chat Notification Count */}
       <TouchableOpacity
-        onPress={navigateToChatroom}
+        onPress={navigateToMessengerRooms}
         style={styles.btnContainer}
       >
-        {showChatNotificationCount && (
+        {showMessengerNotificationCount && (
           <View style={styles.notificationCountContainer}>
-            <Text style={styles.notificationCountText}>{chatNotification}</Text>
+            <Text style={styles.notificationCountText}>
+              {messengerNotificationCount}
+            </Text>
           </View>
         )}
         <Feather name="message-circle" size={22} color={COLORS.white} />
+      </TouchableOpacity>
+
+      {/* Messenger Count */}
+      <TouchableOpacity
+        onPress={navigateToChatroom}
+        style={styles.btnContainer}
+      >
+        {showChatroomNotificationCount && (
+          <View style={styles.notificationCountContainer}>
+            <Text style={styles.notificationCountText}>
+              {chatroomNotificationCount}
+            </Text>
+          </View>
+        )}
+        <MaterialCommunityIcons
+          name="account-group-outline"
+          size={24}
+          color={COLORS.white}
+        />
       </TouchableOpacity>
 
       {/* All Notification Count */}

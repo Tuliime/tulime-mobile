@@ -6,6 +6,7 @@ import { COLORS } from "@/constants";
 import { useChatroomStore } from "@/store/chatroom";
 import { Auth } from "@/types/auth";
 import { addCommasToNumber } from "@/utils";
+import { SyncLoader } from "../shared/loaders/SyncLoader";
 
 export const Typing: React.FC = () => {
   const users = useAuthStore((state) => state.users);
@@ -56,13 +57,24 @@ export const Typing: React.FC = () => {
           </Text>
         </View>
       )}
-      {hasTypingUser && <Text style={styles.typingText}>typing...</Text>}
+      {hasTypingUser && (
+        <View style={styles.typingContainer}>
+          <Text style={styles.typingText}>Typing</Text>
+          <SyncLoader color={COLORS.primary} size={3} speed={480} />
+        </View>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "flex-end",
+    gap: 2,
+  },
+  typingContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "flex-end",

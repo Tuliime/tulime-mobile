@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { useSignInWithRefreshToken } from "./useSignInWithRefreshToken";
 import { router } from "expo-router";
 import * as Device from "expo-device";
+import { serverURL } from "@/constants/urls";
 
 export const UseGlobalRequestInterceptor = () => {
   const { auth, deleteAuth } = useAuthStore();
@@ -15,6 +16,11 @@ export const UseGlobalRequestInterceptor = () => {
       const originalFetch = global.fetch;
 
       global.fetch = async (...args) => {
+        // Don't process the request if doesn't contain server url
+        if (!args[0].toString().startsWith(serverURL)) {
+          return await originalFetch(...args);
+        }
+
         // Attach Authorization header if  missing
         const headers: any = args[1]?.headers;
         if (!headers.Authorization) {

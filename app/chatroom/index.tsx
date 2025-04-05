@@ -1,7 +1,7 @@
 import React from "react";
 import { View } from "react-native";
-import { ChatroomContentLayout } from "@/components/chatroom/layout/ChatroomContentLayout";
-import { FetchChatroomMessages } from "@/components/chatroom/FetchChatroomMessages";
+import { ChatroomContentLayout } from "@/components/chatroom/UI/ChatroomContentLayout";
+import { FetchChatroomMessages } from "@/components/chatroom/UI/FetchChatroomMessages";
 
 const Chatroom: React.FC = () => {
   return (

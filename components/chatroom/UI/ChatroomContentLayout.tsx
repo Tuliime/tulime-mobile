@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, ActivityIndicator, StyleSheet } from "react-native";
-import { ChatroomLayout } from "@/components/shared/layout/ChatroomLayout";
-import { MessageForm } from "@/components/chatroom/MessageForm";
+import { ChatroomLayout } from "@/components/chatroom/layout/ChatroomLayout";
+import { MessageForm } from "@/components/chatroom/UI/MessageForm";
 import { COLORS } from "@/constants";
-import { ChatroomMessageList } from "@/components/chatroom/MessageList";
+import { ChatroomMessageList } from "@/components/chatroom/UI/MessageList";
 import { useChatroomStore } from "@/store/chatroom";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { useGlobalSearchParams } from "expo-router";

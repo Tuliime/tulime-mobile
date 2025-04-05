@@ -7,7 +7,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { COLORS, SIZES } from "@/constants";
-import { MainHeader } from "./MainHeader";
+import { MainHeader } from "../../shared/layout/MainHeader";
 
 type ChatbotLayoutProps = {
   children: ReactNode;

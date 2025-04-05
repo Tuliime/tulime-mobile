@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { ActivityIndicator, View, StyleSheet, Text } from "react-native";
 import { TChatbot } from "@/types/chatbot";
 import { MessageForm } from "@/components/chatbot/UI/MessageForm";
-import { ChatbotLayout } from "@/components/shared/layout/ChatbotLayout";
+import { ChatbotLayout } from "@/components/chatbot/layout/ChatbotLayout";
 import { ChatBotMessageList } from "@/components/chatbot/UI/MessageList";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/auth";

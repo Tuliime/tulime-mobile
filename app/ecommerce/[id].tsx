@@ -16,8 +16,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Foundation from "@expo/vector-icons/Foundation";
 import { AppModal } from "@/components/shared/UI/Modal";
-import { PostFeedback } from "@/components/ecommerce/PostFeedback";
-import { ReportAbuse } from "@/components/ecommerce/ReportAbuse";
+import { PostFeedback } from "@/components/ecommerce/UI/PostFeedback";
+import { ReportAbuse } from "@/components/ecommerce/UI/ReportAbuse";
 import { router } from "expo-router";
 import { useMessengerStore } from "@/store/messenger";
 

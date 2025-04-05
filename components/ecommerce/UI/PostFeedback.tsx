@@ -7,16 +7,16 @@ import {
   ActivityIndicator,
 } from "react-native";
 import React, { useState } from "react";
-import { InputSelect } from "../shared/UI/InputSelect";
+import { InputSelect } from "../../shared/UI/InputSelect";
 import { COLORS } from "@/constants/theme";
 import { Formik, FormikProps } from "formik";
 import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
-import { ImagePicker } from "../shared/UI/ImagePicker";
+import { ImagePicker } from "../../shared/UI/ImagePicker";
 import { Asset } from "@/types/assets";
 import { TFeedback } from "@/types/feedback";
 import Feather from "@expo/vector-icons/Feather";
-import { ImagePreview } from "../shared/UI/ImagePreview";
+import { ImagePreview } from "../../shared/UI/ImagePreview";
 import Entypo from "@expo/vector-icons/Entypo";
 
 export const PostFeedback: React.FC = () => {

@@ -10,7 +10,7 @@ import React, { useCallback } from "react";
 import { MainLayout } from "@/components/shared/layout";
 import { ModuleCard } from "@/components/shared/UI/ModuleCard";
 import { COLORS, icons, SIZES } from "@/constants";
-import { AdProductCard } from "@/components/ecommerce/AdProductCard";
+import { AdProductCard } from "@/components/ecommerce/UI/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
 import { TenderHomeSection } from "@/components/vacancies/TenderHomeSection";
 import { VacancyHomeSection } from "@/components/vacancies/VacancyHomeSection";

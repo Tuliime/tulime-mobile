@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { AdBookmarkCard } from "@/components/ecommerce/AdBookmarkCard";
 import { MainLayout } from "@/components/shared/layout/MainLayout";
 import { COLORS } from "@/constants";
+import { AdBookmarkCard } from "@/components/ecommerce/bookmark/UI/AdBookmarkCard";
 
 const BookMarks: React.FC = () => {
   return (

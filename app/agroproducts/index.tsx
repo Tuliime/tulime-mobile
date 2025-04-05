@@ -10,14 +10,14 @@ import {
 import { useGlobalSearchParams } from "expo-router";
 import { router } from "expo-router";
 import { MainLayout } from "@/components/shared/layout";
-import { Button } from "@/components/shared/UI";
 import { COLORS, SIZES } from "@/constants";
 import { TAgroproducts } from "@/types/product";
-import { ProductItem } from "@/components/agroproducts/UI";
 import { agroProduct } from "@/API/agroProducts";
 import { useQuery } from "@tanstack/react-query";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { ErrorCard } from "@/components/shared/UI/ErrorCard";
+import { Button } from "@/components/shared/UI/Button";
+import { ProductItem } from "@/components/agroproducts/UI/ProductItem";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;

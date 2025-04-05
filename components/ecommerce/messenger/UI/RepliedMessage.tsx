@@ -2,11 +2,11 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useAuthStore } from "@/store/auth";
 import { COLORS } from "@/constants";
-import { truncateString } from "@/utils";
 import { RepliedImageDisplay } from "./RepliedImageDisplay";
 import { FontAwesome } from "@expo/vector-icons";
 import { TextMessage } from "./TextMessage";
 import { TMessenger } from "@/types/messenger";
+import { truncateString } from "@/utils/truncateString";
 
 type RepliedMessageProps = {
   message: TMessenger["organizedMessage"];
@@ -19,23 +19,22 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
   const isDisplayUnderSender: boolean = props.displayUnder === "sender";
 
   const getUsername = (): string => {
-    const repliedUser = users.find(
-      (user) => user.id === props.message.repliedMessage?.userID
-    );
-    const isSenderCurrentUser = repliedUser?.id === currentUser.id;
+    const isSenderCurrentUser =
+      props.message.repliedMessage?.sender?.id === currentUser.id;
 
-    if (isSenderCurrentUser) return "You";
-    return repliedUser?.name!;
+    const username = isSenderCurrentUser
+      ? props.message.repliedMessage?.sender?.name!
+      : props.message.repliedMessage?.recipient?.name!;
+
+    return username;
   };
 
   const getChatroomColor = (): string => {
-    const repliedUser = users.find(
-      (user) => user.id === props.message.repliedMessage?.userID
-    );
-    const isSenderCurrentUser = repliedUser?.id === currentUser.id;
-
+    const isSenderCurrentUser =
+      props.message.repliedMessage?.sender?.id === currentUser.id;
     if (isSenderCurrentUser) return COLORS.blue4;
-    return repliedUser?.chatroomColor!;
+
+    return props.message.repliedMessage?.recipient?.chatroomColor!;
   };
 
   // TODO: To add onPress action that updates the cursor
@@ -54,6 +53,7 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
         },
       ]}
     >
+      {/* TODO: To remove the stripe */}
       <View
         style={[
           styles.stripeContainer,
@@ -61,6 +61,7 @@ export const RepliedMessage: React.FC<RepliedMessageProps> = (props) => {
         ]}
       ></View>
       <View style={styles.messageContainer}>
+        {/* TODO: username */}
         <Text style={[styles.usernameText, { color: getChatroomColor() }]}>
           {truncateString(getUsername(), 24)}
         </Text>

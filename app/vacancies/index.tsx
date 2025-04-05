@@ -1,6 +1,6 @@
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import { MainLayout } from "@/components/shared/layout";
 
 const VacanciesAndTenders: React.FC = () => {
   return (

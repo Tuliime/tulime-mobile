@@ -11,9 +11,9 @@ import {
   ViewStyle,
 } from "react-native";
 import { COLORS, icons, SIZES } from "@/constants";
-import { Footer } from "@/components/shared/layout";
 import { MainHeader } from "./MainHeader";
 import { router } from "expo-router";
+import { Footer } from "./Footer";
 
 type MainLayoutProps = {
   children: ReactNode;

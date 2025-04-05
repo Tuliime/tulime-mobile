@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import { router } from "expo-router";
-import { MainLayout } from "@/components/shared/layout";
 import { COLORS, SIZES } from "@/constants";
 import { farmInput } from "@/API/farmInputs";
 import { useQuery } from "@tanstack/react-query";
@@ -18,6 +17,7 @@ import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { TFarmInput } from "@/types/farmInput";
 import { FarmInputCard } from "@/components/farminputs/UI/FarmInputCard";
 import { Button } from "@/components/shared/UI/Button";
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;

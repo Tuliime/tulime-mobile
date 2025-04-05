@@ -10,7 +10,6 @@ import {
 import React, { useRef, useState } from "react";
 import { COLORS } from "@/constants";
 import { addCommasToNumber } from "@/utils/addCommaNumber";
-import { MainLayout } from "@/components/shared/layout";
 import Entypo from "@expo/vector-icons/Entypo";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -20,6 +19,7 @@ import { PostFeedback } from "@/components/ecommerce/UI/PostFeedback";
 import { ReportAbuse } from "@/components/ecommerce/UI/ReportAbuse";
 import { router } from "expo-router";
 import { useMessengerStore } from "@/store/messenger";
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 

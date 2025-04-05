@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import { router } from "expo-router";
-import { MainLayout } from "@/components/shared/layout";
 import { COLORS, SIZES } from "@/constants";
 import { TAgroproducts } from "@/types/product";
 import { agroProduct } from "@/API/agroProducts";
@@ -18,6 +17,7 @@ import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { Button } from "@/components/shared/UI/Button";
 import { ProductItem } from "@/components/agroproducts/UI/ProductItem";
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;

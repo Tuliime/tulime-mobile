@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { HomeLayout } from "@/components/shared/layout";
 import {
   View,
   Text,
@@ -19,6 +18,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 import { useAuthStore } from "@/store/auth";
 import { SlideUpPanel } from "@/components/shared/layout/SlideUpPanel";
+import { HomeLayout } from "@/components/shared/layout/HomeLayout";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;

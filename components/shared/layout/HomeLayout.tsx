@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { router, Stack } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
-import { Footer } from "@/components/shared/layout";
+import { Footer } from "./Footer";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 

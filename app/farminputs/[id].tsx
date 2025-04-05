@@ -2,7 +2,6 @@ import React from "react";
 import { View, ActivityIndicator, StyleSheet, Image, Text } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { farmInput } from "@/API/farmInputs";
-import { MainLayout } from "@/components/shared/layout";
 import { useQuery } from "@tanstack/react-query";
 import { TFarmInput } from "@/types/farmInput";
 import { COLORS } from "@/constants";
@@ -10,6 +9,7 @@ import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { MaterialIcons } from "@expo/vector-icons";
 import { truncateString } from "@/utils/truncateString";
 import { addCommasToNumber } from "@/utils/addCommaNumber";
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 
 const FarmInputDetailsScreen = () => {
   const { id }: TFarmInput["getById"] = useLocalSearchParams();

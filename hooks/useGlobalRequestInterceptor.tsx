@@ -16,6 +16,7 @@ export const UseGlobalRequestInterceptor = () => {
       const originalFetch = global.fetch;
 
       global.fetch = async (...args) => {
+        console.log("args url: ", args[0].toString());
         // Don't process the request if doesn't contain server url
         if (!args[0].toString().startsWith(serverURL)) {
           return await originalFetch(...args);

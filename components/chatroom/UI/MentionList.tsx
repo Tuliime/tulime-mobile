@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
+import { ProfileAvatar } from "../../shared/UI/ProfileAvatar";
 
 type MentionListProps = {
   onSelect: (user: Auth["user"]) => void;

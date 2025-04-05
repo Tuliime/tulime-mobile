@@ -11,8 +11,8 @@ import {
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import { Typing } from "@/components/chatroom/Typing";
-import { ChatroomOnlineUsers } from "@/components/chatroom/ChatroomOnlineUsers";
+import { Typing } from "@/components/chatroom/UI/Typing";
+import { ChatroomOnlineUsers } from "@/components/chatroom/UI/ChatroomOnlineUsers";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 

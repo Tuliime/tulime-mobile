@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
+import { ProfileAvatar } from "../../shared/UI/ProfileAvatar";
 import { COLORS } from "@/constants";
 import { useChatroomStore } from "@/store/chatroom";
 import { Auth } from "@/types/auth";
-import { SyncLoader } from "../shared/loaders/SyncLoader";
+import { SyncLoader } from "../../shared/loaders/SyncLoader";
 import { addCommasToNumber } from "@/utils/addCommaNumber";
 
 export const Typing: React.FC = () => {

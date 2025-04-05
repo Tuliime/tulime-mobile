@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { icons, SIZES, COLORS } from "@/constants";
 import { router } from "expo-router";
 import { useSlideUpPanelStore } from "@/store/slideUpPanel";
-import { Logout } from "@/components/auth/Logout";
+import { Logout } from "@/components/auth/UI/Logout";
 
 export const SlideUpPanelContent: React.FC = () => {
   const closePanel = useSlideUpPanelStore((state) => state.closePanel);

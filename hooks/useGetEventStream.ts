@@ -50,11 +50,7 @@ export const useGetEventStream = () => {
       },
     });
 
-    // const onopen = async (_: any) => {
-    //   console.log("SSE connection established with backend!");
-    // };
-
-    const onmessage = async (event: any) => {
+    const onmessage: EventSourcePolyfill["onmessage"] = async (event) => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
@@ -104,17 +100,27 @@ export const useGetEventStream = () => {
       }
     };
 
-    const onerror = async (error: any) => {
-      console.log("sse error :", error);
-      // TO trigger auto sign with refresh token
-      if (error.status === 401) {
-        eventSource.close();
-      }
+    const onerror: EventSourcePolyfill["onerror"] = (event): any => {
+      console.log("sse error event :", event);
+      eventSource.close();
+
+      // TODO:  To trigger auto sign with refresh token
+      // TODO: To implement auto reconnect logic that increments in the order,
+      // 1, 5,10, 15, 20, (min(1) and max(20)), resets at max
+      // Note: Auto reconnect be in be sync with global interconnect detector,
+
+      // if (event.status === 401) {
+      //   eventSource.close();
+      // }
+    };
+
+    const onopen: EventSourcePolyfill["onopen"] = (event): any => {
+      console.log("sse connection onopen event :", event);
     };
 
     eventSource.onmessage = onmessage;
     eventSource.onerror = onerror;
-    // eventSource.onopen = onopen;
+    eventSource.onopen = onopen;
 
     return () => {
       effectRan.current = true;

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { icons, SIZES, COLORS } from "@/constants";
 import { router } from "expo-router";
-import { useSidebarStore } from "@/store";
+import { useSidebarStore } from "@/store/sidebar";
 
 export const SidebarContent: React.FC = () => {
   const closeSidebar = useSidebarStore((state) => state.closeSidebar);

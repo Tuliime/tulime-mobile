@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { addCommasToNumber } from "@/utils";
 import { COLORS } from "@/constants";
 import { useChatroomStore } from "@/store/chatroom";
+import { addCommasToNumber } from "@/utils/addCommaNumber";
 
 export const ChatroomOnlineUsers: React.FC = () => {
   const getAllOnlineStatuses = useChatroomStore(

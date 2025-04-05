@@ -4,8 +4,8 @@ import { ProfileAvatar } from "../shared/UI/ProfileAvatar";
 import { COLORS } from "@/constants";
 import { useChatroomStore } from "@/store/chatroom";
 import { Auth } from "@/types/auth";
-import { addCommasToNumber } from "@/utils";
 import { SyncLoader } from "../shared/loaders/SyncLoader";
+import { addCommasToNumber } from "@/utils/addCommaNumber";
 
 export const Typing: React.FC = () => {
   const getAllTypingStatuses = useChatroomStore(

@@ -35,6 +35,7 @@ export const SenderMessage: React.FC<SenderMessageProps> = (props) => {
     props.message.sentAt === postingMessage?.sentAt &&
     postingMessage?.status === "pending";
 
+  // TODO: To improve the logic for displaying images when local file is available
   const buildLocalFileURI = (file: TChatroom["message"]["localFile"]) => {
     if (!file?.mimeType || !file?.base64) return;
     return `data:${file.mimeType};base64,${file.base64}`;

@@ -9,11 +9,11 @@ import {
   StyleSheet,
 } from "react-native";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { truncateString } from "@/utils";
 import { UserOnlineStatus } from "../UI/UserOnlineStatus";
 import { useMessengerStore } from "@/store/messenger";
 import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 import { Typing } from "../UI/Typing";
+import { truncateString } from "@/utils/truncateString";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 

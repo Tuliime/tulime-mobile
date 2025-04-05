@@ -6,8 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { useSidebarStore } from "@/store";
 import { SidebarContent } from "./SidebarContent";
+import { useSidebarStore } from "@/store/sidebar";
 
 const screenWidth = Dimensions.get("window").width;
 const sidebarWidth = screenWidth * 0.8;

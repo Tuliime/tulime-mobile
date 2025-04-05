@@ -3,10 +3,11 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { TChatroom } from "@/types/chatroom";
 import { useAuthStore } from "@/store/auth";
 import { COLORS } from "@/constants";
-import { truncateString } from "@/utils";
+// import { truncateString } from "@/utils";
 import { RepliedImageDisplay } from "./RepliedImageDisplay";
 import { FontAwesome } from "@expo/vector-icons";
 import { TextMessage } from "./TextMessage";
+import { truncateString } from "@/utils/truncateString";
 
 type RepliedMessageProps = {
   message: TChatroom["organizedMessage"];

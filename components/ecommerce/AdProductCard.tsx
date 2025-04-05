@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { COLORS } from "@/constants";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { addCommasToNumber } from "@/utils";
 import { router } from "expo-router";
+import { addCommasToNumber } from "@/utils/addCommaNumber";
 
 type AdProductCardProps = {
   name: string;

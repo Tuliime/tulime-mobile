@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { FlatList, StyleSheet } from "react-native";
 import { useNotificationStore } from "@/store/notification";
-import { NotificationCard } from "@/components/notification/NotificationCard";
+import { NotificationCard } from "@/components/notification/UI/NotificationCard";
 import { TNotification } from "@/types/notification";
 import { MainLayout } from "@/components/shared/layout";
 

@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { Link, router } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
-import { NotificationCount } from "@/components/notification/NotificationCount";
+import { NotificationCount } from "@/components/notification/UI/NotificationCount";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ServiceCard } from "@/components/shared/UI/ServiceCard";
 import { TService } from "@/types/service";

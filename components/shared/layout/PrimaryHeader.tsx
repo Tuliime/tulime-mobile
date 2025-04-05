@@ -11,7 +11,7 @@ import {
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 import { Ionicons } from "@expo/vector-icons";
-import { NotificationCount } from "@/components/notification/NotificationCount";
+import { NotificationCount } from "@/components/notification/UI/NotificationCount";
 import { SlideUpPanel } from "./SlideUpPanel";
 import { ProfileAvatar } from "../UI/ProfileAvatar";
 import { useAuthStore } from "@/store/auth";

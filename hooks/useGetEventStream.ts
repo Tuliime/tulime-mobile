@@ -49,7 +49,7 @@ export const useGetEventStream = () => {
       eventSourceRef.current.close();
     }
 
-    const eventSource = new EventSourcePolyfill(`${serverURL}/event-streams`, {
+    const eventSource = new EventSourcePolyfill(`${serverURL}/event-stream`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

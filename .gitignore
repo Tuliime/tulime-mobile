@@ -26,3 +26,5 @@ eas2.json
 # Google service account json
 google-services.json 
 # TODO: To remove files "google-services.json" and "reserve-now-firebase-admin.json" rom git history
+
+/typing*

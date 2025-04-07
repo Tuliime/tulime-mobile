@@ -14,6 +14,10 @@ import { TMessenger } from "@/types/messenger";
 
 export const useGetEventStream = () => {
   const effectRan = useRef(false);
+  const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
+  const retryCountRef = useRef(0);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
   const addChatroomMessage = useChatroomStore((state) => state.addMessage);
@@ -27,11 +31,9 @@ export const useGetEventStream = () => {
   const updateTypingStatusMessenger = useMessengerStore(
     (state) => state.updateTypingStatus
   );
-
   const addNotification = useNotificationStore(
     (state) => state.addNotifications
   );
-
   const isExpiredAccessToken = isJWTTokenExpired(accessToken);
 
   const playNewMessageSound = async () => {
@@ -40,15 +42,53 @@ export const useGetEventStream = () => {
     await sound.playAsync();
   };
 
-  useEffect(() => {
-    if (effectRan.current == true) return;
-
+  const connectToEventStream = () => {
     if (!accessToken || isExpiredAccessToken || !userID) return;
+
+    if (eventSourceRef.current) {
+      eventSourceRef.current.close();
+    }
+
     const eventSource = new EventSourcePolyfill(`${serverURL}/event-stream`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     });
+
+    const reconnect = (): any => {
+      console.log("Auto reconnect start...");
+      const retryIntervals = [1000, 5000, 10000, 15000, 20000];
+      const retryCount = retryCountRef.current;
+      const delay =
+        retryIntervals[Math.min(retryCount, retryIntervals.length - 1)];
+
+      retryCountRef.current += 1;
+
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+
+      reconnectTimeoutRef.current = setTimeout(() => {
+        console.log(`Reconnecting to SSE (attempt ${retryCount + 1})...`);
+        if (delay === retryIntervals.length - 1) {
+          retryCountRef.current = 0;
+        }
+        connectToEventStream();
+      }, delay);
+      console.log("Auto reconnect End...");
+    };
+
+    const onopen: EventSourcePolyfill["onopen"] = (event): any => {
+      console.log("sse connection opened:", event);
+      retryCountRef.current = 0;
+    };
+
+    const onerror: EventSourcePolyfill["onerror"] = (event): any => {
+      console.log("sse error :", event);
+      eventSource.close();
+
+      reconnect();
+    };
 
     const onmessage: EventSourcePolyfill["onmessage"] = async (event) => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
@@ -100,30 +140,23 @@ export const useGetEventStream = () => {
       }
     };
 
-    const onerror: EventSourcePolyfill["onerror"] = (event): any => {
-      console.log("sse error event :", event);
-      eventSource.close();
-
-      // TODO:  To trigger auto sign with refresh token
-      // TODO: To implement auto reconnect logic that increments in the order,
-      // 1, 5,10, 15, 20, (min(1) and max(20)), resets at max
-      // Note: Auto reconnect be in be sync with global interconnect detector,
-
-      // if (event.status === 401) {
-      //   eventSource.close();
-      // }
-    };
-
-    const onopen: EventSourcePolyfill["onopen"] = (event): any => {
-      console.log("sse connection onopen event :", event);
-    };
-
     eventSource.onmessage = onmessage;
-    eventSource.onerror = onerror;
     eventSource.onopen = onopen;
+    eventSource.onerror = onerror;
+
+    eventSourceRef.current = eventSource;
+  };
+
+  useEffect(() => {
+    if (effectRan.current) return;
+
+    connectToEventStream();
 
     return () => {
       effectRan.current = true;
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
     };
   }, [accessToken]);
 

@@ -92,6 +92,7 @@ export const useGetEventStream = () => {
 
     const onmessage: EventSourcePolyfill["onmessage"] = async (event) => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
+      console.log("parsedData :", parsedData);
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
       const isMessengerMessage = parsedData.type === "messenger";
@@ -154,8 +155,13 @@ export const useGetEventStream = () => {
 
     return () => {
       effectRan.current = true;
+      if (eventSourceRef.current) {
+        eventSourceRef.current.close();
+        console.log("sse connection closed");
+      }
       if (reconnectTimeoutRef.current) {
         clearTimeout(reconnectTimeoutRef.current);
+        console.log("reconnectTimeoutRef cleared");
       }
     };
   }, [accessToken]);

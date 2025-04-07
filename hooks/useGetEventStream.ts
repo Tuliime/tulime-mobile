@@ -49,7 +49,7 @@ export const useGetEventStream = () => {
       eventSourceRef.current.close();
     }
 
-    const eventSource = new EventSourcePolyfill(`${serverURL}/event-stream`, {
+    const eventSource = new EventSourcePolyfill(`${serverURL}/event-streams`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
@@ -70,7 +70,7 @@ export const useGetEventStream = () => {
 
       reconnectTimeoutRef.current = setTimeout(() => {
         console.log(`Reconnecting to SSE (attempt ${retryCount + 1})...`);
-        if (delay === retryIntervals.length - 1) {
+        if (delay === retryIntervals[retryIntervals.length - 1]) {
           retryCountRef.current = 0;
         }
         connectToEventStream();

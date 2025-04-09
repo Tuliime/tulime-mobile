@@ -4,7 +4,6 @@ import { COLORS } from "@/constants";
 import { AppDate } from "@/utils/appDate";
 import { useAuthStore } from "@/store/auth";
 import { RepliedMessage } from "./RepliedMessage";
-import { truncateString } from "@/utils/truncateString";
 import { MessageOnSwipe } from "./MessageOnSwipe";
 import { TextMessage } from "./TextMessage";
 // import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
@@ -31,14 +30,6 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
   return (
     <MessageOnSwipe message={props.message}>
       <View style={styles.Container}>
-        {/* <View style={{ opacity: isPrimaryMessage ? 1 : 0 }}>
-          <ProfileAvatar
-            user={props.message.recipient!}
-            width={32}
-            height={32}
-            fontWeight={500}
-          />
-        </View> */}
         <View
           style={[
             styles.messageContainer,
@@ -51,19 +42,6 @@ export const RecipientMessage: React.FC<RecipientMessageProps> = (props) => {
           <RightAngledTriangle
             style={[styles.triangleIcon, { opacity: isPrimaryMessage ? 1 : 0 }]}
           />
-          {isPrimaryMessage && (
-            <Text
-              style={[
-                styles.usernameText,
-                {
-                  color: props.message.recipient!.chatroomColor,
-                  marginBottom: hasReplyMessage ? 4 : 0,
-                },
-              ]}
-            >
-              {truncateString(props.message.recipient!.name, 24)}
-            </Text>
-          )}
           {hasReplyMessage && (
             <RepliedMessage
               message={props.message}
@@ -98,6 +76,7 @@ const styles = StyleSheet.create({
     gap: 16,
     flexDirection: "row",
     alignItems: "flex-start",
+    paddingLeft: 12,
   },
   messageContainer: {
     width: "auto",
@@ -116,11 +95,6 @@ const styles = StyleSheet.create({
     left: -12,
     top: 0,
     transform: [{ rotate: "180deg" }],
-  },
-  usernameText: {
-    color: COLORS.blue4,
-    fontWeight: 700,
-    paddingLeft: 6,
   },
   messageTextContainer: {
     padding: 4,

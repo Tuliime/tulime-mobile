@@ -9,6 +9,7 @@ import { COLORS } from "@/constants";
 import { truncateString } from "@/utils/truncateString";
 import { router } from "expo-router";
 import { useMessengerStore } from "@/store/messenger";
+import { UserOnlineStatus } from "./UserOnlineStatus";
 
 type MessengerRoomCardProps = {
   message: TMessenger["message"];
@@ -37,6 +38,13 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
       <View style={styles.container}>
         <View style={styles.profileAvatarContainer}>
           <ProfileAvatar user={roomRecipient} />
+          <View style={styles.onlineStatusContainer}>
+            <UserOnlineStatus
+              user={roomRecipient}
+              showOnlineWord={false}
+              showLastSeen={false}
+            />
+          </View>
         </View>
         <View style={styles.messageContentContainer}>
           <View style={styles.nameContainer}>
@@ -65,11 +73,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    // backgroundColor: COLORS.gray4,
     paddingVertical: 8,
     gap: 8,
   },
-  profileAvatarContainer: {},
+  profileAvatarContainer: {
+    position: "relative",
+  },
+  onlineStatusContainer: {
+    position: "absolute",
+    right: -2,
+    bottom: 4,
+  },
   messageContentContainer: {
     flex: 1,
   },

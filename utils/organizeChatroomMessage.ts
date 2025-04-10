@@ -58,17 +58,42 @@ export class ChatroomMessages {
 
   organize(): TChatroom["organizedMessage"][] {
     const organizedMessageList: TChatroom["organizedMessage"][] = [];
-    let prevDate: string, currentDate: string;
-    const messageList: TChatroom["message"][] = this.messages;
 
-    messageList.map((currentMessage: TChatroom["message"], index) => {
+    // Step 1: Deduplicate based on either id or sentAt
+    const seenIds = new Set<string>();
+    const seenSentAts = new Set<string>();
+
+    const deduplicatedMessages: TChatroom["message"][] = [];
+
+    for (const msg of this.messages) {
+      const isDuplicateId = seenIds.has(msg.id);
+      const isDuplicateSentAt = seenSentAts.has(msg.sentAt);
+
+      if (!isDuplicateId && !isDuplicateSentAt) {
+        seenIds.add(msg.id);
+        seenSentAts.add(msg.sentAt);
+        deduplicatedMessages.push(msg);
+      }
+    }
+
+    // Step 2: Sort messages by arrivedAt or fallback to sentAt
+    const sortedMessages = deduplicatedMessages.sort((a, b) => {
+      const dateA = new Date(a.arrivedAt || a.sentAt).getTime();
+      const dateB = new Date(b.arrivedAt || b.sentAt).getTime();
+      return dateA - dateB;
+    });
+
+    // Step 3: Organize
+    let prevDate: string, currentDate: string;
+
+    sortedMessages.map((currentMessage: TChatroom["message"], index) => {
       const descriptors = Object.getOwnPropertyDescriptors(currentMessage); //copy properties
       const organizedMessage = Object.defineProperties(
         {},
         descriptors
-      ) as TChatroom["organizedMessage"]; //create mutable object with all properties
+      ) as TChatroom["organizedMessage"];
 
-      const prevMessage = messageList[index - 1];
+      const prevMessage = sortedMessages[index - 1];
       currentDate = currentMessage.arrivedAt;
       prevDate = prevMessage?.arrivedAt;
 

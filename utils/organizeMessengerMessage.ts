@@ -49,17 +49,42 @@ export class MessengerMessages {
 
   organize(): TMessenger["organizedMessage"][] {
     const organizedMessageList: TMessenger["organizedMessage"][] = [];
-    let prevDate: string, currentDate: string;
-    const messageList: TMessenger["message"][] = this.messages;
 
-    messageList.map((currentMessage: TMessenger["message"], index) => {
+    // Step 1: Deduplicate based on either id or sentAt
+    const seenIds = new Set<string>();
+    const seenSentAts = new Set<string>();
+
+    const deduplicatedMessages: TMessenger["message"][] = [];
+
+    for (const msg of this.messages) {
+      const isDuplicateId = seenIds.has(msg.id);
+      const isDuplicateSentAt = seenSentAts.has(msg.sentAt);
+
+      if (!isDuplicateId && !isDuplicateSentAt) {
+        seenIds.add(msg.id);
+        seenSentAts.add(msg.sentAt);
+        deduplicatedMessages.push(msg);
+      }
+    }
+
+    // Step 2: Sort messages by arrivedAt or fallback to sentAt
+    const sortedMessages = deduplicatedMessages.sort((a, b) => {
+      const dateA = new Date(a.arrivedAt || a.sentAt).getTime();
+      const dateB = new Date(b.arrivedAt || b.sentAt).getTime();
+      return dateA - dateB;
+    });
+
+    // Step 3: Organize
+    let prevDate: string, currentDate: string;
+
+    sortedMessages.map((currentMessage: TMessenger["message"], index) => {
       const descriptors = Object.getOwnPropertyDescriptors(currentMessage); //copy properties
       const organizedMessage = Object.defineProperties(
         {},
         descriptors
-      ) as TMessenger["organizedMessage"]; //create mutable object with all properties
+      ) as TMessenger["organizedMessage"];
 
-      const prevMessage = messageList[index - 1];
+      const prevMessage = sortedMessages[index - 1];
       currentDate = currentMessage.arrivedAt;
       prevDate = prevMessage?.arrivedAt;
 

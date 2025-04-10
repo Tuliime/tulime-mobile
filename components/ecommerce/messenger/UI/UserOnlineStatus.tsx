@@ -28,8 +28,6 @@ export const UserOnlineStatus: React.FC<UserOnlineStatusProps> = (props) => {
         ? getOnlineStatusByUser(props.user?.id!)
         : getOnlineStatusByUser(currentRecipient.id);
 
-      console.log("userOnlineStatus: ", userOnlineStatus);
-
       if (!userOnlineStatus) return;
       setUpdatedAt(() => userOnlineStatus.updatedAt);
 

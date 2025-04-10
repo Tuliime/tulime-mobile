@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { TMessenger } from "@/types/messenger";
 import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 import { useAuthStore } from "@/store/auth";
@@ -16,6 +16,8 @@ type MessengerRoomCardProps = {
 };
 
 export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
+  const [showTypingIndicator, setShowTypingIndicator] =
+    useState<boolean>(false);
   const currentUser = useAuthStore((state) => state.auth.user);
   const isCurrenUserSender: boolean =
     currentUser.id == props.message.sender?.id;
@@ -27,6 +29,10 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
   const updateCurrentRecipient = useMessengerStore(
     (state) => state.updateCurrentRecipient
   );
+
+  const onTypingHandler = (typing: boolean) => {
+    setShowTypingIndicator(() => typing);
+  };
 
   const navigateToMessenger = () => {
     updateCurrentRecipient(roomRecipient);
@@ -56,10 +62,16 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
             </Text>
           </View>
           <View style={styles.messageContainer}>
-            <Text style={styles.message}>
-              {truncateString(props.message.text, 40)}
-            </Text>
-            <Typing />
+            {!showTypingIndicator && (
+              <Text style={styles.message}>
+                {truncateString(props.message.text, 40)}
+              </Text>
+            )}
+            <Typing
+              user={roomRecipient}
+              onTyping={onTypingHandler}
+              showSyncLoader={false}
+            />
           </View>
         </View>
       </View>
@@ -99,6 +111,11 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: 14,
   },
-  messageContainer: {},
+  messageContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    minHeight: 20,
+  },
   message: { color: COLORS.gray6, fontWeight: 400, fontSize: 14 },
 });

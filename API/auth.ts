@@ -188,6 +188,27 @@ class AuthAPI {
     }
     return await response.json();
   };
+
+  getUsersOnlineStatus = async (userIDListEncoding: string) => {
+    console.log("userIDListEncoding: ", userIDListEncoding);
+    const response = await fetch(
+      `${serverURL}/user/online-status?userIDListEncoding=${userIDListEncoding}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  // http://localhost:5000/api/v0.01/user/online-status?userIDListEncoding=WyIwMDcwMzFiNi03NmUxLTRiOWYtOWE4Ny00Y2NiZDU1ZWJhMmUiLCAiYTZhM2JkODktODk2OC00YTg0LWEyZDctODdiZWQ3OTAwNGM0IiwgImQ5YWZlMzM5LTNkNTktNDNlYS1hMmRjLWJkZDFhMjc3OTBiMSJd
 }
 
 export const auth = new AuthAPI();

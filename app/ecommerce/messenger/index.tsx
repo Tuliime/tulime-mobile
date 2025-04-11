@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -10,17 +10,24 @@ import {
 import { PrimaryLayout } from "@/components/shared/layout/PrimaryLayout";
 import { useQuery } from "@tanstack/react-query";
 import { messenger } from "@/API/messenger";
+import { auth } from "@/API/auth";
 import { useAuthStore } from "@/store/auth";
 import { TMessenger } from "@/types/messenger";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { COLORS } from "@/constants";
 import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { MessengerRoomCard } from "@/components/ecommerce/messenger/UI/MessengerRoomCard";
+import { Buffer } from "buffer";
+import { TChatroom } from "@/types/chatroom";
+import { useChatroomStore } from "@/store/chatroom";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
 const MessengerRoomList: React.FC = () => {
   const userID = useAuthStore((state) => state.auth.user.id);
+  const updateOnlineStatus = useChatroomStore(
+    (state) => state.updateOnlineStatus
+  );
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`messenger-${userID}`],
@@ -36,7 +43,53 @@ const MessengerRoomList: React.FC = () => {
   const messengerRooms: TMessenger["message"][] = data?.data ?? [];
   const hasRooms = isArrayWithElements(messengerRooms);
 
-  console.log("messengerRooms: ", messengerRooms);
+  // console.log("messengerRooms: ", messengerRooms);
+
+  const getUserIDList = (messengerRooms: TMessenger["message"][]) => {
+    const userIDList = messengerRooms.map((room) => {
+      if (room.sender?.id === userID) {
+        return room.recipient?.id!;
+      }
+      return room.sender?.id!;
+    });
+
+    return Buffer.from(JSON.stringify(userIDList), "utf-8").toString("base64");
+  };
+
+  const {
+    isPending: pendingOnlineStatus,
+    isError: isOnlineStatusError,
+    data: OnlineStatusData,
+    error: onlineStatusError,
+  } = useQuery({
+    queryKey: [`userOnlinestatus-${messengerRooms}`],
+    queryFn: () => {
+      if (!hasRooms) return {} as any;
+      return auth.getUsersOnlineStatus(getUserIDList(messengerRooms));
+    },
+  });
+
+  if (hasRooms) {
+    console.log("pendingOnlineStatus: ", pendingOnlineStatus);
+  }
+  if (isOnlineStatusError) {
+    console.log("onlineStatusError: ", onlineStatusError);
+  }
+  if (OnlineStatusData) {
+    console.log("OnlineStatusData ", OnlineStatusData);
+  }
+
+  const onlineStatuses: TChatroom["onlineStatus"][] =
+    OnlineStatusData?.data ?? [];
+
+  useEffect(() => {
+    const updateOnlineStatusHandler = () => {
+      onlineStatuses.map((status) => {
+        updateOnlineStatus(status);
+      });
+    };
+    updateOnlineStatusHandler();
+  }, [messengerRooms]);
 
   const renderMessengerRoomItem = useCallback(
     ({ item }: { item: TMessenger["message"] }) => {

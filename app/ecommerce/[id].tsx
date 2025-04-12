@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import React, { useRef, useState } from "react";
 import { COLORS } from "@/constants";
@@ -17,19 +18,20 @@ import Foundation from "@expo/vector-icons/Foundation";
 import { AppModal } from "@/components/shared/UI/Modal";
 import { PostFeedback } from "@/components/ecommerce/UI/PostFeedback";
 import { ReportAbuse } from "@/components/ecommerce/UI/ReportAbuse";
-import { router } from "expo-router";
-import { useMessengerStore } from "@/store/messenger";
+import { router, useLocalSearchParams } from "expo-router";
 import { MainLayout } from "@/components/shared/layout/MainLayout";
+import { useQuery } from "@tanstack/react-query";
+import { ErrorCard } from "@/components/shared/UI/ErrorCard";
+import { advert } from "@/API/advert";
+import { TAdvert } from "@/types/advert";
+import { SafetyTips } from "@/components/ecommerce/UI/SafetyTips";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
 const ProductDetailsScreen: React.FC = () => {
+  const { id } = useLocalSearchParams<{ id: string }>();
   const flatListRef = useRef<FlatList>(null);
   const [index, setIndex] = useState(0);
-
-  const updateCurrentRecipient = useMessengerStore(
-    (state) => state.updateCurrentRecipient
-  );
 
   const handleScroll = (event: any) => {
     const newIndex = Math.round(
@@ -39,27 +41,49 @@ const ProductDetailsScreen: React.FC = () => {
   };
 
   const navigateToMessenger = () => {
-    const currentRecipient = {
-      chatroomColor: "#D50000",
-      createdAt: "2025-01-18T17:59:49.263694Z",
-      id: "20c37fba-fc3b-41b4-874a-81f1b411c8b1",
-      imageUrl:
-        "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fprod%2F1265_vet3.png?alt=media&token=b21ac963-9ecb-44a4-8f38-ef9a58f75828",
-      name: "Tibs Dankan2",
-      profileBgColor: "#D93025",
-      role: "user",
-      telNumber: 256761839754,
-      updatedAt: "2025-03-30T23:40:08.959286Z",
-    };
-    updateCurrentRecipient(currentRecipient);
-
     router.push("/ecommerce/messenger");
   };
+
+  const navigateToStoreDetailScreen = () => {
+    router.push("/ecommerce/store/id");
+  };
+
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: [`advert-${id}`],
+    queryFn: () => {
+      return advert.get({
+        advertID: id,
+      });
+    },
+  });
+
+  const advertData: TAdvert["advert"] = data?.data ?? {};
+  // const hasAdvertData = !!advertData.id
+
+  if (isPending) {
+    return (
+      <MainLayout title="E-commerce">
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.blue7} />
+        </View>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout title="E-commerce">
+        <View style={styles.errorContainer}>
+          <ErrorCard message={error.message} />
+        </View>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout title="E-commerce">
       <View style={styles.container}>
-        {/* product Image slider */}
+        {/* Ad Image slider */}
         <FlatList
           ref={flatListRef}
           data={images}
@@ -97,10 +121,18 @@ const ProductDetailsScreen: React.FC = () => {
         {/* product Content */}
         <View style={styles.contentContainer}>
           <View style={styles.productContainer}>
-            <Text style={styles.productName}>{ads[0].name}</Text>
+            <Text style={styles.productName}>{advertData.productName}</Text>
+
             <Text style={styles.productPrice}>{`${
               ads[0].priceCurrency
             } ${addCommasToNumber(parseInt(ads[0].price))}`}</Text>
+            <TouchableOpacity
+              style={styles.businessContainer}
+              onPress={navigateToStoreDetailScreen}
+            >
+              <Ionicons name="business" size={20} color={COLORS.gray8} />
+              <Text style={styles.businessText}>{advertData.store?.name}</Text>
+            </TouchableOpacity>
             <View style={styles.locationContainer}>
               <Entypo
                 name="location-pin"
@@ -206,68 +238,7 @@ const ProductDetailsScreen: React.FC = () => {
         </View>
 
         {/* Safety Tips */}
-        <View style={styles.SafetyTipsContainer}>
-          <Text style={styles.SafetyTipsTitle}>Safety Tips</Text>
-          <View style={styles.SafetyTipsContentContainer}>
-            <View style={styles.SafetyTipBullet}>
-              <Entypo
-                name="dot-single"
-                size={24}
-                color={COLORS.gray7}
-                style={styles.dotIcon}
-              />
-              <Text style={styles.SafetyTipText}>
-                Never make upfront payments, even for delivery.
-              </Text>
-            </View>
-            <View style={styles.SafetyTipBullet}>
-              <Entypo
-                name="dot-single"
-                size={24}
-                color={COLORS.gray7}
-                style={styles.dotIcon}
-              />
-              <Text style={styles.SafetyTipText}>
-                Always meet the seller in a well-lit, public location.
-              </Text>
-            </View>
-            <View style={styles.SafetyTipBullet}>
-              <Entypo
-                name="dot-single"
-                size={24}
-                color={COLORS.gray7}
-                style={styles.dotIcon}
-              />
-              <Text style={styles.SafetyTipText}>
-                Carefully inspect the item before making a decision.
-              </Text>
-            </View>
-            <View style={styles.SafetyTipBullet}>
-              <Entypo
-                name="dot-single"
-                size={24}
-                color={COLORS.gray7}
-                style={styles.dotIcon}
-              />
-              <Text style={styles.SafetyTipText}>
-                Ensure the item being packed is the same one you inspected.
-              </Text>
-            </View>
-            <View style={styles.SafetyTipBullet}>
-              <Entypo
-                name="dot-single"
-                size={24}
-                color={COLORS.gray7}
-                style={styles.dotIcon}
-              />
-              <Text style={styles.SafetyTipText}>
-                Complete the payment only when fully satisfied with the
-                purchase.
-              </Text>
-            </View>
-          </View>
-        </View>
-        {/* </View> */}
+        <SafetyTips />
       </View>
     </MainLayout>
   );
@@ -276,6 +247,26 @@ const ProductDetailsScreen: React.FC = () => {
 export default ProductDetailsScreen;
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentText: {
+    textAlign: "center",
+    fontSize: 14,
+    color: COLORS.gray7,
+  },
   container: {
     width: "100%",
     gap: 16,
@@ -308,7 +299,7 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "center",
     padding: 16,
-    gap: 4,
+    gap: 8,
   },
   productName: {
     fontSize: 14,
@@ -320,8 +311,18 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     color: COLORS.primary,
   },
+  businessContainer: {
+    flexDirection: "row",
+    alignItems: "flex-end",
+    gap: 8,
+  },
+  businessText: {
+    color: COLORS.gray7,
+    fontSize: 16,
+  },
   locationContainer: {
     flexDirection: "row",
+    alignItems: "flex-end",
     gap: 4,
   },
   locationIcon: {
@@ -370,34 +371,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 4,
-  },
-  SafetyTipsContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: 8,
-    padding: 16,
-    elevation: 3,
-    gap: 8,
-    width: "100%",
-  },
-  SafetyTipsTitle: {
-    color: COLORS.gray8,
-    fontSize: 18,
-    fontWeight: 700,
-    textAlign: "center",
-  },
-  SafetyTipsContentContainer: {
-    gap: 4,
-    width: "100%",
-  },
-  SafetyTipBullet: {
-    flexDirection: "row",
-    width: "100%",
-  },
-  dotIcon: {
-    marginLeft: -8,
-  },
-  SafetyTipText: {
-    color: COLORS.gray7,
   },
 });
 

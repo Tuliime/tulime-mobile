@@ -53,9 +53,16 @@ type AdvertImpression = {
   location?: Location;
 };
 
+type AdvertAnalytics = {
+  advertID: string;
+  impressionCount: number;
+  viewCount: number;
+};
+
 export type TAdvert = {
   advert: Advert;
   advertImage: AdvertImage;
   advertView: AdvertView;
   advertImpression: AdvertImpression;
+  advertAnalytics: AdvertAnalytics;
 };

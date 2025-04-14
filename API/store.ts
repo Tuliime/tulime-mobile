@@ -127,7 +127,7 @@ class StoreAPI {
     return await response.json();
   };
 
-  getByStore = async ({ storeID }: { storeID: string }) => {
+  get = async ({ storeID }: { storeID: string }) => {
     const response = await fetch(
       `${serverURL}/store/${storeID}?includeAdverts=true`,
       {

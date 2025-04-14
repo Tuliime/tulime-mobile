@@ -127,6 +127,24 @@ class StoreAPI {
     return await response.json();
   };
 
+  getByStore = async ({ storeID }: { storeID: string }) => {
+    const response = await fetch(
+      `${serverURL}/store/${storeID}?includeAdverts=true`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   getByUser = async ({ userID }: { userID: string }) => {
     const response = await fetch(`${serverURL}/store/user/${userID}`, {
       method: "GET",

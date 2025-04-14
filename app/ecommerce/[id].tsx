@@ -44,16 +44,14 @@ const ProductDetailsScreen: React.FC = () => {
     router.push("/ecommerce/messenger");
   };
 
-  const navigateToStoreDetailScreen = () => {
-    router.push("/ecommerce/store/id");
+  const navigateToStoreDetailScreen = (storeID: string) => {
+    router.push(`/ecommerce/store/${storeID}`);
   };
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`advert-${id}`],
     queryFn: () => {
-      return advert.get({
-        advertID: id,
-      });
+      return advert.get({ advertID: id });
     },
   });
 
@@ -128,7 +126,9 @@ const ProductDetailsScreen: React.FC = () => {
             } ${addCommasToNumber(parseInt(ads[0].price))}`}</Text>
             <TouchableOpacity
               style={styles.businessContainer}
-              onPress={navigateToStoreDetailScreen}
+              onPress={(_: any) =>
+                navigateToStoreDetailScreen(advertData.store?.id!)
+              }
             >
               <Ionicons name="business" size={20} color={COLORS.gray8} />
               <Text style={styles.businessText}>{advertData.store?.name}</Text>

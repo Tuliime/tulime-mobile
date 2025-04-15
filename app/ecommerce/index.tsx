@@ -21,6 +21,8 @@ const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const index = () => {
+  // TODO: To fetch adverts here
+
   const renderAdItems = useCallback(
     ({ item }: { item: TEcommerce["adProduct"] }) => {
       return (

@@ -20,7 +20,7 @@ type AdProductCardProps = {
 // use link for navigation
 export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
   const navigateAdDetails = () => {
-    router.push("/ecommerce/85ba2b54-a520-44ed-9cd9-3c7f68a4f8dd");
+    router.push("/ecommerce/adverts/85ba2b54-a520-44ed-9cd9-3c7f68a4f8dd");
   };
 
   return (

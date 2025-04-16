@@ -5,6 +5,7 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import React, { useCallback } from "react";
 import { ModuleCard } from "@/components/shared/UI/ModuleCard";
@@ -15,31 +16,61 @@ import { TenderHomeSection } from "@/components/vacancies/TenderHomeSection";
 import { VacancyHomeSection } from "@/components/vacancies/VacancyHomeSection";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { MainLayout } from "@/components/shared/layout/MainLayout";
+import { advert } from "@/API/advert";
+import { useQuery } from "@tanstack/react-query";
+import { ErrorCard } from "@/components/shared/UI/ErrorCard";
+import { TAdvert } from "@/types/advert";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 const index = () => {
-  // TODO: To fetch adverts here
-
-  const renderAdItems = useCallback(
-    ({ item }: { item: TEcommerce["adProduct"] }) => {
-      return (
-        <View style={{ width: itemWidth - 2, marginHorizontal: 2 }}>
-          <AdProductCard
-            // id={item.id}
-            name={item.name}
-            imageUrl={item.imageUrl}
-            description={item.description}
-            price={item.price}
-            priceCurrency={item.priceCurrency}
-          />
-        </View>
-      );
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: [`adverts`],
+    queryFn: () => {
+      return advert.getAll();
     },
-    []
-  );
+  });
+
+  const adverts: TAdvert["advert"][] = data?.data ?? [];
+
+  console.log("adverts: ", adverts);
+
+  const renderAdItems = useCallback(({ item }: { item: TAdvert["advert"] }) => {
+    return (
+      <View style={{ width: itemWidth - 2, marginHorizontal: 2 }}>
+        <AdProductCard
+          name={""}
+          imageUrl={""}
+          description={""}
+          price={""}
+          priceCurrency={""}
+          advert={item}
+        />
+      </View>
+    );
+  }, []);
+
+  if (isPending) {
+    return (
+      <MainLayout title="E-commerce">
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.blue7} />
+        </View>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout title="E-commerce">
+        <View style={styles.errorContainer}>
+          <ErrorCard message={error.message} />
+        </View>
+      </MainLayout>
+    );
+  }
 
   return (
     <MainLayout
@@ -83,8 +114,8 @@ const index = () => {
             <Text style={styles.adsTitle}>All ads</Text>
           </View>
           <FlatList
-            data={ads}
-            keyExtractor={(item) => item.name}
+            data={adverts}
+            keyExtractor={(item) => item.id}
             renderItem={renderAdItems}
             scrollEnabled={false}
             numColumns={numColumns}
@@ -103,6 +134,26 @@ const index = () => {
 };
 
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentText: {
+    textAlign: "center",
+    fontSize: 14,
+    color: COLORS.gray7,
+  },
   container: {
     gap: 16,
   },

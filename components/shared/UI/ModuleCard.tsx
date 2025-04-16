@@ -1,22 +1,28 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { COLORS } from "@/constants";
+import { router } from "expo-router";
 
 type ModuleCardProp = {
   name: string;
   description: string;
   icon: any;
+  link?: any;
 };
 
 export const ModuleCard: React.FC<ModuleCardProp> = (props) => {
+  const navigateToPostAdvert = () => {
+    router.push("/ecommerce/adverts/new");
+  };
+
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={navigateToPostAdvert}>
       <Image source={props.icon} resizeMode="contain" style={styles.image} />
       <View style={styles.contentContainer}>
         <Text style={styles.contentTitle}>{props.name}</Text>
         <Text style={styles.contentDescription}>{props.description}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

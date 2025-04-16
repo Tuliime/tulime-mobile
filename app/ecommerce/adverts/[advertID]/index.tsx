@@ -66,6 +66,7 @@ const ProductDetailsScreen: React.FC = () => {
   const advertData: TAdvert["advert"] = data?.data ?? {};
   // const hasAdvertData = !!advertData.id
   const isCurrentUser = advertData.userID === user.id;
+  const images = advertData.images;
 
   if (isPending) {
     return (
@@ -99,10 +100,16 @@ const ProductDetailsScreen: React.FC = () => {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item) => item.id}
           onScroll={handleScroll}
-          renderItem={({ item, index }) => (
+          renderItem={({
+            item,
+            index,
+          }: {
+            item: TAdvert["advertImage"];
+            index: number;
+          }) => (
             <View style={styles.imageContainer}>
               <Image
-                source={{ uri: `${item.uri}` }}
+                source={{ uri: `${item.url}` }}
                 resizeMode="contain"
                 style={styles.image}
               />
@@ -308,6 +315,8 @@ const styles = StyleSheet.create({
     aspectRatio: "4/3",
     objectFit: "fill",
     padding: 4,
+    borderTopRightRadius: 8,
+    borderTopLeftRadius: 8,
   },
   slide: { borderRadius: 10, overflow: "hidden" },
   contentContainer: {

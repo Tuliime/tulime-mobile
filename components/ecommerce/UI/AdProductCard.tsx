@@ -19,7 +19,12 @@ type AdProductCardProps = {
 // add bookmark functionality,
 // use link for navigation
 export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
+  const hasAdvert = !!props.advert?.id;
   const navigateAdDetails = () => {
+    if (hasAdvert) {
+      router.push(`/ecommerce/adverts/${props.advert?.id}`);
+      return;
+    }
     router.push("/ecommerce/adverts/85ba2b54-a520-44ed-9cd9-3c7f68a4f8dd");
   };
 
@@ -27,7 +32,9 @@ export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
     <TouchableOpacity style={styles.container} onPress={navigateAdDetails}>
       <View style={styles.imageContainer}>
         <Image
-          source={{ uri: props.imageUrl }}
+          source={{
+            uri: hasAdvert ? props.advert?.images[0]?.url : props.imageUrl,
+          }}
           resizeMode="contain"
           style={styles.image}
         />
@@ -47,10 +54,15 @@ export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
         </View>
       </View>
       <View style={styles.productContainer}>
-        <Text style={styles.productName}>{props.name}</Text>
+        <Text style={styles.productName}>
+          {hasAdvert ? props.advert?.productName : props.name}
+        </Text>
+        {/* <Text style={styles.productPrice}>{`${
+          props.priceCurrency
+        } ${addCommasToNumber(parseInt(props.price))}`}</Text> */}
         <Text style={styles.productPrice}>{`${
           props.priceCurrency
-        } ${addCommasToNumber(parseInt(props.price))}`}</Text>
+        } ${addCommasToNumber(parseInt("650000"))}`}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -60,8 +72,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    // borderWidth: 2,
-    // borderColor: COLORS.primary,
     borderRadius: 8,
     backgroundColor: COLORS.white,
     gap: 8,

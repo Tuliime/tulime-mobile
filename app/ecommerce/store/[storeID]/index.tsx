@@ -28,6 +28,7 @@ import { truncateString } from "@/utils/truncateString";
 import { AdProductCard } from "@/components/ecommerce/UI/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
 import { useAuthStore } from "@/store/auth";
+import { TAdvert } from "@/types/advert";
 const screenWidth = Dimensions.get("window").width * 0.999;
 const screenHeight = Dimensions.get("window").height * 0.999;
 
@@ -47,6 +48,7 @@ const StoreDetailsScreen = () => {
 
   const storeData: TEcommerceStore["store"] = data?.data ?? {};
   // const hasStoreData = !!storeData.id
+  const storeAdverts = storeData.adverts!;
 
   const isCurrentUser = storeData.userID === user.id;
   const hasBgImage = !!storeData.backgroundImageUrl;
@@ -62,23 +64,20 @@ const StoreDetailsScreen = () => {
     router.push(`/ecommerce/store/${storeID}/feedback`);
   };
 
-  const renderAdItems = useCallback(
-    ({ item }: { item: TEcommerce["adProduct"] }) => {
-      return (
-        <View style={{ width: itemWidth - 2, marginHorizontal: 2 }}>
-          <AdProductCard
-            // id={item.id}
-            name={item.name}
-            imageUrl={item.imageUrl}
-            description={item.description}
-            price={item.price}
-            priceCurrency={item.priceCurrency}
-          />
-        </View>
-      );
-    },
-    []
-  );
+  const renderAdItems = useCallback(({ item }: { item: TAdvert["advert"] }) => {
+    return (
+      <View style={{ width: itemWidth - 2, marginHorizontal: 2 }}>
+        <AdProductCard
+          name={""}
+          imageUrl={""}
+          description={""}
+          price={""}
+          priceCurrency={""}
+          advert={item}
+        />
+      </View>
+    );
+  }, []);
 
   if (isPending) {
     return (
@@ -242,8 +241,8 @@ const StoreDetailsScreen = () => {
             </Text>
           </View>
           <FlatList
-            data={ads}
-            keyExtractor={(item) => item.name}
+            data={storeAdverts}
+            keyExtractor={(item) => item.id}
             renderItem={renderAdItems}
             scrollEnabled={false}
             numColumns={numColumns}

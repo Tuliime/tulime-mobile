@@ -48,6 +48,7 @@ const ProductDetailsScreen: React.FC = () => {
     router.push(`/ecommerce/adverts/${advertID}/edit`);
   };
 
+  // TODO: To implement navigation to direct to the inbox
   const navigateToMessenger = () => {
     router.push("/ecommerce/messenger");
   };
@@ -88,6 +89,7 @@ const ProductDetailsScreen: React.FC = () => {
     );
   }
 
+  // TODO: To advert post progress  to the owner incase it is not 100
   return (
     <MainLayout title="E-commerce">
       <View style={styles.container}>

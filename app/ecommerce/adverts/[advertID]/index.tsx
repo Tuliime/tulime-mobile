@@ -25,19 +25,27 @@ import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { advert } from "@/API/advert";
 import { TAdvert } from "@/types/advert";
 import { SafetyTips } from "@/components/ecommerce/UI/SafetyTips";
+import { useAuthStore } from "@/store/auth";
+import Feather from "@expo/vector-icons/Feather";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
 const ProductDetailsScreen: React.FC = () => {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { advertID } = useLocalSearchParams<{ advertID: string }>();
   const flatListRef = useRef<FlatList>(null);
   const [index, setIndex] = useState(0);
+  const user = useAuthStore((state) => state.auth.user);
 
   const handleScroll = (event: any) => {
     const newIndex = Math.round(
       event.nativeEvent.contentOffset.x / screenWidth
     );
     setIndex(newIndex);
+  };
+
+  const navigateToAdvertEdit = () => {
+    router.push(`/ecommerce/adverts/${advertID}/edit`);
   };
 
   const navigateToMessenger = () => {
@@ -49,14 +57,15 @@ const ProductDetailsScreen: React.FC = () => {
   };
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: [`advert-${id}`],
+    queryKey: [`advert-${advertID}`],
     queryFn: () => {
-      return advert.get({ advertID: id });
+      return advert.get({ advertID: advertID });
     },
   });
 
   const advertData: TAdvert["advert"] = data?.data ?? {};
   // const hasAdvertData = !!advertData.id
+  const isCurrentUser = advertData.userID === user.id;
 
   if (isPending) {
     return (
@@ -120,7 +129,6 @@ const ProductDetailsScreen: React.FC = () => {
         <View style={styles.contentContainer}>
           <View style={styles.productContainer}>
             <Text style={styles.productName}>{advertData.productName}</Text>
-
             <Text style={styles.productPrice}>{`${
               ads[0].priceCurrency
             } ${addCommasToNumber(parseInt(ads[0].price))}`}</Text>
@@ -221,20 +229,35 @@ const ProductDetailsScreen: React.FC = () => {
               </View>
             </View>
           </View>
-          {/* <View style={styles.bookmarkIconContainer}> */}
-          {/* <Ionicons
+          <View style={styles.bookmarkEditContainer}>
+            <View style={styles.bookmarkContainer}>
+              {/* <Ionicons
             name="bookmark"
             size={24}
             color={COLORS.primary}
             style={styles.bookmarkIcon}
           /> */}
-          <Ionicons
-            name="bookmark-outline"
-            size={24}
-            color={COLORS.primary}
-            style={styles.bookmarkIcon}
-          />
-          {/* </View> */}
+              <Ionicons
+                name="bookmark-outline"
+                size={24}
+                color={COLORS.primary}
+                style={styles.bookmarkIcon}
+              />
+            </View>
+            {isCurrentUser && (
+              <TouchableOpacity
+                style={styles.editContainer}
+                onPress={navigateToAdvertEdit}
+              >
+                <Feather
+                  name="edit"
+                  size={20}
+                  color={COLORS.primary}
+                  style={styles.editIcon}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
         </View>
 
         {/* Safety Tips */}
@@ -331,23 +354,34 @@ const styles = StyleSheet.create({
   locationText: {
     color: COLORS.gray6,
   },
-  bookmarkIconContainer: {
+  bookmarkEditContainer: {
     position: "absolute",
     top: 16,
     right: 16,
-    width: 36,
-    height: 36,
-    backgroundColor: COLORS.white,
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 999,
-    elevation: 5,
+    gap: 8,
+  },
+  bookmarkContainer: {
+    // position: "absolute",
+    // top: 16,
+    // right: 16,
+    // width: 36,
+    // height: 36,
+    // backgroundColor: COLORS.white,
+    alignItems: "center",
+    justifyContent: "center",
+    // borderRadius: 999,
+    // elevation: 5,
   },
   bookmarkIcon: {
-    position: "absolute",
-    top: 16,
-    right: 14,
+    // position: "absolute",
+    // top: 16,
+    // right: 14,
   },
+  editContainer: {},
+  editIcon: {},
   actionsContainer: {
     marginTop: 8,
     gap: 16,

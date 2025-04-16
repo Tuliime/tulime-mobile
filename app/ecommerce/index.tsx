@@ -53,8 +53,8 @@ const index = () => {
           contentContainerStyle={styles.moduleContainer}
         >
           <ModuleCard
-            name={"E-commerce"}
-            description={"Sell and buy agro products to anyone in Uganda"}
+            name={"Got something to sell"}
+            description={"If you have something to sell, just post an ad"}
             icon={icons.ecommerce1}
           />
           <ModuleCard

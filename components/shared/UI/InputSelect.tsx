@@ -8,7 +8,7 @@ import {
   FlatList,
   Dimensions,
 } from "react-native";
-import { COLORS } from "@/constants/theme";
+import { COLORS, SIZES } from "@/constants/theme";
 import Entypo from "@expo/vector-icons/Entypo";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
@@ -17,12 +17,14 @@ type InputSelectProps = {
   options: string[];
   initialValue?: string;
   onSelect: (value: string) => void;
+  label?: string;
 };
 
 export const InputSelect: React.FC<InputSelectProps> = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const initialSelectValue = props.initialValue || "Select an option";
   const [selectedValue, setSelectedValue] = useState(initialSelectValue);
+  const label = props.label;
 
   const selectHandler = (value: string) => {
     props.onSelect(value);
@@ -32,6 +34,16 @@ export const InputSelect: React.FC<InputSelectProps> = (props) => {
 
   return (
     <View style={styles.container}>
+      {label && (
+        <Text
+          style={{
+            color: COLORS.gray6,
+            fontSize: SIZES.medium,
+          }}
+        >
+          {label}
+        </Text>
+      )}
       <TouchableOpacity
         style={styles.dropdown}
         onPress={() => setIsOpen(!isOpen)}
@@ -78,6 +90,7 @@ export const InputSelect: React.FC<InputSelectProps> = (props) => {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
+    gap: 8,
   },
   dropdown: {
     borderWidth: 1,

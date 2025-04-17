@@ -1,4 +1,5 @@
 import { serverURL } from "@/constants/urls";
+import { TAdvert } from "@/types/advert";
 
 class AdvertAPI {
   post = async ({
@@ -114,6 +115,52 @@ class AdvertAPI {
   getAnalytics = async ({ advertID }: { advertID: string }) => {
     const response = await fetch(`${serverURL}/adverts/${advertID}/analytics`, {
       method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  postPrice = async ({
+    advertID,
+    amount,
+    currency,
+  }: TAdvert["postAdvertPriceInput"]) => {
+    const response = await fetch(`${serverURL}/adverts/${advertID}/price`, {
+      method: "POST",
+      body: JSON.stringify({
+        amount: amount,
+        currency: currency,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  postInventory = async ({
+    advertID,
+    quantity,
+    unit,
+  }: TAdvert["postAdvertInventoryInput"]) => {
+    const response = await fetch(`${serverURL}/adverts/${advertID}/inventory`, {
+      method: "POST",
+      body: JSON.stringify({
+        quantity: quantity,
+        unit: unit,
+      }),
       headers: {
         "Content-type": "application/json",
       },

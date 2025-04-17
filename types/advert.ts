@@ -17,6 +17,8 @@ type Advert = {
   updatedAt: string;
   user?: Auth["user"];
   store?: TEcommerceStore["store"];
+  price?: AdvertPrice;
+  inventory?: AdvertInventory;
 };
 
 type AdvertImage = {
@@ -27,6 +29,44 @@ type AdvertImage = {
   isPrimary: boolean;
   createdAt: string;
   updatedAt: string;
+};
+
+type AdvertPrice = {
+  id: string;
+  advertID: string;
+  amount: number;
+  currency: string;
+  unit: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type AdvertInventory = {
+  id: string;
+  advertID: string;
+  quantity: number;
+  unit: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type Currency = {
+  name: string;
+  code: string;
+  symbol: string;
+};
+
+type PostAdvertPriceInput = {
+  advertID: string;
+  amount: number;
+  currency: string; //stringified json
+  unit: string;
+};
+
+type PostAdvertInventoryInput = {
+  advertID: string;
+  quantity: number;
+  unit: string;
 };
 
 type AdvertView = {
@@ -65,4 +105,7 @@ export type TAdvert = {
   advertView: AdvertView;
   advertImpression: AdvertImpression;
   advertAnalytics: AdvertAnalytics;
+  advertPrice: AdvertPrice;
+  postAdvertPriceInput: PostAdvertPriceInput;
+  postAdvertInventoryInput: PostAdvertInventoryInput;
 };

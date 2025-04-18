@@ -26,53 +26,62 @@ export const AppModal: React.FC<AppModalProp> = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={styles.safeAreaCenteredView}>
-        {/* Open Modal */}
-        <Pressable
-          style={[styles.openModalElement, props.openModalElementStyles]}
-          onPress={() => setModalVisible(() => true)}
-        >
-          {props.openModalElement}
-        </Pressable>
+    <View style={styles.modalContainer}>
+      {/* Open Modal */}
+      <Pressable
+        style={[styles.openModalElement, props.openModalElementStyles]}
+        onPress={() => setModalVisible(() => true)}
+      >
+        {props.openModalElement}
+      </Pressable>
 
-        {/* Modal */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(() => !modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              {/* Modal Content */}
-              <View style={styles.modalChildren}>{props.children}</View>
+      {modalVisible && (
+        <SafeAreaProvider>
+          <SafeAreaView style={styles.safeAreaCenteredView}>
+            {/* Modal */}
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                Alert.alert("Modal has been closed.");
+                setModalVisible(() => !modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  {/* Modal Content */}
+                  <View style={styles.modalChildren}>{props.children}</View>
 
-              {/* Close modal */}
-              <Pressable
-                style={styles.closeModal}
-                onPress={() => setModalVisible(() => !modalVisible)}
-              >
-                <AntDesign name="close" size={24} color={COLORS.gray7} />
-              </Pressable>
-            </View>
+                  {/* Close modal */}
+                  <Pressable
+                    style={styles.closeModal}
+                    onPress={() => setModalVisible(() => !modalVisible)}
+                  >
+                    <AntDesign name="close" size={24} color={COLORS.gray7} />
+                  </Pressable>
+                </View>
 
-            {/* Backdrop */}
-            <Pressable
-              style={styles.backdrop}
-              onPress={() => setModalVisible(() => false)}
-            />
-          </View>
-        </Modal>
-      </SafeAreaView>
-    </SafeAreaProvider>
+                {/* Backdrop */}
+                <Pressable
+                  style={styles.backdrop}
+                  onPress={() => setModalVisible(() => false)}
+                />
+              </View>
+            </Modal>
+          </SafeAreaView>
+        </SafeAreaProvider>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   safeAreaCenteredView: {
     flex: 1,
     justifyContent: "center",

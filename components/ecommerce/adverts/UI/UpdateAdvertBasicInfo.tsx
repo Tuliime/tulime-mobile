@@ -13,8 +13,6 @@ import { useMutation } from "@tanstack/react-query";
 import { advert } from "@/API/advert";
 import { InputField } from "@/components/shared/UI/InputField";
 import { InputTextArea } from "@/components/shared/UI/InputTextArea";
-import { useAuthStore } from "@/store/auth";
-import { router } from "expo-router";
 import { TAdvert } from "@/types/advert";
 import Toast from "react-native-toast-message";
 
@@ -22,14 +20,19 @@ import Toast from "react-native-toast-message";
   /*TODO: to make fields productName and productDescription ai aided  */
 }
 
-export const PostAdvert: React.FC = () => {
-  const userID = useAuthStore((state) => state.auth.user.id);
+type UpdateAdvertBasicInfo = {
+  advert: TAdvert["advert"];
+};
 
-  const initialFormValues: TAdvert["postAdvertInput"] = {
-    storeID: "",
-    userID: userID,
-    productName: "",
-    productDescription: "",
+export const UpdateAdvertBasicInfo: React.FC<UpdateAdvertBasicInfo> = (
+  props
+) => {
+  const initialFormValues: TAdvert["updateAdvertInput"] = {
+    advertID: props.advert.id,
+    storeID: props.advert.storeID,
+    userID: props.advert.userID,
+    productName: props.advert.productName,
+    productDescription: props.advert.productDescription,
   };
 
   const advertValidationSchema = yup.object().shape({
@@ -44,22 +47,10 @@ export const PostAdvert: React.FC = () => {
   });
 
   const { isPending, mutate } = useMutation({
-    mutationFn: advert.post,
+    mutationFn: advert.update,
     onSuccess: (response: any) => {
-      console.log("post advert response:", response);
-      const newAdvert = response.data as TAdvert["advert"];
+      console.log("update advert response:", response);
 
-      router.setParams({
-        postAdvertStep: 1,
-        advertID: newAdvert.id,
-        productName: newAdvert.productName,
-      });
-
-      router.push(
-        `/ecommerce/adverts/new?postAdvertStep=${2}&advertID=${
-          newAdvert.id
-        }&productName=${newAdvert.productName}`
-      );
       Toast.show({
         type: "success",
         text1: "Success!",
@@ -82,7 +73,7 @@ export const PostAdvert: React.FC = () => {
     },
   });
 
-  const postAdvertSubmitHandler = (values: TAdvert["postAdvertInput"]) => {
+  const updateAdvertSubmitHandler = (values: TAdvert["updateAdvertInput"]) => {
     console.log("advert values:", values);
     mutate(values);
   };
@@ -90,12 +81,12 @@ export const PostAdvert: React.FC = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.titleText}>Post Ad</Text>
+        <Text style={styles.titleText}>Basic Information</Text>
       </View>
       <Formik
         validationSchema={advertValidationSchema}
         initialValues={initialFormValues}
-        onSubmit={(values) => postAdvertSubmitHandler(values)}
+        onSubmit={(values) => updateAdvertSubmitHandler(values)}
       >
         {(formik) => (
           <View style={styles.formContainer}>
@@ -121,11 +112,11 @@ export const PostAdvert: React.FC = () => {
               >
                 {isPending ? (
                   <View style={styles.loadingContainer}>
-                    <ActivityIndicator size="large" color={COLORS.white} />
-                    <Text style={styles.buttonText}>Saving info...</Text>
+                    <ActivityIndicator size="small" color={COLORS.white} />
+                    <Text style={styles.buttonText}>Saving...</Text>
                   </View>
                 ) : (
-                  <Text style={styles.buttonText}>Next</Text>
+                  <Text style={styles.buttonText}>save</Text>
                 )}
               </TouchableOpacity>
             </View>
@@ -222,6 +213,8 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
   },
   button: {
     backgroundColor: COLORS.primary,
@@ -230,12 +223,11 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-    height: 52,
+    width: 120,
   },
   buttonText: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: "bold",
   },
   loadingContainer: {
     flexDirection: "row",

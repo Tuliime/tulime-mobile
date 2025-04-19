@@ -7,14 +7,36 @@ class AdvertAPI {
     userID,
     productName,
     productDescription,
-  }: {
-    storeID: string;
-    userID: string;
-    productName: string;
-    productDescription: string;
-  }) => {
+  }: TAdvert["postAdvertInput"]) => {
     const response = await fetch(`${serverURL}/adverts`, {
       method: "POST",
+      body: JSON.stringify({
+        storeID: storeID,
+        userID: userID,
+        productName: productName,
+        productDescription: productDescription,
+      }),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  update = async ({
+    advertID,
+    storeID,
+    userID,
+    productName,
+    productDescription,
+  }: TAdvert["updateAdvertInput"]) => {
+    const response = await fetch(`${serverURL}/adverts/${advertID}`, {
+      method: "PATCH",
       body: JSON.stringify({
         storeID: storeID,
         userID: userID,
@@ -150,6 +172,33 @@ class AdvertAPI {
     return await response.json();
   };
 
+  //
+  updatePrice = async ({
+    advertID,
+    amount,
+    currency,
+  }: TAdvert["postAdvertPriceInput"]) => {
+    const response = await fetch(
+      `${serverURL}/adverts/${advertID}/price/${serverURL}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          amount: amount,
+          currency: currency,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
   postInventory = async ({
     advertID,
     quantity,
@@ -165,6 +214,34 @@ class AdvertAPI {
         "Content-type": "application/json",
       },
     });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  // updateInventory
+  updateInventory = async ({
+    advertID,
+    advertInventoryID,
+    quantity,
+    unit,
+  }: TAdvert["updateAdvertInventoryInput"]) => {
+    const response = await fetch(
+      `${serverURL}/adverts/${advertID}/inventory/${advertInventoryID}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          quantity: quantity,
+          unit: unit,
+        }),
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
 
     if (!response.ok) {
       const error = await response.json();

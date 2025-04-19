@@ -63,10 +63,18 @@ type PostAdvertPriceInput = {
   unit: string;
 };
 
+type UpdateAdvertPriceInput = PostAdvertPriceInput & {
+  advertPriceID: string;
+};
+
 type PostAdvertInventoryInput = {
   advertID: string;
   quantity: number;
   unit: string;
+};
+
+type UpdateAdvertInventoryInput = PostAdvertInventoryInput & {
+  advertInventoryID: string;
 };
 
 type AdvertView = {
@@ -99,6 +107,26 @@ type AdvertAnalytics = {
   viewCount: number;
 };
 
+type PostAdvertInput = {
+  storeID: string;
+  userID: string;
+  productName: string;
+  productDescription: string;
+};
+
+type UpdateAdvertInput = {
+  advertID: string;
+  storeID: string;
+  userID: string;
+  productName: string;
+  productDescription: string;
+};
+
+type TAdvertAction = {
+  updateCurrentAdvert: (advert: Advert) => void;
+  clearAdvert: () => void;
+};
+
 export type TAdvert = {
   advert: Advert;
   advertImage: AdvertImage;
@@ -107,5 +135,10 @@ export type TAdvert = {
   advertAnalytics: AdvertAnalytics;
   advertPrice: AdvertPrice;
   postAdvertPriceInput: PostAdvertPriceInput;
+  updateAdvertPriceInput: UpdateAdvertPriceInput;
   postAdvertInventoryInput: PostAdvertInventoryInput;
+  updateAdvertInventoryInput: UpdateAdvertInventoryInput;
+  postAdvertInput: PostAdvertInput;
+  updateAdvertInput: UpdateAdvertInput;
+  advertAction: TAdvertAction;
 };

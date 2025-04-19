@@ -28,6 +28,7 @@ import { SafetyTips } from "@/components/ecommerce/UI/SafetyTips";
 import { useAuthStore } from "@/store/auth";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useAdvertStore } from "@/store/advert";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -36,16 +37,15 @@ const ProductDetailsScreen: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const [index, setIndex] = useState(0);
   const user = useAuthStore((state) => state.auth.user);
+  const updateCurrentAdvert = useAdvertStore(
+    (state) => state.updateCurrentAdvert
+  );
 
   const handleScroll = (event: any) => {
     const newIndex = Math.round(
       event.nativeEvent.contentOffset.x / screenWidth
     );
     setIndex(newIndex);
-  };
-
-  const navigateToAdvertEdit = () => {
-    router.push(`/ecommerce/adverts/${advertID}/edit`);
   };
 
   // TODO: To implement navigation to direct to the inbox
@@ -68,6 +68,11 @@ const ProductDetailsScreen: React.FC = () => {
   // const hasAdvertData = !!advertData.id
   const isCurrentUser = advertData.userID === user.id;
   const images = advertData.images;
+
+  const navigateToAdvertEdit = () => {
+    updateCurrentAdvert(advertData);
+    router.push(`/ecommerce/adverts/${advertID}/edit`);
+  };
 
   if (isPending) {
     return (

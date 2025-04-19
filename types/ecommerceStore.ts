@@ -57,14 +57,6 @@ export type Location = {
   updatedAt: string;
 };
 
-type PostStoreInput = {
-  storeID: string;
-  userID: string;
-  productName: string;
-  productDescription: string;
-};
-
 export type TEcommerceStore = {
   store: Store;
-  postStoreInput: PostStoreInput;
 };

@@ -15,6 +15,7 @@ import { InputField } from "@/components/shared/UI/InputField";
 import { InputTextArea } from "@/components/shared/UI/InputTextArea";
 import { TAdvert } from "@/types/advert";
 import Toast from "react-native-toast-message";
+import { useAdvertStore } from "@/store/advert";
 
 {
   /*TODO: to make fields productName and productDescription ai aided  */
@@ -35,6 +36,10 @@ export const UpdateAdvertBasicInfo: React.FC<UpdateAdvertBasicInfo> = (
     productDescription: props.advert.productDescription,
   };
 
+  const updateCurrentAdvert = useAdvertStore(
+    (state) => state.updateCurrentAdvert
+  );
+
   const advertValidationSchema = yup.object().shape({
     productName: yup
       .string()
@@ -50,7 +55,7 @@ export const UpdateAdvertBasicInfo: React.FC<UpdateAdvertBasicInfo> = (
     mutationFn: advert.update,
     onSuccess: (response: any) => {
       console.log("update advert response:", response);
-
+      updateCurrentAdvert(response.data);
       Toast.show({
         type: "success",
         text1: "Success!",

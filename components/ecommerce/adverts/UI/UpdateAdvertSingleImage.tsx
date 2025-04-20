@@ -17,6 +17,7 @@ import { ImagePreview } from "../../../shared/UI/ImagePreview";
 import { advert } from "@/API/advert";
 import Toast from "react-native-toast-message";
 import { TAdvert } from "@/types/advert";
+import { useAdvertStore } from "@/store/advert";
 
 type UpdateAdvertSingleImageProps = {
   image: TAdvert["advertImage"];
@@ -39,10 +40,13 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
   const showImagePreview: boolean = !!file?.name;
   const hasFile: boolean = !!file?.name;
 
+  const updateAdvertImage = useAdvertStore((state) => state.updateAdvertImage);
+
   const { isPending, mutate } = useMutation({
     mutationFn: advert.updateImage,
     onSuccess: (response: any) => {
       console.log("updated advertImage response:", response);
+      updateAdvertImage(response.data);
 
       Toast.show({
         type: "success",

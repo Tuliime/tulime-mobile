@@ -125,6 +125,9 @@ type UpdateAdvertInput = {
 type TAdvertAction = {
   updateCurrentAdvert: (advert: Advert) => void;
   clearAdvert: () => void;
+  updateAdvertImage: (image: AdvertImage) => void;
+  updateAdvertPrice: (price: AdvertPrice) => void;
+  updateAdvertInventory: (inventory: AdvertInventory) => void;
 };
 
 export type TAdvert = {

@@ -16,6 +16,7 @@ import Toast from "react-native-toast-message";
 import { InputSelect } from "@/components/shared/UI/InputSelect";
 import { units } from "../data/units";
 import { InputField } from "@/components/shared/UI/InputField";
+import { useAdvertStore } from "@/store/advert";
 
 type updateAdvertInventoryProps = {
   advert: TAdvert["advert"];
@@ -30,6 +31,10 @@ export const UpdateAdvertInventory: React.FC<updateAdvertInventoryProps> = (
     quantity: props.advert.inventory?.quantity!,
     unit: props.advert.inventory?.unit!,
   };
+
+  const updateAdvertInventory = useAdvertStore(
+    (state) => state.updateAdvertInventory
+  );
 
   const advertPriceValidationSchema = yup.object().shape({
     quantity: yup
@@ -46,7 +51,7 @@ export const UpdateAdvertInventory: React.FC<updateAdvertInventoryProps> = (
     mutationFn: advert.updateInventory,
     onSuccess: (response: any) => {
       console.log("update advert inventory response:", response);
-
+      updateAdvertInventory(response.data);
       Toast.show({
         type: "success",
         text1: "Success!",

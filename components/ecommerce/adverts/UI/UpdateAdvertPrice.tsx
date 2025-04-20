@@ -18,6 +18,7 @@ import { units } from "../data/units";
 import { currencies } from "../data/currencies";
 import { InputField } from "@/components/shared/UI/InputField";
 import { isJSONString } from "@/utils/isJsonStringified";
+import { useAdvertStore } from "@/store/advert";
 
 type UpdateAdvertPriceProps = {
   advert: TAdvert["advert"];
@@ -31,6 +32,8 @@ export const UpdateAdvertPrice: React.FC<UpdateAdvertPriceProps> = (props) => {
     currency: props.advert.price?.currency!,
     unit: props.advert.price?.unit!,
   };
+
+  const updateAdvertPrice = useAdvertStore((state) => state.updateAdvertPrice);
 
   const advertPriceValidationSchema = yup.object().shape({
     amount: yup
@@ -51,7 +54,7 @@ export const UpdateAdvertPrice: React.FC<UpdateAdvertPriceProps> = (props) => {
     mutationFn: advert.updatePrice,
     onSuccess: (response: any) => {
       console.log("post advert price response:", response);
-
+      updateAdvertPrice(response.data);
       Toast.show({
         type: "success",
         text1: "Success!",

@@ -17,8 +17,9 @@ type ImagePickerProps = {
 
 export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
   const MAX_FILE_LIMIT = 5 * 1024 * 1024; /* 5 MB */
-  const limit = props.limit ? props.limit : 10; //Default limit is 10
-  const multiple: boolean = props.multiple ? props.multiple : true; //Default multiple is true
+  const limit = props.limit !== undefined ? props.limit : 10; //Default limit is 10
+  const multiple: boolean =
+    props.multiple !== undefined ? props.multiple : true; //Default multiple is true
 
   const pickImageHandler = async () => {
     try {

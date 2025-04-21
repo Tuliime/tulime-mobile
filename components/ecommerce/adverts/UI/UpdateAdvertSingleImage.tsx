@@ -139,7 +139,7 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
                     pickElement={
                       <Feather name="plus" size={28} color={COLORS.white} />
                     }
-                    limit={12}
+                    multiple={false}
                   />
                 </View>
               </View>

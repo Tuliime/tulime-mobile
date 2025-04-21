@@ -222,7 +222,6 @@ class AdvertAPI {
     return await response.json();
   };
 
-  // updateInventory
   updateInventory = async ({
     advertID,
     advertInventoryID,
@@ -242,6 +241,38 @@ class AdvertAPI {
         },
       }
     );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  publish = async ({ advertID }: TAdvert["advertPublicityInput"]) => {
+    const response = await fetch(`${serverURL}/adverts/${advertID}/publish`, {
+      method: "PATCH",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  unPublish = async ({ advertID }: TAdvert["advertPublicityInput"]) => {
+    const response = await fetch(`${serverURL}/adverts/${advertID}/unpublish`, {
+      method: "PATCH",
+      body: JSON.stringify({}),
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();

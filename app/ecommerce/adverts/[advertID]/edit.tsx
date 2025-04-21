@@ -7,6 +7,7 @@ import { useAdvertStore } from "@/store/advert";
 import { UpdateAdvertBasicInfo } from "@/components/ecommerce/adverts/UI/UpdateAdvertBasicInfo";
 import { UpdateAdvertPrice } from "@/components/ecommerce/adverts/UI/UpdateAdvertPrice";
 import { UpdateAdvertInventory } from "@/components/ecommerce/adverts/UI/updateAdvertInventory";
+import { AdvertPublicityLayout } from "@/components/ecommerce/adverts/layout/AdvertPublicityLayout";
 
 const EditAdvert = () => {
   const { advertID } = useLocalSearchParams<{ advertID: string }>();
@@ -19,6 +20,7 @@ const EditAdvert = () => {
         <UpdateAdvertBasicInfo advert={currentAdvert} />
         <UpdateAdvertPrice advert={currentAdvert} />
         <UpdateAdvertInventory advert={currentAdvert} />
+        <AdvertPublicityLayout advert={currentAdvert} />
         {/* delete add here - optional */}
       </View>
     </MainLayout>

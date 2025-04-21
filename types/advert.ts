@@ -122,6 +122,10 @@ type UpdateAdvertInput = {
   productDescription: string;
 };
 
+type AdvertPublicityInput = {
+  advertID: string;
+};
+
 type TAdvertAction = {
   updateCurrentAdvert: (advert: Advert) => void;
   clearAdvert: () => void;
@@ -141,6 +145,7 @@ export type TAdvert = {
   updateAdvertPriceInput: UpdateAdvertPriceInput;
   postAdvertInventoryInput: PostAdvertInventoryInput;
   updateAdvertInventoryInput: UpdateAdvertInventoryInput;
+  advertPublicityInput: AdvertPublicityInput;
   postAdvertInput: PostAdvertInput;
   updateAdvertInput: UpdateAdvertInput;
   advertAction: TAdvertAction;

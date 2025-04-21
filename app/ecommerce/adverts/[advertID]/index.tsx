@@ -68,6 +68,7 @@ const ProductDetailsScreen: React.FC = () => {
   // const hasAdvertData = !!advertData.id
   const isCurrentUser = advertData.userID === user.id;
   const images = advertData.images;
+  const hasLogo = !!advertData.store?.logoUrl;
 
   const navigateToAdvertEdit = () => {
     updateCurrentAdvert(advertData);
@@ -152,7 +153,15 @@ const ProductDetailsScreen: React.FC = () => {
                 navigateToStoreDetailScreen(advertData.store?.id!)
               }
             >
-              <Ionicons name="business" size={20} color={COLORS.gray8} />
+              {hasLogo && (
+                <Image
+                  source={{ uri: advertData.store?.logoUrl }}
+                  style={[styles.logo, { objectFit: "contain" }]}
+                />
+              )}
+              {!hasLogo && (
+                <Ionicons name="business" size={20} color={COLORS.gray8} />
+              )}
               <Text style={styles.businessText}>{advertData.store?.name}</Text>
             </TouchableOpacity>
             <View style={styles.locationContainer}>
@@ -354,6 +363,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     gap: 8,
+  },
+  logo: {
+    width: 20,
+    height: 20,
   },
   businessText: {
     color: COLORS.gray7,

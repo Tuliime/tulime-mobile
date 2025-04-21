@@ -1,4 +1,5 @@
 import { serverURL } from "@/constants/urls";
+import { TEcommerceStore } from "@/types/ecommerceStore";
 
 class StoreAPI {
   post = async ({
@@ -30,23 +31,15 @@ class StoreAPI {
   };
 
   update = async ({
-    storeID,
+    id,
     userID,
     name,
     description,
     website,
     email,
     location,
-  }: {
-    storeID: string;
-    userID: string;
-    name: string;
-    description: string;
-    website: string;
-    email: string;
-    location: string;
-  }) => {
-    const response = await fetch(`${serverURL}/store/${storeID}`, {
+  }: TEcommerceStore["updateStoreInput"]) => {
+    const response = await fetch(`${serverURL}/store/${id}`, {
       method: "PATCH",
       body: JSON.stringify({
         userID: userID,

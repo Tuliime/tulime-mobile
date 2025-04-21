@@ -57,6 +57,23 @@ export type Location = {
   updatedAt: string;
 };
 
+type UpdateStoreInput = {
+  id: string;
+  userID: string;
+  name: string;
+  description: string;
+  website: string;
+  email: string;
+  location: string;
+};
+
+type TStoreAction = {
+  updateCurrentStore: (store: Store) => void;
+  clearStore: () => void;
+};
+
 export type TEcommerceStore = {
   store: Store;
+  updateStoreInput: UpdateStoreInput;
+  storeAction: TStoreAction;
 };

@@ -18,6 +18,7 @@ import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { TEcommerceStore } from "@/types/ecommerceStore";
 import {
   Entypo,
+  Feather,
   FontAwesome,
   Ionicons,
   MaterialIcons,
@@ -29,6 +30,7 @@ import { AdProductCard } from "@/components/ecommerce/UI/AdProductCard";
 import { TEcommerce } from "@/types/ecommerce";
 import { useAuthStore } from "@/store/auth";
 import { TAdvert } from "@/types/advert";
+import { useEcommerceStore } from "@/store/ecommerceStore";
 const screenWidth = Dimensions.get("window").width * 0.999;
 const screenHeight = Dimensions.get("window").height * 0.999;
 
@@ -38,6 +40,9 @@ const itemWidth = screenWidth / numColumns - SIZES.medium;
 const StoreDetailsScreen = () => {
   const user = useAuthStore((state) => state.auth.user);
   const { storeID } = useLocalSearchParams<{ storeID: string }>();
+  const updateCurrentStore = useEcommerceStore(
+    (state) => state.updateCurrentStore
+  );
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`store-${storeID}`],
@@ -47,7 +52,6 @@ const StoreDetailsScreen = () => {
   });
 
   const storeData: TEcommerceStore["store"] = data?.data ?? {};
-  // const hasStoreData = !!storeData.id
   const storeAdverts = storeData.adverts!;
 
   const isCurrentUser = storeData.userID === user.id;
@@ -58,6 +62,11 @@ const StoreDetailsScreen = () => {
   // TODO: To implement navigation to direct to the inbox
   const navigateToMessenger = () => {
     router.push("/ecommerce/messenger");
+  };
+
+  const navigateToStoreEdit = () => {
+    updateCurrentStore(storeData);
+    router.push(`/ecommerce/store/${storeID}/edit`);
   };
 
   const navigateToFeedback = () => {
@@ -129,7 +138,23 @@ const StoreDetailsScreen = () => {
 
         {/* Store/Business Info */}
         <View style={styles.storeInfoContainer}>
-          <Text style={styles.storeNameText}>{storeData.name}</Text>
+          <View style={styles.storeNameContainer}>
+            <Text style={styles.storeNameText}>{storeData.name}</Text>
+            {isCurrentUser && (
+              <TouchableOpacity
+                style={styles.editContainer}
+                onPress={navigateToStoreEdit}
+              >
+                <Feather
+                  name="edit"
+                  size={20}
+                  color={COLORS.primary}
+                  style={styles.editIcon}
+                />
+                <Text style={styles.editText}>Edit</Text>
+              </TouchableOpacity>
+            )}
+          </View>
           {hasDescription && (
             <Text style={styles.storeDescriptionText}>
               {truncateString(storeData.description, 176)}
@@ -312,6 +337,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 8,
   },
+  storeNameContainer: {
+    width: "100%",
+    flexDirection: "row",
+    gap: 8,
+    justifyContent: "space-between",
+  },
   storeNameText: {
     color: COLORS.gray8,
     fontWeight: 600,
@@ -319,6 +350,16 @@ const styles = StyleSheet.create({
   },
   storeDescriptionText: {
     color: COLORS.gray6,
+  },
+  editContainer: {
+    flexDirection: "row",
+    gap: 4,
+  },
+  editIcon: {},
+  editText: {
+    color: COLORS.primary,
+    fontSize: 16,
+    fontWeight: 500,
   },
   storeLocationContainer: {
     flexDirection: "row",

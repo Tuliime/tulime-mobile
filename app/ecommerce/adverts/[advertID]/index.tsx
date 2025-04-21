@@ -29,6 +29,7 @@ import { useAuthStore } from "@/store/auth";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useAdvertStore } from "@/store/advert";
+import { AdvertPublicityLayout } from "@/components/ecommerce/adverts/layout/AdvertPublicityLayout";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -77,7 +78,7 @@ const ProductDetailsScreen: React.FC = () => {
 
   if (isPending) {
     return (
-      <MainLayout title="E-commerce">
+      <MainLayout title={advertData.productName}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color={COLORS.blue7} />
         </View>
@@ -87,7 +88,7 @@ const ProductDetailsScreen: React.FC = () => {
 
   if (isError) {
     return (
-      <MainLayout title="E-commerce">
+      <MainLayout title={advertData.productName}>
         <View style={styles.errorContainer}>
           <ErrorCard message={error.message} />
         </View>
@@ -97,7 +98,7 @@ const ProductDetailsScreen: React.FC = () => {
 
   // TODO: To advert post progress  to the owner incase it is not 100
   return (
-    <MainLayout title="E-commerce">
+    <MainLayout title={advertData.productName}>
       <View style={styles.container}>
         {/* Ad Image slider */}
         <FlatList
@@ -139,6 +140,13 @@ const ProductDetailsScreen: React.FC = () => {
             </View>
           )}
         />
+
+        {/* Advert publicity */}
+        {isCurrentUser && (
+          <View style={styles.publicityContainer}>
+            <AdvertPublicityLayout advert={advertData} />
+          </View>
+        )}
 
         {/* product Content */}
         <View style={styles.contentContainer}>
@@ -335,6 +343,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
   },
   slide: { borderRadius: 10, overflow: "hidden" },
+  publicityContainer: {},
   contentContainer: {
     width: "100%",
     position: "relative",

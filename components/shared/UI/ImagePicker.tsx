@@ -12,11 +12,13 @@ type ImagePickerProps = {
   onLoading: (isLoading: boolean) => void;
   pickElement?: ReactNode;
   limit?: number;
+  multiple?: boolean;
 };
 
 export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
   const MAX_FILE_LIMIT = 5 * 1024 * 1024; /* 5 MB */
   const limit = props.limit ? props.limit : 10; //Default limit is 10
+  const multiple: boolean = props.multiple ? props.multiple : true; //Default multiple is true
 
   const pickImageHandler = async () => {
     try {
@@ -25,7 +27,7 @@ export const ImagePicker: React.FC<ImagePickerProps> = (props) => {
       const result = await DocumentPicker.getDocumentAsync({
         type: "image/*",
         copyToCacheDirectory: true,
-        multiple: true,
+        multiple: multiple,
       });
 
       if (result.canceled || !result.assets) return;

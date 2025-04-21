@@ -9,15 +9,17 @@ import {
   Ionicons,
   MaterialIcons,
 } from "@expo/vector-icons";
-// import { AppModal } from "@/components/shared/UI/Modal";
+import { AppModal } from "@/components/shared/UI/Modal";
 import { UpdateStore } from "@/components/ecommerce/store/UI/UpdateStore";
 import { useEcommerceStore } from "@/store/ecommerceStore";
+import { UpdateStoreBgImage } from "@/components/ecommerce/store/UI/UpdateStoreBgImage";
 const screenWidth = Dimensions.get("window").width * 0.999;
 const screenHeight = Dimensions.get("window").height * 0.999;
 
 const EditStore = () => {
   const currentStore = useEcommerceStore((state) => state.currentStore);
   const hasLogo = !!currentStore.logoUrl;
+  const hasBgImage = !!currentStore.backgroundImageUrl;
 
   return (
     <MainLayout title="Edit Store" childrenStyles={styles.layoutContainer}>
@@ -28,6 +30,17 @@ const EditStore = () => {
             source={{ uri: currentStore.backgroundImageUrl }}
             style={[styles.image, { objectFit: "fill" }]}
           />
+          <View style={styles.updateBgImageContainer}>
+            <AppModal
+              openModalElement={
+                <View style={styles.updateBgImageLabelContainer}>
+                  <MaterialIcons name="edit" size={20} color={COLORS.white} />
+                </View>
+              }
+            >
+              <UpdateStoreBgImage store={currentStore} />
+            </AppModal>
+          </View>
           <View style={styles.logoContainer}>
             {hasLogo && (
               <Image
@@ -88,6 +101,18 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  updateBgImageContainer: {
+    position: "absolute",
+    top: 16,
+    right: 16,
+  },
+  updateBgImageLabelContainer: {
+    backgroundColor: COLORS.primaryTransparent,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 32,
+    elevation: 1,
   },
   logoContainer: {
     width: 48,

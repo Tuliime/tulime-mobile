@@ -170,30 +170,6 @@ const StoreDetailsScreen = () => {
             <Text style={styles.storeLocationText}>Kampala, Central</Text>
           </View>
           <View style={styles.storeActionContainer}>
-            {/* <AppModal
-              openModalElement={
-                <View
-                  style={[
-                    styles.actionsBtn,
-                    {
-                      backgroundColor: COLORS.gray3,
-                    },
-                  ]}
-                >
-                  <MaterialIcons
-                    name="feedback"
-                    size={20}
-                    color={COLORS.gray8}
-                    style={styles.actionsIcon}
-                  />
-                  <Text style={[styles.actionsText, { color: COLORS.gray8 }]}>
-                    Give Feedback
-                  </Text>
-                </View>
-              }
-            >
-              <PostFeedback />
-            </AppModal> */}
             <TouchableOpacity
               onPress={navigateToFeedback}
               style={[

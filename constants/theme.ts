@@ -14,6 +14,7 @@ const COLORS = {
   gray8: "#343a40",
   gray9: "#212529",
   white: "#FFFFFF",
+  whiteTransparent: "rgba(255,255,255,0.0)",
   lightWhite: "#FAFAFC",
   green0: "#ebfbee",
   green1: "#d3f9d8",

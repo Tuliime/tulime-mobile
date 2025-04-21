@@ -137,9 +137,6 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
             {!showImagePreview && (
               <View style={styles.imagePickerContainer}>
                 <View style={styles.imagePickerContent}>
-                  {/* <Text style={styles.imagePickerTitleSecondary}>
-                    You can upload a minimum of 2 pictures and a maximum of 12
-                  </Text> */}
                   <Text style={styles.imagePickerTitleSecondary}>
                     Select Image from Gallery
                   </Text>

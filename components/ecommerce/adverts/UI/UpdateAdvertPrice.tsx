@@ -213,17 +213,6 @@ const styles = StyleSheet.create({
     width: "auto",
     minWidth: 80,
   },
-  input: {
-    height: 120,
-    width: "100%",
-    borderWidth: 1,
-    borderColor: COLORS.gray6,
-    borderRadius: 8,
-    color: COLORS.gray8,
-    padding: 10,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
   buttonContainer: {
     width: "100%",
     flexDirection: "row",

@@ -39,6 +39,7 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
 
   const showImagePreview: boolean = !!file?.name;
   const hasFile: boolean = !!file?.name;
+  const hasImage: boolean = !!props.image.url;
 
   const updateAdvertImage = useAdvertStore((state) => state.updateAdvertImage);
 
@@ -47,6 +48,7 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
     onSuccess: (response: any) => {
       console.log("updated advertImage response:", response);
       updateAdvertImage(response.data);
+      setFile(() => initialFormValues.file);
 
       Toast.show({
         type: "success",
@@ -112,9 +114,19 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
-        {/* Image preview here */}
         <Text style={styles.titleText}>Update Advert Image </Text>
       </View>
+      {hasImage && (
+        <View style={""}>
+          <ImagePreview
+            files={[]}
+            urls={[props.image.url]}
+            onDelete={(_) => {}}
+            canDelete={false}
+            isLocalImage={false}
+          />
+        </View>
+      )}
       <Formik
         validationSchema={advertImageValidationSchema}
         initialValues={initialFormValues}
@@ -175,14 +187,10 @@ export const UpdateAdvertSingleImage: React.FC<UpdateAdvertSingleImageProps> = (
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16,
     gap: 16,
   },
   titleContainer: {
     width: "100%",
-    backgroundColor: COLORS.white,
-    padding: 14,
-    borderRadius: 8,
   },
   titleText: {
     color: COLORS.gray8,

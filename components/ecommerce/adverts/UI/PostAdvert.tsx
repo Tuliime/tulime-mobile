@@ -152,73 +152,8 @@ const styles = StyleSheet.create({
     color: COLORS.gray8,
     fontSize: 16,
   },
-  experienceContainer: {
-    gap: 8,
-  },
-  experienceQtnText: {
-    color: COLORS.gray8,
-    fontSize: 20,
-  },
-  experienceBtnContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 8,
-  },
-  experienceBtn: {
-    padding: 6,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    gap: 4,
-    borderWidth: 1,
-    borderRadius: 8,
-  },
-  experienceBtnText: {
-    fontWeight: 500,
-    color: COLORS.white,
-  },
   formContainer: {
     gap: 16,
-  },
-  input: {
-    height: 120,
-    width: "100%",
-    borderWidth: 1,
-    borderColor: COLORS.gray6,
-    borderRadius: 8,
-    color: COLORS.gray8,
-    padding: 10,
-    justifyContent: "flex-start",
-    alignItems: "center",
-  },
-  imagePickerContainer: {
-    width: "100%",
-    flexDirection: "row",
-    justifyContent: "flex-start",
-    gap: 8,
-  },
-  imagePicker: {
-    width: 52,
-    height: 52,
-    backgroundColor: COLORS.gray5,
-    alignItems: "center",
-    justifyContent: "center",
-    padding: 8,
-    borderRadius: 999,
-  },
-  imagePickerContent: {
-    flex: 1,
-  },
-  imagePickerTitlePrimary: {
-    color: COLORS.gray8,
-    fontWeight: "500",
-    fontSize: 16,
-  },
-  imagePickerTitleSecondary: {
-    color: COLORS.gray6,
-    fontSize: 14,
   },
   buttonContainer: {
     width: "100%",

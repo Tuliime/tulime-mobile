@@ -13,13 +13,13 @@ import { AppModal } from "@/components/shared/UI/Modal";
 import { UpdateStore } from "@/components/ecommerce/store/UI/UpdateStore";
 import { useEcommerceStore } from "@/store/ecommerceStore";
 import { UpdateStoreBgImage } from "@/components/ecommerce/store/UI/UpdateStoreBgImage";
+import { UpdateStoreLogo } from "@/components/ecommerce/store/UI/UpdateStoreLogo";
 const screenWidth = Dimensions.get("window").width * 0.999;
 const screenHeight = Dimensions.get("window").height * 0.999;
 
 const EditStore = () => {
   const currentStore = useEcommerceStore((state) => state.currentStore);
   const hasLogo = !!currentStore.logoUrl;
-  const hasBgImage = !!currentStore.backgroundImageUrl;
 
   return (
     <MainLayout title="Edit Store" childrenStyles={styles.layoutContainer}>
@@ -41,7 +41,18 @@ const EditStore = () => {
               <UpdateStoreBgImage store={currentStore} />
             </AppModal>
           </View>
-          <View style={styles.logoContainer}>
+          <View
+            style={[
+              styles.logoContainer,
+              {
+                backgroundColor: hasLogo
+                  ? COLORS.whiteTransparent
+                  : COLORS.gray2,
+                borderColor: hasLogo ? COLORS.whiteTransparent : COLORS.white,
+                elevation: hasLogo ? 0 : 5,
+              },
+            ]}
+          >
             {hasLogo && (
               <Image
                 source={{ uri: currentStore.logoUrl }}
@@ -51,6 +62,17 @@ const EditStore = () => {
             {!hasLogo && (
               <Ionicons name="business" size={28} color={COLORS.gray8} />
             )}
+            <View style={styles.updateLogoContainer}>
+              <AppModal
+                openModalElement={
+                  <View style={styles.updateLogoLabelContainer}>
+                    <MaterialIcons name="edit" size={14} color={COLORS.gray8} />
+                  </View>
+                }
+              >
+                <UpdateStoreLogo store={currentStore} />
+              </AppModal>
+            </View>
           </View>
 
           {/* Update store form */}
@@ -128,8 +150,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  updateLogoContainer: {
+    position: "absolute",
+    top: -2,
+    right: -12,
+  },
+  updateLogoLabelContainer: {
+    backgroundColor: COLORS.white,
+    padding: 4,
+    borderRadius: 999,
+    elevation: 5,
+  },
   updateFormContainer: {
-    // flex: 1,
     marginTop: 48,
     paddingHorizontal: 16,
   },

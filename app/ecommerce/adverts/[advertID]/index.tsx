@@ -30,6 +30,7 @@ import Feather from "@expo/vector-icons/Feather";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useAdvertStore } from "@/store/advert";
 import { AdvertPublicityLayout } from "@/components/ecommerce/adverts/layout/AdvertPublicityLayout";
+import { PostAdvertProgress } from "@/components/ecommerce/adverts/UI/PostAdvertProgress";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -140,6 +141,13 @@ const ProductDetailsScreen: React.FC = () => {
             </View>
           )}
         />
+
+        {/* Advert progress */}
+        {isCurrentUser && (
+          <View style={styles.progressContainer}>
+            <PostAdvertProgress advert={advertData} showDetails={false} />
+          </View>
+        )}
 
         {/* Advert publicity */}
         {isCurrentUser && (
@@ -343,6 +351,7 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 8,
   },
   slide: { borderRadius: 10, overflow: "hidden" },
+  progressContainer: {},
   publicityContainer: {},
   contentContainer: {
     width: "100%",

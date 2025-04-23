@@ -53,6 +53,7 @@ const MessengerRoomList: React.FC = () => {
 
   // console.log("messengerRooms: ", messengerRooms);
 
+  // TODO: To consider using a hook for getting userOnline status
   const getUserIDList = (messengerRooms: TMessenger["message"][]) => {
     const userIDList = messengerRooms.map((room) => {
       if (room.sender?.id === userID) {
@@ -114,6 +115,7 @@ const MessengerRoomList: React.FC = () => {
   }, [messengerRooms]);
 
   const msgrRooms = getAllMessengerRooms();
+  const hasMessengerRooms = isArrayWithElements(msgrRooms);
 
   const renderMessengerRoomItem = useCallback(
     ({ item }: { item: TMessenger["message"] }) => {
@@ -151,7 +153,7 @@ const MessengerRoomList: React.FC = () => {
       <View>
         <Text>Chatroom card here</Text>
       </View>
-      {hasRooms && (
+      {hasMessengerRooms && (
         <FlatList
           data={msgrRooms}
           keyExtractor={(item) => item.id}

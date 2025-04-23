@@ -13,8 +13,10 @@ export const MessengerContentLayout: React.FC = () => {
   const messageLoadingError = useMessengerStore(
     (state) => state.messageLoadingError
   );
-  const messagesFromStore = useMessengerStore((state) => state.messages);
   const currentRecipient = useMessengerStore((state) => state.currentRecipient);
+  const messagesFromStore = useMessengerStore((state) =>
+    state.getRoomMessages(currentRecipient.id)
+  );
   const { direction } = useGlobalSearchParams<{
     cursor: string;
     includeCursor: string;

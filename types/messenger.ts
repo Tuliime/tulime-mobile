@@ -145,6 +145,11 @@ type TMessengerAction = {
   updateMessage: (message: Message) => void;
   updateMessageBySentAt: (message: Message) => void;
   clearMessages: () => void;
+  updateRoomMessages: (recipientID: string, messages: Message[]) => void;
+  updateOneRoomMessage: (recipientID: string, message: Message) => void;
+  getRoomMessages: (recipientID: string) => Message[];
+  getAllMessengerRooms: () => Message[];
+  clearRoomMessages: () => void;
   updatePagination: (pagination: Pagination) => void;
   clearPagination: () => void;
   updateSwipedMessage: (message: OrganizedMessage) => void;
@@ -170,6 +175,7 @@ export type TMessenger = {
   message: Message;
   pagination: Pagination;
   organizedMessage: OrganizedMessage;
+  roomMessageMap: Map<string, Message[]>;
   userRooms: Message[];
   swipedMessage: OrganizedMessage | null;
   postingMessage: Map<string, PostingMessage>;

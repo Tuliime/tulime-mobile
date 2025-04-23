@@ -150,11 +150,11 @@ const ProductDetailsScreen: React.FC = () => {
         )}
 
         {/* Advert publicity */}
-        {isCurrentUser && (
+        {/* {isCurrentUser && (
           <View style={styles.publicityContainer}>
             <AdvertPublicityLayout advert={advertData} />
           </View>
-        )}
+        )} */}
 
         {/* product Content */}
         <View style={styles.contentContainer}>

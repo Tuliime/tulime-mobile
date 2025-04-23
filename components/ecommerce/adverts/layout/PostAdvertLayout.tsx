@@ -3,6 +3,7 @@ import React from "react";
 import { PostAdvert } from "../UI/PostAdvert";
 import { PostAdvertImages } from "../UI/PostAdvertImages";
 import { PostAdvertPriceQuantityDelivery } from "../UI/PostAdvertPriceQuantityDelivery";
+import { PostAdvertDeliveryBoostPublicity } from "../UI/PostAdvertDeliveryBoostPublicity";
 import { useGlobalSearchParams } from "expo-router";
 import { COLORS } from "@/constants";
 
@@ -20,6 +21,10 @@ export const PostAdvertLayout = () => {
     {
       step: 3,
       title: "Step 3: Add price, quantity and delivery",
+    },
+    {
+      step: 4,
+      title: "Step 4: Add delivery, boost and publish",
     },
   ];
 
@@ -50,6 +55,12 @@ export const PostAdvertLayout = () => {
         <View style={styles.postAdvertStepContainer}>
           <Text style={styles.postAdvertStepText}>{getAdvertStepTitle(3)}</Text>
           <PostAdvertPriceQuantityDelivery />
+        </View>
+      )}
+      {getAdvertStep() === 4 && (
+        <View style={styles.postAdvertStepContainer}>
+          <Text style={styles.postAdvertStepText}>{getAdvertStepTitle(4)}</Text>
+          <PostAdvertDeliveryBoostPublicity />
         </View>
       )}
     </View>

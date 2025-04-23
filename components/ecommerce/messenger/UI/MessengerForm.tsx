@@ -54,6 +54,13 @@ export const MessengerForm: React.FC = () => {
   const clearSwipedMessage = useMessengerStore(
     (state) => state.clearSwipedMessage
   );
+
+  const updateRoomMessages = useMessengerStore(
+    (state) => state.updateRoomMessages
+  );
+  const updateOneRoomMessage = useMessengerStore(
+    (state) => state.updateOneRoomMessage
+  );
   const swipedMessage = useMessengerStore((state) => state.swipedMessage);
   const recipient = useMessengerStore((state) => state.currentRecipient);
   const sender = auth.user;
@@ -140,6 +147,7 @@ export const MessengerForm: React.FC = () => {
     onSuccess: (response: any) => {
       console.log("chatroom response:", response);
       updateMessageBySentAt(response.data);
+      updateOneRoomMessage(recipient.id, response.data);
       updatePostingMessage({ status: "success", sentAt: response.data.sentAt });
       setText(() => "");
       playSuccessPostSound();
@@ -201,8 +209,8 @@ export const MessengerForm: React.FC = () => {
       formData.append("file", new Blob([values.file]));
     }
 
-    addMessage(genInitialMessageValues(values));
-    // addRepliedMessage(swipedMessage!);
+    // addMessage(genInitialMessageValues(values));
+    updateRoomMessages(recipient.id, [genInitialMessageValues(values)]);
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
     mutate({ formData: formData });
     clearSwipedMessage();
@@ -216,7 +224,6 @@ export const MessengerForm: React.FC = () => {
     const formData = new FormData();
     values.sentAt = new Date().toISOString();
     const reply = !!swipedMessage?.id! ? swipedMessage?.id! : "";
-    // values.localFile = { base64: file.base64, mimeType: file.mimeType };
     values.localFile = file;
     const tagList = getTagListHandler(text, users);
 
@@ -243,8 +250,8 @@ export const MessengerForm: React.FC = () => {
       file.name
     );
 
-    addMessage(genInitialMessageValues(values));
-    // addRepliedMessage(swipedMessage!);
+    // addMessage(genInitialMessageValues(values));
+    updateRoomMessages(recipient.id, [genInitialMessageValues(values)]);
     updatePostingMessage({ status: "pending", sentAt: values.sentAt });
     mutate({ formData: formData });
     clearSwipedMessage();

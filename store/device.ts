@@ -7,21 +7,6 @@ import { TStoreHydration } from "@/types/store";
 
 enableMapSet(); // Enable Map & Set support for
 
-const getStorageKey = () => {
-  const env = process.env.NODE_ENV;
-  const environment = process.env.EXPO_PUBLIC_ENV;
-
-  console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
-  console.log("process.env.EXPO_PUBLIC_ENV: ", process.env.EXPO_PUBLIC_ENV);
-
-  if (environment === "preview") return "device-storage-preview";
-  if (environment === "production") return "device-storage-prod";
-
-  if (env === "development") return "device-storage-dev";
-  if (env === "production") return "device-storage-prod";
-  return "device-storage-preview"; // Default to preview
-};
-
 const initialDevice = {
   id: "",
   userID: "",
@@ -86,7 +71,6 @@ export const useDeviceStore = create(
     }),
     {
       name: "device-storage",
-      // name: getStorageKey(),
       storage: {
         getItem: async (key) => {
           const value = await AsyncStorage.getItem(key);

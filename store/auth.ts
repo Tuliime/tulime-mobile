@@ -4,22 +4,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Auth, TAuth } from "@/types/auth";
 import { TStoreHydration } from "@/types/store";
 
-const getStorageKey = () => {
-  const env = process.env.NODE_ENV;
-
-  const environment = process.env.EXPO_PUBLIC_ENV;
-
-  console.log("process.env.NODE_ENV: ", process.env.NODE_ENV);
-  console.log("process.env.EXPO_PUBLIC_ENV: ", process.env.EXPO_PUBLIC_ENV);
-
-  if (environment === "preview") return "device-storage-preview";
-  if (environment === "production") return "device-storage-prod";
-
-  if (env === "development") return "auth-storage-dev";
-  if (env === "production") return "auth-storage-prod";
-  return "auth-storage-preview"; // Default to preview
-};
-
 const authInitialValues: Auth = {
   accessToken: "",
   refreshToken: "",
@@ -62,8 +46,7 @@ export const useAuthStore = create(
       },
     }),
     {
-      // name: "auth-storage",
-      name: getStorageKey(),
+      name: "auth-storage",
       storage: {
         getItem: async (key) => {
           const value = await AsyncStorage.getItem(key);

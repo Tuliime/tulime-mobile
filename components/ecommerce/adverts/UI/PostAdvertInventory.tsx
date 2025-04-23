@@ -18,6 +18,7 @@ import Toast from "react-native-toast-message";
 import { InputSelect } from "@/components/shared/UI/InputSelect";
 import { units } from "../data/units";
 import { InputField } from "@/components/shared/UI/InputField";
+import { useAdvertStore } from "@/store/advert";
 
 export const PostAdvertInventory: React.FC = () => {
   const {
@@ -33,6 +34,11 @@ export const PostAdvertInventory: React.FC = () => {
     unit: "",
   };
 
+  const updateCurrentAdvert = useAdvertStore(
+    (state) => state.updateCurrentAdvert
+  );
+  const currentAdvert = useAdvertStore((state) => state.currentAdvert);
+
   const advertPriceValidationSchema = yup.object().shape({
     quantity: yup
       .string()
@@ -47,7 +53,11 @@ export const PostAdvertInventory: React.FC = () => {
   const { isPending, mutate } = useMutation({
     mutationFn: advert.postInventory,
     onSuccess: (response: any) => {
-      console.log("post advert price response:", response);
+      console.log("post advert inventory response:", response);
+
+      const inventory = response.data as TAdvert["advertInventory"];
+      currentAdvert.inventory = inventory;
+      updateCurrentAdvert(currentAdvert);
 
       Toast.show({
         type: "success",

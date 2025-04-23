@@ -19,6 +19,7 @@ import { advert } from "@/API/advert";
 import { router, useGlobalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 import { TAdvert } from "@/types/advert";
+import { useAdvertStore } from "@/store/advert";
 
 export const PostAdvertImages: React.FC = () => {
   const {
@@ -37,11 +38,19 @@ export const PostAdvertImages: React.FC = () => {
     files: [],
   };
 
+  const updateCurrentAdvert = useAdvertStore(
+    (state) => state.updateCurrentAdvert
+  );
+  const currentAdvert = useAdvertStore((state) => state.currentAdvert);
+
   const { isPending, mutate } = useMutation({
     mutationFn: advert.postImages,
     onSuccess: (response: any) => {
       console.log("post advertImages response:", response);
+
       const images = response.data as TAdvert["advertImage"][];
+      currentAdvert.images = images;
+      updateCurrentAdvert(currentAdvert);
 
       router.push(
         `/ecommerce/adverts/new?postAdvertStep=${3}&advertID=${advertID}&productName=${productName}&advertImage=${

@@ -141,6 +141,7 @@ export type TAdvert = {
   advertImpression: AdvertImpression;
   advertAnalytics: AdvertAnalytics;
   advertPrice: AdvertPrice;
+  advertInventory: AdvertInventory;
   postAdvertPriceInput: PostAdvertPriceInput;
   updateAdvertPriceInput: UpdateAdvertPriceInput;
   postAdvertInventoryInput: PostAdvertInventoryInput;

@@ -19,6 +19,7 @@ import { InputSelect } from "@/components/shared/UI/InputSelect";
 import { units } from "../data/units";
 import { currencies } from "../data/currencies";
 import { InputField } from "@/components/shared/UI/InputField";
+import { useAdvertStore } from "@/store/advert";
 
 export const PostAdvertPrice: React.FC = () => {
   const {
@@ -27,6 +28,11 @@ export const PostAdvertPrice: React.FC = () => {
     productName,
   }: { postAdvertStep: string; advertID: string; productName: string } =
     useGlobalSearchParams();
+
+  const updateCurrentAdvert = useAdvertStore(
+    (state) => state.updateCurrentAdvert
+  );
+  const currentAdvert = useAdvertStore((state) => state.currentAdvert);
 
   const initialFormValues: TAdvert["postAdvertPriceInput"] = {
     advertID: advertID,
@@ -60,6 +66,10 @@ export const PostAdvertPrice: React.FC = () => {
     mutationFn: advert.postPrice,
     onSuccess: (response: any) => {
       console.log("post advert price response:", response);
+
+      const price = response.data as TAdvert["advertPrice"];
+      currentAdvert.price = price;
+      updateCurrentAdvert(currentAdvert);
 
       Toast.show({
         type: "success",

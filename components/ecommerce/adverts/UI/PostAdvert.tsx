@@ -17,6 +17,7 @@ import { useAuthStore } from "@/store/auth";
 import { router } from "expo-router";
 import { TAdvert } from "@/types/advert";
 import Toast from "react-native-toast-message";
+import { useAdvertStore } from "@/store/advert";
 
 {
   /*TODO: to make fields productName and productDescription ai aided  */
@@ -24,6 +25,9 @@ import Toast from "react-native-toast-message";
 
 export const PostAdvert: React.FC = () => {
   const userID = useAuthStore((state) => state.auth.user.id);
+  const updateCurrentAdvert = useAdvertStore(
+    (state) => state.updateCurrentAdvert
+  );
 
   const initialFormValues: TAdvert["postAdvertInput"] = {
     storeID: "",
@@ -54,6 +58,8 @@ export const PostAdvert: React.FC = () => {
         advertID: newAdvert.id,
         productName: newAdvert.productName,
       });
+
+      updateCurrentAdvert(response.data);
 
       router.push(
         `/ecommerce/adverts/new?postAdvertStep=${2}&advertID=${

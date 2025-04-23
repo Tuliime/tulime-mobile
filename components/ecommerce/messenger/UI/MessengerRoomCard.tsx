@@ -58,7 +58,7 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
               {truncateString(roomRecipient.name, 24)}
             </Text>
             <Text style={styles.messageTime}>
-              {new AppDate(props.message.arrivedAt).time()}
+              {new AppDate(props.message.arrivedAt).timeOrDate()}
             </Text>
           </View>
           <View style={styles.messageContainer}>

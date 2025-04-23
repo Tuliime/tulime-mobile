@@ -40,7 +40,7 @@ export const useGetMessengerMessages = () => {
   const isForwardDirection: boolean = direction === "FORWARD";
 
   const { isPending, isError, data, error } = useQuery({
-    queryKey: [`messengerRoom-${auth.user.id}-${cursor}-${direction}`],
+    queryKey: [`messengerRoom-${recipient.id}-${cursor}-${direction}`],
     queryFn: () => {
       return messenger.getMessagesByRoom({
         limit: 20,

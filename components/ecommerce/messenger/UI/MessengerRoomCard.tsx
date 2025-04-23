@@ -64,7 +64,14 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
           <View style={styles.messageContainer}>
             {!showTypingIndicator && (
               <Text style={styles.message}>
-                {truncateString(props.message.text, 40)}
+                {truncateString(
+                  `${
+                    isCurrenUserSender
+                      ? "You: " + props.message.text
+                      : props.message.text
+                  }`,
+                  40
+                )}
               </Text>
             )}
             <Typing

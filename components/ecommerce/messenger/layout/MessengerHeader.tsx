@@ -22,7 +22,11 @@ type MessengerHeaderProps = {
 };
 
 export const MessengerHeader: React.FC<MessengerHeaderProps> = (props) => {
-  const navigateToBack = () => router.back();
+  const navigateToBack = () => {
+    router.back();
+    // TODO: To use navigation of the actual path not router.back();
+    // router.push("/ecommerce/messenger");
+  };
   const currentRecipient = useMessengerStore((state) => state.currentRecipient);
 
   // TODO: To change the header content depending on the current user (buyer or seller)

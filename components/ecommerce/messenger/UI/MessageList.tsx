@@ -21,7 +21,11 @@ export const MessengerMessageList: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const [isAtTop, setIsAtTop] = useState(true);
   const currentUser = useAuthStore((state) => state.auth.user);
-  const messages = useMessengerStore((state) => state.messages) ?? [];
+  const recipient = useMessengerStore((state) => state.currentRecipient);
+
+  const messages = useMessengerStore((state) =>
+    state.getRoomMessages(recipient.id)
+  );
   const getAllPostingMessages = useMessengerStore(
     (state) => state.getAllPostingMessages
   );

@@ -10,9 +10,6 @@ import { useMessengerStore } from "@/store/messenger";
 
 export const useGetMessengerMessages = () => {
   const auth = useAuthStore((state) => state.auth);
-  const updateAllMessages = useMessengerStore(
-    (state) => state.updateAllMessages
-  );
   const updatePagination = useMessengerStore((state) => state.updatePagination);
   const messagesFromStore = useMessengerStore((state) => state.messages) ?? [];
   const updateMessageLoader = useMessengerStore(
@@ -26,6 +23,10 @@ export const useGetMessengerMessages = () => {
   const sender = auth.user;
   const messengerRoomID = useMessengerStore(
     (state) => state.messages[0]?.messengerRoomID ?? ""
+  );
+
+  const updateRoomMessages = useMessengerStore(
+    (state) => state.updateRoomMessages
   );
 
   const { cursor, includeCursor, direction, urlUpdateAction } =
@@ -57,44 +58,23 @@ export const useGetMessengerMessages = () => {
   const incomingMessages: TMessenger["message"][] = msgAPIResponse?.data ?? [];
   const pagination: TMessenger["pagination"] = msgAPIResponse?.pagination;
 
-  // console.log("msgAPIResponse: ", msgAPIResponse);
-  // console.log("incomingMessages: ", incomingMessages);
-
   const hasMessages = isArrayWithElements(messagesFromStore);
 
   useEffect(() => {
     if (incomingMessages?.length === 0) {
       return;
     }
-    const updateMessageHandler = () => {
-      if (isForwardDirection) {
-        if (
-          messagesFromStore[messagesFromStore.length - 1]?.id ===
-          incomingMessages[incomingMessages.length - 1].id
-        ) {
-          return;
-        }
-        const resultingMessages = [...messagesFromStore, ...incomingMessages];
-        updateAllMessages(resultingMessages);
-        return;
-      }
-      if (!isForwardDirection) {
-        if (messagesFromStore[0]?.id === incomingMessages[0].id) {
-          return;
-        }
-        const resultingMessages = [...incomingMessages, ...messagesFromStore];
-        updateAllMessages(resultingMessages);
-        return;
-      }
-      updateAllMessages(incomingMessages);
+
+    const updateRoomMessageMapHandler = () => {
+      updateRoomMessages(recipient.id, incomingMessages);
     };
 
     const updatePaginationHandler = () => {
       updatePagination(pagination);
     };
 
+    updateRoomMessageMapHandler();
     updatePaginationHandler();
-    updateMessageHandler();
   }, [data]);
 
   //   update loading status

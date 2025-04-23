@@ -20,6 +20,7 @@ import { MessengerRoomCard } from "@/components/ecommerce/messenger/UI/Messenger
 import { Buffer } from "buffer";
 import { TChatroom } from "@/types/chatroom";
 import { useChatroomStore } from "@/store/chatroom";
+import { useMessengerStore } from "@/store/messenger";
 
 const screenWidth = Dimensions.get("window").width * 0.999;
 
@@ -27,6 +28,13 @@ const MessengerRoomList: React.FC = () => {
   const userID = useAuthStore((state) => state.auth.user.id);
   const updateOnlineStatus = useChatroomStore(
     (state) => state.updateOnlineStatus
+  );
+
+  const updateRoomMessages = useMessengerStore(
+    (state) => state.updateRoomMessages
+  );
+  const getAllMessengerRooms = useMessengerStore(
+    (state) => state.getAllMessengerRooms
   );
 
   const { isPending, isError, data, error } = useQuery({
@@ -83,6 +91,20 @@ const MessengerRoomList: React.FC = () => {
     OnlineStatusData?.data ?? [];
 
   useEffect(() => {
+    const updateRoomMessageMapHandler = () => {
+      messengerRooms.map((message) => {
+        const isCurrentUserIsSender = message.senderID === userID;
+        const recipientID = isCurrentUserIsSender
+          ? message.recipientID
+          : message.senderID;
+
+        updateRoomMessages(recipientID, [message]);
+      });
+    };
+    updateRoomMessageMapHandler();
+  }, [data]);
+
+  useEffect(() => {
     const updateOnlineStatusHandler = () => {
       onlineStatuses.map((status) => {
         updateOnlineStatus(status);
@@ -90,6 +112,8 @@ const MessengerRoomList: React.FC = () => {
     };
     updateOnlineStatusHandler();
   }, [messengerRooms]);
+
+  const msgrRooms = getAllMessengerRooms();
 
   const renderMessengerRoomItem = useCallback(
     ({ item }: { item: TMessenger["message"] }) => {
@@ -129,7 +153,7 @@ const MessengerRoomList: React.FC = () => {
       </View>
       {hasRooms && (
         <FlatList
-          data={messengerRooms!}
+          data={msgrRooms}
           keyExtractor={(item) => item.id}
           renderItem={renderMessengerRoomItem}
           scrollEnabled={false}

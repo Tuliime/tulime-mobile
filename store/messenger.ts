@@ -26,21 +26,23 @@ const defaultRecipient: TMessenger["currentRecipient"] = {
 
 enableMapSet(); // Enable Map & Set support for Immer
 
-export const useMessengerStore = create<
-  {
-    messages: TMessenger["message"][];
-    pagination: TMessenger["pagination"];
-    swipedMessage: TMessenger["swipedMessage"];
-    messageLoader: TMessenger["messageLoader"];
-    messageLoadingError: TMessenger["messageLoadingError"];
-    postingMessageMap: TMessenger["postingMessage"];
-    onlineStatusMap: TMessenger["onlineStatusMap"];
-    typingStatusMap: TMessenger["typingStatusMap"];
-    currentRecipient: TMessenger["currentRecipient"];
-    userRooms: TMessenger["userRooms"];
-  } & TMessenger["messengerAction"]
->((set, get) => ({
+type TUseMessenger = {
+  messages: TMessenger["message"][];
+  roomMessageMap: TMessenger["roomMessageMap"];
+  pagination: TMessenger["pagination"];
+  swipedMessage: TMessenger["swipedMessage"];
+  messageLoader: TMessenger["messageLoader"];
+  messageLoadingError: TMessenger["messageLoadingError"];
+  postingMessageMap: TMessenger["postingMessage"];
+  onlineStatusMap: TMessenger["onlineStatusMap"];
+  typingStatusMap: TMessenger["typingStatusMap"];
+  currentRecipient: TMessenger["currentRecipient"];
+  userRooms: TMessenger["userRooms"];
+} & TMessenger["messengerAction"];
+
+export const useMessengerStore = create<TUseMessenger>((set, get) => ({
   messages: [],
+  roomMessageMap: new Map(),
   pagination: defaultPagination,
   swipedMessage: null,
   messageLoader: { type: "firstTimeMessageLoader", isLoading: false },
@@ -65,6 +67,74 @@ export const useMessengerStore = create<
         msg.id === message.id ? { ...msg, ...message } : msg
       ),
     })),
+
+  // Room message action
+  updateRoomMessages: (recipientID, messages) =>
+    set(
+      produce((state: TUseMessenger) => {
+        const existingMessages = state.roomMessageMap.get(recipientID) ?? [];
+        const combinedMessages = existingMessages.concat(messages);
+
+        // Step 1: Deduplicate based on either id or sentAt
+        const seenIds = new Set<string>();
+        const seenSentAts = new Set<string>();
+        const deduplicatedMessages: TMessenger["message"][] = [];
+
+        for (const msg of combinedMessages) {
+          const isDuplicateId = seenIds.has(msg.id);
+          const isDuplicateSentAt = seenSentAts.has(msg.sentAt);
+
+          if (!isDuplicateId && !isDuplicateSentAt) {
+            seenIds.add(msg.id);
+            seenSentAts.add(msg.sentAt);
+            deduplicatedMessages.push(msg);
+          }
+        }
+
+        // Step 2: Sort messages by arrivedAt or fallback to sentAt
+        const sortedMessages = deduplicatedMessages.sort((a, b) => {
+          const dateA = new Date(a.arrivedAt || a.sentAt).getTime();
+          const dateB = new Date(b.arrivedAt || b.sentAt).getTime();
+          return dateA - dateB;
+        });
+
+        state.roomMessageMap.set(recipientID, sortedMessages);
+      })
+    ),
+  updateOneRoomMessage: (recipientID, message) =>
+    set(
+      produce((state: TUseMessenger) => {
+        const existingMessages = state.roomMessageMap.get(recipientID);
+        if (!existingMessages) return;
+
+        state.roomMessageMap.set(
+          recipientID,
+          existingMessages.map((msg) => {
+            return msg.sentAt === message.sentAt ? message : msg;
+          })
+        );
+      })
+    ),
+  clearRoomMessages: () =>
+    set(
+      produce((state: TUseMessenger) => {
+        state.roomMessageMap = new Map();
+      })
+    ),
+  getRoomMessages: (recipientID) => get().roomMessageMap.get(recipientID)!,
+  getAllMessengerRooms: () => {
+    const rooms: TMessenger["message"][] = [];
+    const keys = Array.from(get().roomMessageMap.keys());
+
+    keys.map((k) => {
+      const keyRooms = get().roomMessageMap.get(k);
+      if (keyRooms) {
+        rooms.push(keyRooms[keyRooms.length - 1]);
+      }
+    });
+    return rooms;
+  },
+
   // Pagination actions
   updatePagination: (pagination) => set(() => ({ pagination: pagination })),
   clearPagination: () => set(() => ({ pagination: defaultPagination })),
@@ -79,7 +149,7 @@ export const useMessengerStore = create<
   updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
   clearSwipedMessage: () =>
     set(
-      produce((state) => {
+      produce((state: TUseMessenger) => {
         state.swipedMessage = null;
       })
     ),
@@ -92,7 +162,7 @@ export const useMessengerStore = create<
   // PostingMessage action
   updatePostingMessage: (postingMessage) =>
     set(
-      produce((state) => {
+      produce((state: TUseMessenger) => {
         state.postingMessageMap.set(postingMessage.sentAt, postingMessage);
       })
     ),
@@ -101,7 +171,7 @@ export const useMessengerStore = create<
   // Online status action
   updateOnlineStatus: (status) =>
     set(
-      produce((state) => {
+      produce((state: TUseMessenger) => {
         state.onlineStatusMap.set(status.userID, status);
       })
     ),
@@ -109,7 +179,7 @@ export const useMessengerStore = create<
   // Typing status action
   updateTypingStatus: (status) =>
     set(
-      produce((state) => {
+      produce((state: TUseMessenger) => {
         state.typingStatusMap.set(status.userID, status);
       })
     ),

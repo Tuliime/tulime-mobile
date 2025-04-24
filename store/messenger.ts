@@ -132,7 +132,12 @@ export const useMessengerStore = create<TUseMessenger>((set, get) => ({
         rooms.push(keyRooms[keyRooms.length - 1]);
       }
     });
-    return rooms;
+
+    return rooms.sort((a, b) => {
+      const dateA = new Date(a.arrivedAt || a.sentAt).getTime();
+      const dateB = new Date(b.arrivedAt || b.sentAt).getTime();
+      return dateB - dateA; // Descending sort
+    });
   },
 
   // Pagination actions

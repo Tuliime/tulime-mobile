@@ -11,7 +11,6 @@ import { useMessengerStore } from "@/store/messenger";
 export const useGetMessengerMessages = () => {
   const auth = useAuthStore((state) => state.auth);
   const updatePagination = useMessengerStore((state) => state.updatePagination);
-  const messagesFromStore = useMessengerStore((state) => state.messages) ?? [];
   const updateMessageLoader = useMessengerStore(
     (state) => state.updateMessageLoader
   );
@@ -22,8 +21,10 @@ export const useGetMessengerMessages = () => {
   const recipient = useMessengerStore((state) => state.currentRecipient);
   const sender = auth.user;
   const messengerRoomID = useMessengerStore(
-    (state) => state.messages[0]?.messengerRoomID ?? ""
+    (state) => state.getRoomMessages(recipient.id)[0]?.messengerRoomID ?? ""
   );
+  const messagesFromStore =
+    useMessengerStore((state) => state.getRoomMessages(recipient.id)) ?? [];
 
   const updateRoomMessages = useMessengerStore(
     (state) => state.updateRoomMessages
@@ -48,8 +49,8 @@ export const useGetMessengerMessages = () => {
         includeCursor: parseBool(includeCursor),
         direction: isForwardDirection ? "FORWARD" : "BACKWARD",
         userOneID: sender.id,
-        userTwoID: recipient.id, // To be the current recipient
-        messengerRoomID: messengerRoomID, // To gotten from the first message
+        userTwoID: recipient.id,
+        messengerRoomID: messengerRoomID,
       });
     },
   });

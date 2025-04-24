@@ -21,6 +21,9 @@ export const useGetEventStream = () => {
   const accessToken = useAuthStore((state) => state.auth.accessToken);
   const userID = useAuthStore((state) => state.auth.user.id);
   const addChatroomMessage = useChatroomStore((state) => state.addMessage);
+  const updateRoomMessages = useMessengerStore(
+    (state) => state.updateRoomMessages
+  );
   const updateOnlineStatus = useChatroomStore(
     (state) => state.updateOnlineStatus
   );
@@ -110,14 +113,14 @@ export const useGetEventStream = () => {
         if (message.userID === userID) return;
 
         addChatroomMessage(parsedData.data);
-        playNewMessageSound();
+        // playNewMessageSound();
       }
       if (isMessengerMessage) {
-        const message = parsedData.data as TMessenger["organizedMessage"];
+        const message = parsedData.data as TMessenger["message"];
         if (message.senderID === userID) return;
 
-        addMessengerMessage(parsedData.data);
-        playNewMessageSound();
+        updateRoomMessages(message.recipientID, [message]);
+        // playNewMessageSound();
       }
       if (isOnlineStatusMsg) {
         const onlineStatus = parsedData.data as TChatroom["onlineStatus"];

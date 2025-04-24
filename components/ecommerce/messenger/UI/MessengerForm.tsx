@@ -65,7 +65,7 @@ export const MessengerForm: React.FC = () => {
   const recipient = useMessengerStore((state) => state.currentRecipient);
   const sender = auth.user;
   const messengerRoomID = useMessengerStore(
-    (state) => state.messages[0]?.messengerRoomID ?? ""
+    (state) => state.getRoomMessages(recipient.id)[0]?.messengerRoomID ?? ""
   );
   const showSwipedMessage: boolean = !!swipedMessage?.id;
   const showImagePreview: boolean = !!fileList[0]?.name;

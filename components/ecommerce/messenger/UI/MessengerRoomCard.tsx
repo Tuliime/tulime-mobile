@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { TMessenger } from "@/types/messenger";
 import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
@@ -40,7 +40,7 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
   };
 
   return (
-    <Pressable onPress={navigateToMessenger}>
+    <TouchableOpacity onPress={navigateToMessenger}>
       <View style={styles.container}>
         <View style={styles.profileAvatarContainer}>
           <ProfileAvatar user={roomRecipient} />
@@ -82,7 +82,7 @@ export const MessengerRoomCard: React.FC<MessengerRoomCardProps> = (props) => {
           </View>
         </View>
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

@@ -82,12 +82,16 @@ export const useGetEventStream = () => {
     };
 
     const onopen: EventSourcePolyfill["onopen"] = (event): any => {
-      console.log("sse connection opened:", event);
+      // console.log("sse connection opened:", event);
+      console.log("sse connection opened:", JSON.stringify(event, null, 2));
+
       retryCountRef.current = 0;
     };
 
     const onerror: EventSourcePolyfill["onerror"] = (event): any => {
-      console.log("sse error :", event);
+      // console.log("sse error :", event);
+      console.log("sse error :", JSON.stringify(event, null, 2));
+
       eventSource.close();
 
       reconnect();
@@ -95,7 +99,8 @@ export const useGetEventStream = () => {
 
     const onmessage: EventSourcePolyfill["onmessage"] = async (event) => {
       const parsedData = JSON.parse(event.data) as TChatroom["sseData"];
-      console.log("parsedData :", parsedData);
+      console.log("parsedData:", JSON.stringify(parsedData, null, 2));
+
       const isKeepLiveMsg = parsedData.type === "keep-alive";
       const isChatroomMessage = parsedData.type === "chatroom-message";
       const isMessengerMessage = parsedData.type === "messenger";
@@ -113,14 +118,17 @@ export const useGetEventStream = () => {
         if (message.userID === userID) return;
 
         addChatroomMessage(parsedData.data);
-        // playNewMessageSound();
+        playNewMessageSound();
       }
       if (isMessengerMessage) {
         const message = parsedData.data as TMessenger["message"];
         if (message.senderID === userID) return;
 
-        updateRoomMessages(message.recipientID, [message]);
-        // playNewMessageSound();
+        const recipientID =
+          message.senderID === userID ? message.recipientID : message.senderID;
+
+        updateRoomMessages(recipientID, [message]);
+        playNewMessageSound();
       }
       if (isOnlineStatusMsg) {
         const onlineStatus = parsedData.data as TChatroom["onlineStatus"];

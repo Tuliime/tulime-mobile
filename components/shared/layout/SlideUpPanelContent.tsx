@@ -1,55 +1,127 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { icons, SIZES, COLORS } from "@/constants";
 import { router } from "expo-router";
 import { useSlideUpPanelStore } from "@/store/slideUpPanel";
 import { Logout } from "@/components/auth/UI/Logout";
+import { AuthenticatedUser } from "@/components/auth/UI/AuthenticatedUser";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useAuthStore } from "@/store/auth";
 
 export const SlideUpPanelContent: React.FC = () => {
   const closePanel = useSlideUpPanelStore((state) => state.closePanel);
+  const user = useAuthStore((state) => state.auth.user);
 
   const navigateToScreen = (link: string) => {
+    closePanel();
     const currenLink = link as any;
     router.push(currenLink);
-    closePanel();
   };
 
   return (
     <View style={styles.container}>
       {/* Logo */}
-      <View style={styles.contentView}>
+      <View style={[styles.contentView, { padding: 20 }]}>
         <Text style={styles.logoText}>Tulime</Text>
       </View>
-      {/* Content */}
-      <View style={styles.contentView}>
-        {sidebarContentList.map((item, index) => (
+      {/* Current user */}
+      <View style={[styles.contentView, { borderBottomWidth: 0 }]}>
+        <AuthenticatedUser />
+      </View>
+
+      {/* Inbox */}
+      <View style={[styles.contentView, { borderBottomWidth: 0 }]}>
+        <TouchableOpacity
+          style={[styles.contentBtnPrimary, { gap: 12 }]}
+          onPress={() => navigateToScreen("/ecommerce/messenger")}
+        >
+          <FontAwesome6 name="message" size={20} color={COLORS.gray8} />
+          <Text style={styles.contentTextPrimary}>Inbox</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Advert */}
+      <View style={[styles.contentView, { borderBottomWidth: 0, gap: 8 }]}>
+        <TouchableOpacity
+          style={[styles.contentBtnPrimary, { marginLeft: -4 }]}
+          onPress={() => navigateToScreen("/ecommerce")}
+        >
+          <MaterialIcons
+            name="workspace-premium"
+            size={24}
+            color={COLORS.gray7}
+          />
+          <Text style={styles.contentTextPrimary}>Advert</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.contentBtnSecondary}
+          onPress={() =>
+            navigateToScreen(`/ecommerce/store/unknown?userID=${user.id}`)
+          }
+        >
+          <Text style={styles.contentTextSecondary}>My adverts</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.contentBtnSecondary}
+          onPress={() => navigateToScreen("/ecommerce")}
+        >
+          <Text style={styles.contentTextSecondary}>All adverts</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Services */}
+      <View style={[styles.contentView, { borderBottomWidth: 0, gap: 8 }]}>
+        <TouchableOpacity style={[styles.contentBtnPrimary]}>
+          <MaterialIcons name="view-module" size={24} color={COLORS.gray7} />
+          <Text style={styles.contentTextPrimary}>Services</Text>
+        </TouchableOpacity>
+        {services.map((srv) => (
           <TouchableOpacity
-            style={styles.button}
-            activeOpacity={1}
-            key={index}
-            onPress={(_) => navigateToScreen(item.link)}
+            style={styles.contentBtnSecondary}
+            onPress={() => navigateToScreen(srv.link)}
           >
-            <Image source={item.icon} resizeMode="cover" style={styles.icon} />
-            <Text style={styles.buttonText}>{item.name}</Text>
+            <Text style={styles.contentTextSecondary}>{srv.name}</Text>
           </TouchableOpacity>
         ))}
       </View>
-      {/* Others like settings */}
-      <View style={styles.contentView}>
-        {otherContentList.map((item, index) => (
-          <TouchableOpacity
-            style={styles.button}
-            activeOpacity={1}
-            key={index}
-            onPress={(_) => navigateToScreen(item.link)}
-          >
-            <Image source={item.icon} resizeMode="cover" style={styles.icon} />
-            <Text style={styles.buttonText}>{item.name}</Text>
-          </TouchableOpacity>
-        ))}
+
+      {/* Notifications */}
+      <View style={[styles.contentView, { borderBottomWidth: 0, gap: 8 }]}>
+        <TouchableOpacity
+          style={[styles.contentBtnPrimary, { marginLeft: 0 }]}
+          onPress={() => navigateToScreen("/notification")}
+        >
+          <MaterialIcons name="notifications" size={24} color={COLORS.gray7} />
+          <Text style={styles.contentTextPrimary}>Notifications</Text>
+        </TouchableOpacity>
       </View>
+
+      {/* Bookmark */}
+      <View style={[styles.contentView, { borderBottomWidth: 0, gap: 8 }]}>
+        <TouchableOpacity
+          style={[styles.contentBtnPrimary]}
+          onPress={() => navigateToScreen("/ecommerce/bookmark")}
+        >
+          <Ionicons name="bookmark" size={22} color={COLORS.gray7} />
+          <Text style={styles.contentTextPrimary}>Bookmarks</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Settings */}
+      <View style={[styles.contentView, { borderBottomWidth: 0, gap: 8 }]}>
+        <TouchableOpacity
+          style={[styles.contentBtnPrimary]}
+          onPress={() => navigateToScreen("/settings")}
+        >
+          <Ionicons name="settings-sharp" size={24} color={COLORS.gray7} />
+          <Text style={styles.contentTextPrimary}>Settings</Text>
+        </TouchableOpacity>
+      </View>
+
       {/* Logout */}
-      <View>
+      <View style={styles.logoutContainer}>
         <Logout />
       </View>
     </View>
@@ -57,11 +129,7 @@ export const SlideUpPanelContent: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
-  contentView: {
-    borderBottomWidth: 1,
-    borderColor: "#adb5bd",
-    padding: 20,
+  container: {
     gap: 20,
   },
   logoText: {
@@ -69,22 +137,36 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: COLORS.primary,
   },
-  button: {
+  contentView: {
+    borderBottomWidth: 1,
+    borderColor: "#adb5bd",
+    paddingHorizontal: 20,
+    gap: 12,
+  },
+  contentBtnPrimary: {
     flexDirection: "row",
-    gap: SIZES.large,
+    alignItems: "center",
+    gap: 8,
   },
-  icon: {
-    width: 28,
-    height: 28,
-  },
-  buttonText: {
-    color: COLORS.gray8,
-    fontSize: SIZES.medium,
+  contentTextPrimary: {
     fontWeight: 500,
+    fontSize: 18,
+    color: COLORS.gray8,
+  },
+  contentBtnSecondary: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginLeft: 28,
+  },
+  contentTextSecondary: {
+    color: COLORS.gray7,
+  },
+  logoutContainer: {
+    borderTopWidth: 1,
+    borderColor: "#adb5bd",
   },
 });
-
-const sidebarContentList = [
+const services = [
   {
     name: "Agro Products",
     link: "/agroproducts",

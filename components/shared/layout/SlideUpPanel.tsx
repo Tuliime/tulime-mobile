@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     minHeight: screenHeight * 0.2,
     height: "auto",
-    maxHeight: screenHeight * 0.9,
+    // maxHeight: screenHeight * 0.9,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     zIndex: 1500,

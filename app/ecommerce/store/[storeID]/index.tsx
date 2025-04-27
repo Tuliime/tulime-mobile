@@ -10,7 +10,11 @@ import {
   FlatList,
 } from "react-native";
 import { MainLayout } from "@/components/shared/layout/MainLayout";
-import { router, useLocalSearchParams } from "expo-router";
+import {
+  router,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+} from "expo-router";
 import { useQuery } from "@tanstack/react-query";
 import { store } from "@/API/store";
 import { COLORS, SIZES } from "@/constants";
@@ -40,14 +44,19 @@ const itemWidth = screenWidth / numColumns - SIZES.medium;
 const StoreDetailsScreen = () => {
   const user = useAuthStore((state) => state.auth.user);
   const { storeID } = useLocalSearchParams<{ storeID: string }>();
+  const { userID } = useGlobalSearchParams<{ userID: string }>();
+
   const updateCurrentStore = useEcommerceStore(
     (state) => state.updateCurrentStore
   );
+  const isStoreIDUnknown = storeID === "unknown";
 
   const { isPending, isError, data, error } = useQuery({
     queryKey: [`store-${storeID}`],
     queryFn: () => {
-      return store.get({ storeID: storeID });
+      return isStoreIDUnknown
+        ? store.getByUser({ userID: userID })
+        : store.get({ storeID: storeID });
     },
   });
 
@@ -55,6 +64,7 @@ const StoreDetailsScreen = () => {
   const storeAdverts = storeData.adverts!;
 
   const isCurrentUser = storeData.userID === user.id;
+  const hasStore = !!storeData.id;
   const hasBgImage = !!storeData.backgroundImageUrl;
   const hasLogo = !!storeData.logoUrl;
   const hasDescription = !!storeData.description;
@@ -103,6 +113,17 @@ const StoreDetailsScreen = () => {
       <MainLayout title={storeData.name}>
         <View style={styles.errorContainer}>
           <ErrorCard message={error.message} />
+        </View>
+      </MainLayout>
+    );
+  }
+
+  if (!hasStore) {
+    return (
+      <MainLayout title={storeData.name}>
+        <View style={styles.noContentContainer}>
+          {/*TODO: Action btn to create the store */}
+          <Text style={styles.noContentText}>You have not Store yet!</Text>
         </View>
       </MainLayout>
     );

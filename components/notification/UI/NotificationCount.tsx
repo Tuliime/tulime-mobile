@@ -6,6 +6,7 @@ import { router } from "expo-router";
 import { useNotificationStore } from "@/store/notification";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 // TODO: To mark notifications as read
 export const NotificationCount = () => {
@@ -122,15 +123,15 @@ export const NotificationCount = () => {
         {showMessengerNotificationCount && (
           <View style={styles.notificationCountContainer}>
             <Text style={styles.notificationCountText}>
-              {messengerNotificationCount}
+              {messengerNotificationCount + chatroomNotificationCount}
             </Text>
           </View>
         )}
-        <Feather name="message-circle" size={22} color={COLORS.white} />
+        <Ionicons name="chatbox-outline" size={24} color={COLORS.white} />
       </TouchableOpacity>
 
       {/* Messenger Count */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={navigateToChatroom}
         style={styles.btnContainer}
       >
@@ -146,7 +147,7 @@ export const NotificationCount = () => {
           size={24}
           color={COLORS.white}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* All Notification Count */}
       <TouchableOpacity

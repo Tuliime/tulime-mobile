@@ -9,6 +9,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useAuthStore } from "@/store/auth";
+import Entypo from "@expo/vector-icons/Entypo";
 
 export const SlideUpPanelContent: React.FC = () => {
   const closePanel = useSlideUpPanelStore((state) => state.closePanel);
@@ -37,7 +38,7 @@ export const SlideUpPanelContent: React.FC = () => {
           style={[styles.contentBtnPrimary, { gap: 12 }]}
           onPress={() => navigateToScreen("/ecommerce/messenger")}
         >
-          <FontAwesome6 name="message" size={20} color={COLORS.gray8} />
+          <Ionicons name="chatbox" size={24} color={COLORS.gray8} />
           <Text style={styles.contentTextPrimary}>Inbox</Text>
         </TouchableOpacity>
       </View>

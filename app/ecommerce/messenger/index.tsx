@@ -17,6 +17,7 @@ import { isArrayWithElements } from "@/utils/isArrayWithElements";
 import { COLORS } from "@/constants";
 import { ErrorCard } from "@/components/shared/UI/ErrorCard";
 import { MessengerRoomCard } from "@/components/ecommerce/messenger/UI/MessengerRoomCard";
+import { ChatroomCard } from "@/components/chatroom/UI/ChatroomCard";
 import { Buffer } from "buffer";
 import { TChatroom } from "@/types/chatroom";
 import { useChatroomStore } from "@/store/chatroom";
@@ -150,9 +151,7 @@ const MessengerRoomList: React.FC = () => {
 
   return (
     <PrimaryLayout>
-      <View>
-        <Text>Chatroom card here</Text>
-      </View>
+      <ChatroomCard />
       {hasMessengerRooms && (
         <FlatList
           data={msgrRooms}

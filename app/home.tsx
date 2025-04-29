@@ -65,7 +65,7 @@ export default function Home() {
       link: "/news",
     },
     {
-      name: "Farm Managers & Veterinary Doctors",
+      name: "Farm Managers, Vet Doctors & Agronomists",
       icon: icons.manager,
       backgroundColor: COLORS.green5,
       link: "/farmmanagers",

@@ -24,16 +24,21 @@ const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
-// TODO: To use primary layout to for the home screen
 export default function Home() {
   const user = useAuthStore((state) => state.auth.user);
 
   const services: TService[] = [
+    // {
+    //   name: "My Profile",
+    //   icon: icons.account,
+    //   backgroundColor: COLORS.yellow5,
+    //   link: "/settings",
+    // },
     {
-      name: "My Profile",
-      icon: icons.account,
+      name: "Buy/Sell",
+      icon: icons.ecommerce2,
       backgroundColor: COLORS.yellow5,
-      link: "/settings",
+      link: "/ecommerce",
     },
     {
       name: "Agro Product Prices",
@@ -64,12 +69,6 @@ export default function Home() {
       icon: icons.manager,
       backgroundColor: COLORS.green5,
       link: "/farmmanagers",
-    },
-    {
-      name: "E-commerce",
-      icon: icons.ecommerce2,
-      backgroundColor: COLORS.pink8,
-      link: "/ecommerce",
     },
   ];
 

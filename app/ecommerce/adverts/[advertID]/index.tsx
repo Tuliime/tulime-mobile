@@ -8,7 +8,7 @@ import {
   FlatList,
   ActivityIndicator,
 } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { COLORS } from "@/constants";
 import { addCommasToNumber } from "@/utils/addCommaNumber";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -39,6 +39,8 @@ const ProductDetailsScreen: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const [index, setIndex] = useState(0);
   const user = useAuthStore((state) => state.auth.user);
+
+  const currentAdvert = useAdvertStore((state) => state.currentAdvert);
   const updateCurrentAdvert = useAdvertStore(
     (state) => state.updateCurrentAdvert
   );
@@ -66,11 +68,25 @@ const ProductDetailsScreen: React.FC = () => {
     },
   });
 
-  const advertData: TAdvert["advert"] = data?.data ?? {};
-  // const hasAdvertData = !!advertData.id
+  const advertDataResponse: TAdvert["advert"] = data?.data ?? {};
+  const hasAdvertData = !!advertDataResponse.id;
+
+  useEffect(() => {
+    const updateAdvertHandler = () => {
+      if (!hasAdvertData) return;
+      updateCurrentAdvert(advertDataResponse);
+    };
+    updateAdvertHandler();
+  }, [data]);
+
+  const advertData: TAdvert["advert"] = currentAdvert;
   const isCurrentUser = advertData.userID === user.id;
   const images = advertData.images;
   const hasLogo = !!advertData.store?.logoUrl;
+
+  const hasPrice = !!advertData?.price?.amount;
+  const priceCurrencyCode = JSON.parse(advertData?.price?.currency!)
+    ?.code as string;
 
   const navigateToAdvertEdit = () => {
     updateCurrentAdvert(advertData);
@@ -160,9 +176,13 @@ const ProductDetailsScreen: React.FC = () => {
         <View style={styles.contentContainer}>
           <View style={styles.productContainer}>
             <Text style={styles.productName}>{advertData.productName}</Text>
-            <Text style={styles.productPrice}>{`${
-              ads[0].priceCurrency
-            } ${addCommasToNumber(parseInt(ads[0].price))}`}</Text>
+            {hasPrice && (
+              <Text
+                style={styles.productPrice}
+              >{`${priceCurrencyCode} ${addCommasToNumber(
+                advertData?.price?.amount!
+              )}`}</Text>
+            )}
             <TouchableOpacity
               style={styles.businessContainer}
               onPress={(_: any) =>

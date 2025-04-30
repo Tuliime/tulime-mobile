@@ -28,22 +28,23 @@ export const PostAdvertInventory: React.FC = () => {
   }: { postAdvertStep: string; advertID: string; productName: string } =
     useGlobalSearchParams();
 
-  const initialFormValues: TAdvert["postAdvertInventoryInput"] = {
-    advertID: advertID,
-    quantity: 0,
-    unit: "",
-  };
-
-  const updateCurrentAdvert = useAdvertStore(
-    (state) => state.updateCurrentAdvert
+  const updateAdvertInventory = useAdvertStore(
+    (state) => state.updateAdvertInventory
   );
   const currentAdvert = useAdvertStore((state) => state.currentAdvert);
+  const hasInventory = !!currentAdvert?.inventory?.quantity;
+  const currentAdvertID = currentAdvert?.id!;
+  const quantity = currentAdvert?.inventory?.quantity!;
+  const unit = currentAdvert?.inventory?.unit!;
+
+  const initialFormValues: TAdvert["postAdvertInventoryInput"] = {
+    advertID: hasInventory ? currentAdvertID : advertID,
+    quantity: hasInventory ? quantity : 0,
+    unit: hasInventory ? unit : "",
+  };
 
   const advertPriceValidationSchema = yup.object().shape({
-    quantity: yup
-      .string()
-      .transform((value) => value.trim())
-      .required("Quantity is required"),
+    quantity: yup.number().required("Quantity is required"),
     unit: yup
       .string()
       .transform((value) => value.trim())
@@ -56,8 +57,7 @@ export const PostAdvertInventory: React.FC = () => {
       console.log("post advert inventory response:", response);
 
       const inventory = response.data as TAdvert["advertInventory"];
-      currentAdvert.inventory = inventory;
-      updateCurrentAdvert(currentAdvert);
+      updateAdvertInventory(inventory);
 
       Toast.show({
         type: "success",
@@ -84,6 +84,7 @@ export const PostAdvertInventory: React.FC = () => {
   const postAdvertSubmitHandler = (
     values: TAdvert["postAdvertInventoryInput"]
   ) => {
+    values.quantity = Number(values.quantity);
     console.log("advert values:", values);
     mutate(values);
   };

@@ -2,7 +2,6 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
@@ -29,25 +28,31 @@ export const PostAdvertPrice: React.FC = () => {
   }: { postAdvertStep: string; advertID: string; productName: string } =
     useGlobalSearchParams();
 
-  const updateCurrentAdvert = useAdvertStore(
-    (state) => state.updateCurrentAdvert
-  );
+  const updateAdvertPrice = useAdvertStore((state) => state.updateAdvertPrice);
   const currentAdvert = useAdvertStore((state) => state.currentAdvert);
 
+  const hasPrice = !!currentAdvert?.price?.amount;
+  const currentAdvertID = currentAdvert?.id!;
+  const amount = currentAdvert?.price?.amount!;
+  const unit = currentAdvert?.price?.unit!;
+  const priceCurrencyCode = JSON.parse(currentAdvert?.price?.currency!)
+    ?.code as string;
+
+  const getCurrency = (currencyCode: string) => {
+    return JSON.stringify(
+      currencies.find((currency) => currency.code === currencyCode)!
+    );
+  };
+
   const initialFormValues: TAdvert["postAdvertPriceInput"] = {
-    advertID: advertID,
-    amount: 0,
-    currency: JSON.stringify(
-      currencies.find((currency) => currency.code === "UGX")!
-    ),
-    unit: "",
+    advertID: hasPrice ? currentAdvertID : advertID,
+    amount: hasPrice ? amount : 0,
+    currency: hasPrice ? getCurrency(priceCurrencyCode) : getCurrency("UGX"),
+    unit: hasPrice ? unit : "",
   };
 
   const advertPriceValidationSchema = yup.object().shape({
-    amount: yup
-      .string()
-      .transform((value) => value.trim())
-      .required("Amount is required"),
+    amount: yup.number().required("Amount is required"),
     currency: yup
       .string()
       .transform((value) => value.trim())
@@ -58,18 +63,13 @@ export const PostAdvertPrice: React.FC = () => {
       .required("Unit is required"),
   });
 
-  //     const navigateToAdDetails = () => {
-  //     router.push(`/ecommerce/adverts/${advertID}`);
-  //   };
-
   const { isPending, mutate } = useMutation({
     mutationFn: advert.postPrice,
     onSuccess: (response: any) => {
       console.log("post advert price response:", response);
 
       const price = response.data as TAdvert["advertPrice"];
-      currentAdvert.price = price;
-      updateCurrentAdvert(currentAdvert);
+      updateAdvertPrice(price);
 
       Toast.show({
         type: "success",
@@ -94,6 +94,7 @@ export const PostAdvertPrice: React.FC = () => {
   });
 
   const postAdvertSubmitHandler = (values: TAdvert["postAdvertPriceInput"]) => {
+    values.amount = Number(values.amount);
     console.log("advert values:", values);
     mutate(values);
   };

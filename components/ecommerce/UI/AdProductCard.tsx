@@ -20,6 +20,10 @@ type AdProductCardProps = {
 // use link for navigation
 export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
   const hasAdvert = !!props.advert?.id;
+  const hasPrice = !!props.advert?.price?.amount;
+  const priceCurrencyCode = JSON.parse(props.advert?.price?.currency!)
+    ?.code as string;
+
   const navigateAdDetails = () => {
     if (hasAdvert) {
       router.push(`/ecommerce/adverts/${props.advert?.id}`);
@@ -57,12 +61,13 @@ export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
         <Text style={styles.productName}>
           {hasAdvert ? props.advert?.productName : props.name}
         </Text>
-        {/* <Text style={styles.productPrice}>{`${
-          props.priceCurrency
-        } ${addCommasToNumber(parseInt(props.price))}`}</Text> */}
-        <Text style={styles.productPrice}>{`${
-          props.priceCurrency
-        } ${addCommasToNumber(parseInt("650000"))}`}</Text>
+        {hasPrice && (
+          <Text
+            style={styles.productPrice}
+          >{`${priceCurrencyCode} ${addCommasToNumber(
+            props.advert?.price?.amount!
+          )}`}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

@@ -153,12 +153,14 @@ class AdvertAPI {
     advertID,
     amount,
     currency,
+    unit,
   }: TAdvert["postAdvertPriceInput"]) => {
     const response = await fetch(`${serverURL}/adverts/${advertID}/price`, {
       method: "POST",
       body: JSON.stringify({
         amount: amount,
         currency: currency,
+        unit: unit,
       }),
       headers: {
         "Content-type": "application/json",

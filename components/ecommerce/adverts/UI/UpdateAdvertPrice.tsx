@@ -25,10 +25,11 @@ type UpdateAdvertPriceProps = {
 };
 
 export const UpdateAdvertPrice: React.FC<UpdateAdvertPriceProps> = (props) => {
+  console.log("advert: ", props.advert);
   const initialFormValues: TAdvert["updateAdvertPriceInput"] = {
     advertID: props.advert.id,
     advertPriceID: props.advert.price?.id!,
-    amount: props.advert.price?.amount! ?? 0,
+    amount: String(props.advert.price?.amount || "") as any,
     currency: props.advert.price?.currency!,
     unit: props.advert.price?.unit!,
   };
@@ -53,7 +54,7 @@ export const UpdateAdvertPrice: React.FC<UpdateAdvertPriceProps> = (props) => {
   const { isPending, mutate } = useMutation({
     mutationFn: advert.updatePrice,
     onSuccess: (response: any) => {
-      console.log("post advert price response:", response);
+      console.log("update advert price response:", response);
       updateAdvertPrice(response.data);
       Toast.show({
         type: "success",
@@ -77,9 +78,10 @@ export const UpdateAdvertPrice: React.FC<UpdateAdvertPriceProps> = (props) => {
     },
   });
 
-  const postAdvertSubmitHandler = (
+  const updateAdvertPriceSubmitHandler = (
     values: TAdvert["updateAdvertPriceInput"]
   ) => {
+    values.amount = Number(values.amount);
     console.log("advert values:", values);
     mutate(values);
   };
@@ -120,7 +122,7 @@ export const UpdateAdvertPrice: React.FC<UpdateAdvertPriceProps> = (props) => {
       <Formik
         validationSchema={advertPriceValidationSchema}
         initialValues={initialFormValues}
-        onSubmit={(values) => postAdvertSubmitHandler(values)}
+        onSubmit={(values) => updateAdvertPriceSubmitHandler(values)}
       >
         {(formik) => (
           <View style={styles.formContainer}>

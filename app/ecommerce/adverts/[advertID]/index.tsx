@@ -85,8 +85,8 @@ const ProductDetailsScreen: React.FC = () => {
   const hasLogo = !!advertData.store?.logoUrl;
 
   const hasPrice = !!advertData?.price?.amount;
-  const priceCurrencyCode = JSON.parse(advertData?.price?.currency!)
-    ?.code as string;
+  const priceCurrencyCode: string =
+    hasPrice && JSON.parse(advertData?.price?.currency!)?.code;
 
   const navigateToAdvertEdit = () => {
     updateCurrentAdvert(advertData);

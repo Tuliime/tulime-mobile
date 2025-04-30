@@ -28,7 +28,7 @@ export const UpdateAdvertInventory: React.FC<updateAdvertInventoryProps> = (
   const initialFormValues: TAdvert["updateAdvertInventoryInput"] = {
     advertID: props.advert.id,
     advertInventoryID: props.advert.inventory?.id!,
-    quantity: props.advert.inventory?.quantity!,
+    quantity: String(props.advert.inventory?.quantity || "") as any,
     unit: props.advert.inventory?.unit!,
   };
 

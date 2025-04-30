@@ -8,6 +8,8 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
 import { router, Stack } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
@@ -18,9 +20,9 @@ const headerWidth = Dimensions.get("window").width * 0.999;
 type HomeLayoutProps = {
   children: ReactNode;
   header: ReactNode;
+  childrenStyles?: StyleProp<ViewStyle>;
 };
 
-// TODO: To be changed to Primary layout
 export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
   const navigateToChatBot = () => {
     router.push("/chatbot");
@@ -44,7 +46,9 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.contentContainer}>{props.children}</View>
+        <View style={[styles.contentContainer, props.childrenStyles]}>
+          {props.children}
+        </View>
       </ScrollView>
       <TouchableOpacity
         style={styles.botContainer}
@@ -67,7 +71,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   headerLeftContainer: {
-    height: 120,
     width: headerWidth,
     justifyContent: "center",
     alignItems: "center",

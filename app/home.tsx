@@ -19,6 +19,7 @@ import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
 import { useAuthStore } from "@/store/auth";
 import { SlideUpPanel } from "@/components/shared/layout/SlideUpPanel";
 import { HomeLayout } from "@/components/shared/layout/HomeLayout";
+import { SearchLayout } from "@/components/search/layout/SearchLayout";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
@@ -97,12 +98,13 @@ export default function Home() {
     router.push("/ecommerce/bookmark");
   };
 
-  const navigateToMessengerRooms = () => {
-    router.push("/ecommerce/messenger");
-  };
+  // const navigateToMessengerRooms = () => {
+  //   router.push("/ecommerce/messenger");
+  // };
 
   return (
     <HomeLayout
+      childrenStyles={styles.layoutContainer}
       header={
         <View style={styles.headerContainer}>
           <View style={styles.headerTitleContainer}>
@@ -130,21 +132,29 @@ export default function Home() {
               />
             </View>
           </View>
-          <TouchableOpacity
-            onPress={() => navigateToSearch()}
-            style={styles.headerSearchContainer}
-          >
-            <View style={styles.headerSearch}>
-              <Text style={styles.headerSearchText}>Search Tulime</Text>
-              <View>
-                <MaterialIcons name="search" size={24} color={COLORS.primary} />
-              </View>
-            </View>
-          </TouchableOpacity>
         </View>
       }
     >
       <View style={styles.contentContainer}>
+        <View style={styles.searchContainer}>
+          <SearchLayout
+            parameters={["*"]}
+            searchLabel={
+              <View style={styles.headerSearchContainer}>
+                <View style={styles.headerSearch}>
+                  <Text style={styles.headerSearchText}>Search Tulime</Text>
+                  <View>
+                    <MaterialIcons
+                      name="search"
+                      size={24}
+                      color={COLORS.primary}
+                    />
+                  </View>
+                </View>
+              </View>
+            }
+          />
+        </View>
         <Text style={styles.contentTitleText}>Tulime services</Text>
         <FlatList
           data={services}
@@ -179,10 +189,12 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  layoutContainer: {
+    padding: 0,
+  },
   headerContainer: {
     width: "100%",
     gap: 8,
-    marginTop: -16,
   },
   headerTitleContainer: {
     width: "100%",
@@ -196,6 +208,7 @@ const styles = StyleSheet.create({
   },
   headerSearchContainer: {
     width: "100%",
+    height: 48,
   },
   headerSearch: {
     width: "100%",
@@ -215,21 +228,29 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 16,
   },
+  searchContainer: {
+    backgroundColor: COLORS.primary,
+    paddingTop: 0,
+    padding: 16,
+  },
   contentTitleText: {
     color: COLORS.gray7,
     fontSize: 16,
     fontWeight: 500,
+    paddingHorizontal: 16,
   },
   chatroomContainer: {
     backgroundColor: COLORS.gray1,
     padding: 16,
     borderRadius: 8,
-    elevation: 5,
+    elevation: 2,
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
     borderWidth: 1,
     borderColor: COLORS.gray3,
+    marginHorizontal: 16,
+    marginBottom: 24,
   },
   chatroomIcon: {
     width: 68,

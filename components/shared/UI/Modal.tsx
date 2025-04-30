@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import {
   Alert,
   Modal,
@@ -20,10 +20,32 @@ type AppModalProp = {
   openModalElement: ReactNode;
   children: ReactNode;
   openModalElementStyles?: StyleProp<ViewStyle>;
+  modalViewStyles?: StyleProp<ViewStyle>;
+  modalChildrenStyles?: StyleProp<ViewStyle>;
+  positionViewStyles?: StyleProp<ViewStyle>;
+  modalAnimationType?: "none" | "slide" | "fade";
+  showCloseModalIcon?: boolean;
+  closeModal?: boolean;
 };
 
 export const AppModal: React.FC<AppModalProp> = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const showCloseModalIcon =
+    props.showCloseModalIcon !== undefined ? props.showCloseModalIcon : true;
+
+  const animationType = props.modalAnimationType
+    ? props.modalAnimationType
+    : "slide";
+
+  useEffect(() => {
+    const autoCloseModalHandler = () => {
+      const closeModal = props.closeModal !== undefined && props.closeModal;
+
+      if (!closeModal) return;
+      setModalVisible(() => !closeModal);
+    };
+    autoCloseModalHandler();
+  }, [props.closeModal]);
 
   return (
     <View style={styles.modalContainer}>
@@ -37,29 +59,37 @@ export const AppModal: React.FC<AppModalProp> = (props) => {
 
       {modalVisible && (
         <SafeAreaProvider>
-          <SafeAreaView style={styles.safeAreaCenteredView}>
+          <SafeAreaView
+            style={[styles.safeAreaCenteredView, props.positionViewStyles]}
+          >
             {/* Modal */}
             <Modal
-              animationType="slide"
+              animationType={animationType}
               transparent={true}
               visible={modalVisible}
               onRequestClose={() => {
-                Alert.alert("Modal has been closed.");
+                console.log("Modal has been closed.");
                 setModalVisible(() => !modalVisible);
               }}
             >
-              <View style={styles.centeredView}>
-                <View style={styles.modalView}>
+              <View style={[styles.centeredView, props.positionViewStyles]}>
+                <View style={[styles.modalView, props.modalViewStyles]}>
                   {/* Modal Content */}
-                  <View style={styles.modalChildren}>{props.children}</View>
+                  <View
+                    style={[styles.modalChildren, props.modalChildrenStyles]}
+                  >
+                    {props.children}
+                  </View>
 
                   {/* Close modal */}
-                  <Pressable
-                    style={styles.closeModal}
-                    onPress={() => setModalVisible(() => !modalVisible)}
-                  >
-                    <AntDesign name="close" size={24} color={COLORS.gray7} />
-                  </Pressable>
+                  {showCloseModalIcon && (
+                    <Pressable
+                      style={styles.closeModal}
+                      onPress={() => setModalVisible(() => !modalVisible)}
+                    >
+                      <AntDesign name="close" size={24} color={COLORS.gray7} />
+                    </Pressable>
+                  )}
                 </View>
 
                 {/* Backdrop */}

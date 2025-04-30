@@ -29,11 +29,17 @@ export const PostAdvert: React.FC = () => {
     (state) => state.updateCurrentAdvert
   );
 
+  const currentAdvert = useAdvertStore((state) => state.currentAdvert);
+  const hasAdvertInfo = !!currentAdvert?.id;
+  const storeID = currentAdvert?.storeID!;
+  const productName = currentAdvert?.productName!;
+  const productDescription = currentAdvert?.productDescription!;
+
   const initialFormValues: TAdvert["postAdvertInput"] = {
-    storeID: "",
+    storeID: hasAdvertInfo ? storeID : "",
     userID: userID,
-    productName: "",
-    productDescription: "",
+    productName: hasAdvertInfo ? productName : "",
+    productDescription: hasAdvertInfo ? productDescription : "",
   };
 
   const advertValidationSchema = yup.object().shape({

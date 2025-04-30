@@ -35,8 +35,8 @@ export const PostAdvertPrice: React.FC = () => {
   const currentAdvertID = currentAdvert?.id!;
   const amount = currentAdvert?.price?.amount!;
   const unit = currentAdvert?.price?.unit!;
-  const priceCurrencyCode = JSON.parse(currentAdvert?.price?.currency!)
-    ?.code as string;
+  const priceCurrencyCode: string =
+    hasPrice && JSON.parse(currentAdvert?.price?.currency!)?.code;
 
   const getCurrency = (currencyCode: string) => {
     return JSON.stringify(

@@ -21,8 +21,8 @@ type AdProductCardProps = {
 export const AdProductCard: React.FC<AdProductCardProps> = (props) => {
   const hasAdvert = !!props.advert?.id;
   const hasPrice = !!props.advert?.price?.amount;
-  const priceCurrencyCode = JSON.parse(props.advert?.price?.currency!)
-    ?.code as string;
+  const priceCurrencyCode: string =
+    hasPrice && JSON.parse(props.advert?.price?.currency!)?.code;
 
   const navigateAdDetails = () => {
     if (hasAdvert) {

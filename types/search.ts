@@ -12,8 +12,8 @@ export type TSearchAPI = {
 };
 
 type TSearchResult = {
-  news?: TNews["news"];
-  adverts?: TAdvert["advert"];
+  news?: TNews["news"][];
+  adverts?: TAdvert["advert"][];
 };
 
 export type TSearch = {

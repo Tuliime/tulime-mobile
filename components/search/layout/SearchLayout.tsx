@@ -6,6 +6,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { TSearch } from "@/types/search";
 import { AppModal } from "@/components/shared/UI/Modal";
 import { MaterialIcons } from "@expo/vector-icons";
+import { SearchResults } from "../UI/SearchResults";
 
 type SecondaryLayoutProps = {
   parameters?: string[];
@@ -16,9 +17,10 @@ const screenWidth = Dimensions.get("window").width * 0.999;
 const screenHeight = Dimensions.get("window").height * 0.999;
 
 export const SearchLayout: React.FC<SecondaryLayoutProps> = (props) => {
-  const [searchResults, setSearchResults] = useState<TSearch["results"] | null>(
-    null
-  );
+  // const [searchResults, setSearchResults] = useState<TSearch["results"] | null>(
+  //   null
+  // );
+  const [searchResults, setSearchResults] = useState<TSearch["results"]>();
   const [closeModal, setCloseModal] = useState<boolean>(false);
   const closeModalHandler = () => setCloseModal(() => true);
   const parameters = props.parameters !== undefined ? props.parameters : ["*"];
@@ -33,16 +35,18 @@ export const SearchLayout: React.FC<SecondaryLayoutProps> = (props) => {
     );
 
   const onResultUpdateHandler = (results: TSearch["results"]) => {
-    console.log("search results : ", results);
-    setSearchResults(() => results);
+    // console.log("search results : ", results);
+    setSearchResults(() => {
+      return results;
+    });
   };
 
   useEffect(() => {
     return () => {
       setCloseModal(() => false);
-      setSearchResults(() => null);
+      // setSearchResults();
     };
-  }, [closeModal]);
+  }, [closeModal, searchResults, setSearchResults]);
 
   return (
     <AppModal
@@ -66,6 +70,7 @@ export const SearchLayout: React.FC<SecondaryLayoutProps> = (props) => {
             onResultUpdate={onResultUpdateHandler}
           />
         </View>
+        <SearchResults results={searchResults!} />
       </View>
     </AppModal>
   );
@@ -75,7 +80,6 @@ const styles = StyleSheet.create({
   modalView: {
     width: screenWidth,
     minHeight: screenHeight * 0.2,
-    // height: "auto",
     height: screenHeight,
     maxHeight: screenHeight,
     borderRadius: 0,
@@ -90,7 +94,8 @@ const styles = StyleSheet.create({
   },
   searchLayoutView: {
     position: "relative",
-    // paddingTop: 120,
+    // backgroundColor: COLORS.blue5,
+    flex: 1,
   },
   searchFormView: {
     flexDirection: "row",
@@ -98,11 +103,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingRight: 16,
     backgroundColor: COLORS.white,
-    // backgroundColor: COLORS.blue4,
     paddingVertical: 8,
     position: "fixed",
     top: 8,
     left: 0,
+    marginBottom: 8,
   },
   iconButton: {
     width: 40,

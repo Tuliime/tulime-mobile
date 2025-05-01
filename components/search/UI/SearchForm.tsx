@@ -104,6 +104,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    minHeight: 44,
     maxHeight: 80,
   },
   button: {

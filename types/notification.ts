@@ -23,6 +23,21 @@ type Pagination = {
   cursor: any;
 };
 
+type PushNotificationBaseline = {
+  type: string;
+  clientPath: string;
+};
+
+type PushNotificationChatroom = PushNotificationBaseline & {
+  ChatroomID: string;
+  FileURL: string;
+};
+
+type PushNotificationMessenger = PushNotificationBaseline & {
+  MessengerID: string;
+  FileURL: string;
+};
+
 type TNotificationAction = {
   updateAllNotificationCount: (count: number) => void;
   updateChatNotificationCount: (count: number) => void;
@@ -45,4 +60,7 @@ export type TNotification = {
   notificationAction: TNotificationAction;
   notificationAPIResponse: NotificationAPIResponse;
   sseData: SSEData;
+  pushNotificationBaseline: PushNotificationBaseline;
+  pushNotificationChatroom: PushNotificationChatroom;
+  pushNotificationMessenger: PushNotificationMessenger;
 };

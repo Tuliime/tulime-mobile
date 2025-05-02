@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import * as Notifications from "expo-notifications";
 import { Linking } from "react-native";
+import { TNotification } from "@/types/notification";
+import { router } from "expo-router";
 
 // Set notification handling behavior
 Notifications.setNotificationHandler({
@@ -26,9 +28,22 @@ export const useNotificationListener = () => {
     responseListener.current =
       Notifications.addNotificationResponseReceivedListener((response) => {
         console.log("✅ User interacted with notification:", response);
-        const url = response.notification.request.content.data?.url;
-        if (url) {
-          Linking.openURL(url); // Opens the deep link when the notification is tapped
+        console.log(
+          "✅ notification data:",
+          response.notification.request.content.data
+        );
+        // const url = response.notification.request.content.data?.url;
+        // if (url) {
+        //   Linking.openURL(url); // Opens the deep link when the notification is tapped
+        // }
+
+        const notificationData = JSON.parse(
+          response.notification.request.content.data.data
+        ) as TNotification["pushNotificationBaseline"];
+
+        if (notificationData) {
+          router.push(notificationData.clientPath as any);
+          // router.navigate(notificationData.clientPath as any);
         }
       });
 

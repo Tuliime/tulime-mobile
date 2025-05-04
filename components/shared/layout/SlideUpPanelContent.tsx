@@ -78,10 +78,11 @@ export const SlideUpPanelContent: React.FC = () => {
           <MaterialIcons name="view-module" size={24} color={COLORS.gray7} />
           <Text style={styles.contentTextPrimary}>Services</Text>
         </TouchableOpacity>
-        {services.map((srv) => (
+        {services.map((srv, index) => (
           <TouchableOpacity
             style={styles.contentBtnSecondary}
             onPress={() => navigateToScreen(srv.link)}
+            key={index}
           >
             <Text style={styles.contentTextSecondary}>{srv.name}</Text>
           </TouchableOpacity>

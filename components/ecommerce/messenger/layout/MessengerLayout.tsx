@@ -2,6 +2,7 @@ import React, { ReactNode } from "react";
 import { View, SafeAreaView, StatusBar, StyleSheet } from "react-native";
 import { COLORS, SIZES } from "@/constants";
 import { MessengerHeader } from "./MessengerHeader";
+import { NetworkStatusCard } from "@/hooks/NetworkStatusCard";
 
 type MessengerLayoutProps = {
   children: ReactNode;
@@ -21,6 +22,7 @@ export const MessengerLayout: React.FC<MessengerLayoutProps> = (props) => {
       <MessengerHeader title={props.title} />
       <View style={styles.mainContent}>
         <View style={styles.contentContainer}>{props.children}</View>
+        <NetworkStatusCard />
         <View style={styles.chatInputFieldContainer}>
           {props.messengerInputField}
         </View>

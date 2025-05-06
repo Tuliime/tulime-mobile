@@ -3,6 +3,8 @@ import { Redirect } from "expo-router";
 import { useAuthStore } from "@/store/auth";
 import { useSignInWithRefreshToken } from "@/hooks/useSignInWithRefreshToken";
 import { isJWTTokenExpired } from "@/utils/expiredJWT";
+import { CONNECTION_STATUS, useNetworkStatus } from "@/hooks/useNetworkStatus";
+import { NetworkStatusOverlay } from "@/components/shared/UI/NetworkStatusOverlay";
 
 // TODO: To display the UI when running this page
 export default function Index() {
@@ -10,6 +12,7 @@ export default function Index() {
   const { accessToken, refreshToken } = auth;
   const [redirectPath, setRedirectPath] = useState<string | null>(null);
   const { signInWithRT } = useSignInWithRefreshToken();
+  const connectionStatus = useNetworkStatus();
 
   const isExpiredAccessToken = isJWTTokenExpired(accessToken);
   const isExpiredRefreshToken = isJWTTokenExpired(refreshToken);
@@ -58,6 +61,19 @@ export default function Index() {
   }, [accessToken, refreshToken, deleteAuth]);
 
   console.log("Invoked the index screen.");
+
+  if (
+    connectionStatus === CONNECTION_STATUS.OFFLINE ||
+    connectionStatus === CONNECTION_STATUS.CONNECTING
+  ) {
+    return <NetworkStatusOverlay />;
+  }
+  // if (
+  //   connectionStatus === CONNECTION_STATUS.ONLINE ||
+  //   connectionStatus === CONNECTION_STATUS.CONNECTING
+  // ) {
+  //   return <NetworkStatusOverlay />;
+  // }
 
   if (redirectPath) {
     return <Redirect href={redirectPath as any} />;

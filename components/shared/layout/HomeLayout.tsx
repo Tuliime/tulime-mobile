@@ -14,6 +14,7 @@ import {
 import { router, Stack } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
 import { Footer } from "./Footer";
+import { NetworkStatusCard } from "@/hooks/NetworkStatusCard";
 
 const headerWidth = Dimensions.get("window").width * 0.999;
 
@@ -56,6 +57,7 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
       >
         <Image source={icons.bot} resizeMode="contain" style={styles.botIcon} />
       </TouchableOpacity>
+      <NetworkStatusCard />
       <Footer />
     </SafeAreaView>
   );

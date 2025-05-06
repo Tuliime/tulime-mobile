@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { COLORS, SIZES } from "@/constants";
 import { ChatroomHeader } from "./ChatroomHeader";
+import { NetworkStatusCard } from "@/hooks/NetworkStatusCard";
 
 type ChatroomLayoutProps = {
   children: ReactNode;
@@ -32,6 +33,7 @@ export const ChatroomLayout: React.FC<ChatroomLayoutProps> = (props) => {
         > */}
         <View style={styles.contentContainer}>{props.children}</View>
         {/* </ScrollView> */}
+        <NetworkStatusCard />
         <View style={styles.chatInputFieldContainer}>
           {props.chatInputField}
         </View>

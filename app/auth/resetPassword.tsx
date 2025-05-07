@@ -20,7 +20,10 @@ import { useAuthStore } from "@/store/auth";
 
 const ResetPassword: React.FC = () => {
   const updateAuth = useAuthStore((state) => state.updateAuth);
-  const { otp }: { otp: string } = useGlobalSearchParams();
+  const { nextTo, otp } = useGlobalSearchParams<{
+    nextTo: string;
+    otp: string;
+  }>();
 
   const initialFormValues: TAuth["resetPassword"] = {
     password: "",
@@ -45,7 +48,13 @@ const ResetPassword: React.FC = () => {
     onSuccess: (response: TAuth["apiResponse"]) => {
       console.log("reset password response:", response);
       updateAuth(response);
-      router.push("/home");
+
+      if (!!nextTo) {
+        router.push(nextTo as any);
+      } else {
+        router.push("/home");
+      }
+
       Toast.show({
         type: "success",
         text1: "Success!",

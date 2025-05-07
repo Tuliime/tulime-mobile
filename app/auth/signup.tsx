@@ -14,12 +14,13 @@ import * as yup from "yup";
 import { useMutation } from "@tanstack/react-query";
 import { auth } from "@/API/auth";
 import { TAuth } from "@/types/auth";
-import { Link, router } from "expo-router";
+import { Link, router, useGlobalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 import { useAuthStore } from "@/store/auth";
 
 const SignUp: React.FC = () => {
   const updateAuth = useAuthStore((state) => state.updateAuth);
+  const { nextTo } = useGlobalSearchParams<{ nextTo: string }>();
 
   const initialFormValues: TAuth["signup"] = {
     name: "",
@@ -55,7 +56,13 @@ const SignUp: React.FC = () => {
     onSuccess: (response: TAuth["apiResponse"]) => {
       console.log("Signup response:", response);
       updateAuth(response);
-      router.push("/home");
+
+      if (!!nextTo) {
+        router.push(nextTo as any);
+      } else {
+        router.push("/home");
+      }
+
       Toast.show({
         type: "success",
         text1: "Success!",

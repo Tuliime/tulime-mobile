@@ -4,9 +4,16 @@ import { COLORS } from "@/constants";
 import { truncateString } from "@/utils/truncateString";
 import { router } from "expo-router";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import { useAuthStore } from "@/store/auth";
 
 export const ChatroomCard: React.FC = () => {
+  const isLoggedIn = !!useAuthStore((state) => state.auth.accessToken);
+
   const navigateToChatroom = () => {
+    if (!isLoggedIn) {
+      router.push("/auth/signin?nextTo=/chatroom");
+      return;
+    }
     router.push("/chatroom");
   };
 

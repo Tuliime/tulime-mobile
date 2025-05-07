@@ -27,6 +27,7 @@ const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 export default function Home() {
   const user = useAuthStore((state) => state.auth.user);
+  const isLoggedIn = !!useAuthStore((state) => state.auth.accessToken);
 
   const services: TService[] = [
     // {
@@ -87,20 +88,24 @@ export default function Home() {
   }, []);
 
   const navigateToChatroom = () => {
+    if (!isLoggedIn) {
+      router.push("/auth/signin?nextTo=/chatroom");
+      return;
+    }
     router.push("/chatroom");
   };
 
-  const navigateToSearch = () => {
-    router.push("/search");
-  };
-
   const navigateToBookmark = () => {
+    if (!isLoggedIn) {
+      router.push("/auth/signin?nextTo=/ecommerce/bookmark");
+      return;
+    }
     router.push("/ecommerce/bookmark");
   };
 
-  // const navigateToMessengerRooms = () => {
-  //   router.push("/ecommerce/messenger");
-  // };
+  const navigateToSignin = () => {
+    router.push("/auth/signin");
+  };
 
   return (
     <HomeLayout
@@ -109,28 +114,44 @@ export default function Home() {
         <View style={styles.headerContainer}>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitleText}>Tulime</Text>
-            <View
-              style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
-            >
-              <TouchableOpacity onPress={() => navigateToBookmark()}>
-                <Ionicons
-                  name="bookmark-outline"
-                  size={22}
-                  color={COLORS.white}
+            {isLoggedIn && (
+              <View
+                style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+              >
+                <TouchableOpacity onPress={() => navigateToBookmark()}>
+                  <Ionicons
+                    name="bookmark-outline"
+                    size={22}
+                    color={COLORS.white}
+                  />
+                </TouchableOpacity>
+                <NotificationCount />
+                <SlideUpPanel
+                  openSlideUpPanelElement={
+                    <ProfileAvatar
+                      user={user}
+                      width={36}
+                      height={36}
+                      fontWeight={500}
+                    />
+                  }
                 />
-              </TouchableOpacity>
-              <NotificationCount />
-              <SlideUpPanel
-                openSlideUpPanelElement={
+              </View>
+            )}
+            {!isLoggedIn && (
+              <View
+                style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+              >
+                <TouchableOpacity onPress={() => navigateToSignin()}>
                   <ProfileAvatar
                     user={user}
                     width={36}
                     height={36}
                     fontWeight={500}
                   />
-                }
-              />
-            </View>
+                </TouchableOpacity>
+              </View>
+            )}
           </View>
         </View>
       }

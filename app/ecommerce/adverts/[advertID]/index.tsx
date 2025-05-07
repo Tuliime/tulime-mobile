@@ -39,6 +39,7 @@ const ProductDetailsScreen: React.FC = () => {
   const flatListRef = useRef<FlatList>(null);
   const [index, setIndex] = useState(0);
   const user = useAuthStore((state) => state.auth.user);
+  const isLoggedIn = !!useAuthStore((state) => state.auth.accessToken);
 
   const currentAdvert = useAdvertStore((state) => state.currentAdvert);
   const updateCurrentAdvert = useAdvertStore(
@@ -54,6 +55,10 @@ const ProductDetailsScreen: React.FC = () => {
 
   // TODO: To implement navigation to direct to the inbox
   const navigateToMessenger = () => {
+    if (!isLoggedIn) {
+      router.push("/auth/signin?nextTo=/ecommerce/messenger");
+      return;
+    }
     router.push("/ecommerce/messenger");
   };
 

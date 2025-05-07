@@ -1,5 +1,7 @@
 import { COLORS } from "@/constants";
+import { useAuthStore } from "@/store/auth";
 import { Auth } from "@/types/auth";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { StyleSheet, Text, View, Image, TextStyle } from "react-native";
 
@@ -12,14 +14,35 @@ type ProfileAvatarProps = {
 };
 
 export const ProfileAvatar: React.FC<ProfileAvatarProps> = (props) => {
-  const hasImage: boolean = !!props.user.imageUrl;
-  const imageUrl: string = props.user.imageUrl;
-  const firstNameChar: string = props.user.name.charAt(0).toUpperCase();
-  const profileBgColor: string = props.user.profileBgColor;
+  const isLoggedIn = !!useAuthStore((state) => state.auth.accessToken);
   const isWidthGiven: boolean = !!props.width;
   const isHeightGiven: boolean = !!props.height;
   const isFontSizeGiven: boolean = !!props.fontSize;
   const isFontWeightGiven: boolean = !!props.fontWeight;
+
+  if (!isLoggedIn) {
+    return (
+      <View style={styles.container}>
+        <View
+          style={[
+            styles.profileBgContainer,
+            {
+              backgroundColor: COLORS.gray7,
+              width: isWidthGiven ? props.width : 44,
+              height: isHeightGiven ? props.height : 44,
+            },
+          ]}
+        >
+          <Ionicons name="person" size={20} color={COLORS.gray2} />
+        </View>
+      </View>
+    );
+  }
+
+  const hasImage: boolean = !!props.user.imageUrl;
+  const imageUrl: string = props.user.imageUrl;
+  const firstNameChar: string = props.user.name.charAt(0).toUpperCase();
+  const profileBgColor: string = props.user.profileBgColor;
 
   return (
     <View style={styles.container}>

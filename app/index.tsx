@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { Redirect } from "expo-router";
+import { Redirect, useGlobalSearchParams } from "expo-router";
 import { useAuthStore } from "@/store/auth";
 import { useSignInWithRefreshToken } from "@/hooks/useSignInWithRefreshToken";
 import { isJWTTokenExpired } from "@/utils/expiredJWT";
 import { CONNECTION_STATUS, useNetworkStatus } from "@/hooks/useNetworkStatus";
 import { NetworkStatusOverlay } from "@/components/shared/UI/NetworkStatusOverlay";
+import { useLogout } from "@/hooks/useLogout";
 
 // TODO: To display the UI when running this page
 export default function Index() {
+  const { nextTo } = useGlobalSearchParams<{ nextTo: string }>();
   const { auth, deleteAuth } = useAuthStore();
   const { accessToken, refreshToken } = auth;
   const [redirectPath, setRedirectPath] = useState<string | null>(null);
   const { signInWithRT } = useSignInWithRefreshToken();
+  const { logout } = useLogout();
   const connectionStatus = useNetworkStatus();
 
   const isExpiredAccessToken = isJWTTokenExpired(accessToken);
@@ -19,15 +22,9 @@ export default function Index() {
 
   useEffect(() => {
     const authCheckHandler = async () => {
-      if (!accessToken) {
-        console.log("No accessToken found, redirecting to signin.");
-        deleteAuth();
-        setRedirectPath("/auth/signin");
-        return;
-      }
-
-      if (!isExpiredAccessToken) {
-        console.log("AccessToken is valid, redirecting to home.");
+      // if ((!!refreshToken && isExpiredRefreshToken) || !accessToken) {
+      if (!!refreshToken && isExpiredRefreshToken) {
+        logout();
         setRedirectPath("/home");
         return;
       }
@@ -39,22 +36,31 @@ export default function Index() {
         });
 
         if (!signIn.isSuccess) {
-          console.log("Sign in with RT failed, redirecting to signin.");
-          setRedirectPath("/auth/signin");
+          setRedirectPath("/home");
           return;
         }
 
         console.log(
-          "Expired accessToken, successfully refreshed. Redirecting to home."
+          "Expired accessToken, successfully refreshed. Redirecting to home or nextTo"
         );
+        if (!!nextTo) {
+          setRedirectPath(nextTo);
+          return;
+        }
+
         setRedirectPath("/home");
         return;
       }
 
-      console.log(
-        "Expired accessToken and refresh token, redirecting to signin."
-      );
-      setRedirectPath("/auth/signin");
+      // Set redirectPath to either nextTo or /home incase
+      // there is no refreshToken or when the refreshToken is expired
+      // or when both accessToken and refreshToken is still valid
+      if (!!nextTo) {
+        setRedirectPath(nextTo);
+        return;
+      }
+
+      setRedirectPath("/home");
     };
 
     authCheckHandler();

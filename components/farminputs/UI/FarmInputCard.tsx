@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { TFarmInput } from "@/types/farmInput";
 import { COLORS } from "@/constants";
-import { addCommasToNumber, truncateString } from "@/utils";
 import Feather from "@expo/vector-icons/Feather";
 import { router } from "expo-router";
+import { truncateString } from "@/utils/truncateString";
+import { addCommasToNumber } from "@/utils/addCommaNumber";
 
 type FarmInputCardProps = TFarmInput["farminput"] & {
   itemWidth: number;

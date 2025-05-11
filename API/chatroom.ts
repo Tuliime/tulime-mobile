@@ -8,7 +8,6 @@ class ChatroomAPI {
       body: formData,
       headers: {
         Authorization: `Bearer ${token}`,
-        // "Content-type": "multipart/form-data",
       },
     });
 
@@ -23,10 +22,11 @@ class ChatroomAPI {
     limit,
     cursor,
     includeCursor,
+    direction,
     token,
   }: TChatroom["getMessageInput"]) => {
     const response = await fetch(
-      `${serverURL}/chatroom?limit=${limit}&cursor=${cursor}&includeCursor=${includeCursor}`,
+      `${serverURL}/chatroom?limit=${limit}&cursor=${cursor}&includeCursor=${includeCursor}&direction=${direction}`,
       {
         method: "GET",
         headers: {
@@ -35,6 +35,70 @@ class ChatroomAPI {
         },
       }
     );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  updateOnlineStatus = async ({
+    userID,
+    token,
+  }: TChatroom["updateOnlineStatusInput"]) => {
+    const response = await fetch(`${serverURL}/chatroom/onlinestatus`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        userID: userID,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  getOnlineStatus = async ({ token }: { token: string }) => {
+    const response = await fetch(`${serverURL}/chatroom/onlinestatus`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    return await response.json();
+  };
+
+  updateTypingStatus = async ({
+    userID,
+    startedTypingAt,
+    recipientID,
+    type,
+  }: TChatroom["updateTypingStatusInput"]) => {
+    const response = await fetch(`${serverURL}/chatroom/typingstatus`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        userID: userID,
+        startedTypingAt: startedTypingAt,
+        recipientID: recipientID,
+        type: type,
+      }),
+      headers: {
+        "Content-type": "application/json",
+        // Authorization: `Bearer ${token}`,
+      },
+    });
 
     if (!response.ok) {
       const error = await response.json();

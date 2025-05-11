@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/theme";
 import { Asset } from "@/types/assets";
 import { AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   ScrollView,
   Image,
@@ -12,28 +12,21 @@ import {
 
 type ImagePreviewProps = {
   files: Asset["file"][];
+  urls?: string[];
   onDelete: (index: number) => void;
+  canDelete?: boolean;
+  isLocalImage?: boolean;
 };
 
 export const ImagePreview: React.FC<ImagePreviewProps> = ({
   files,
   onDelete,
+  canDelete,
+  isLocalImage,
+  urls,
 }) => {
-  const [imageDimensions, setImageDimensions] = useState<{
-    [key: string]: { width: number; height: number };
-  }>({});
-
-  useEffect(() => {
-    files.forEach((file) => {
-      const uri = `data:${file.mimeType};base64,${file.base64}`;
-      Image.getSize(uri, (width, height) => {
-        setImageDimensions((prev) => ({
-          ...prev,
-          [file.name]: { width, height },
-        }));
-      });
-    });
-  }, [files]);
+  const showDeleteIcon = canDelete !== undefined ? canDelete : true;
+  const isLocal = isLocalImage !== undefined ? isLocalImage : true;
 
   return (
     <ScrollView
@@ -41,28 +34,46 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
       showsHorizontalScrollIndicator={false}
       style={styles.container}
     >
-      {files.map((file, index) => {
-        const dimensions = imageDimensions[file.name];
-        const aspectRatio = dimensions
-          ? dimensions.width / dimensions.height
-          : 1;
-        return (
-          <View key={index} style={styles.imageContainer}>
-            <TouchableOpacity
-              style={styles.deleteImageBtn}
-              onPress={() => onDelete(index)}
-            >
-              <AntDesign name="close" size={14} color={COLORS.gray7} />
-            </TouchableOpacity>
-            <Image
-              key={file.name}
-              resizeMode="contain"
-              source={{ uri: `data:${file.mimeType};base64,${file.base64}` }}
-              style={[styles.image, { aspectRatio }]}
-            />
-          </View>
-        );
-      })}
+      {isLocal && (
+        <>
+          {files.map((file, index) => {
+            return (
+              <View key={index} style={styles.imageContainer}>
+                {showDeleteIcon && (
+                  <TouchableOpacity
+                    style={styles.deleteImageBtn}
+                    onPress={() => onDelete(index)}
+                  >
+                    <AntDesign name="close" size={14} color={COLORS.gray7} />
+                  </TouchableOpacity>
+                )}
+                <Image
+                  resizeMode="cover"
+                  source={{
+                    uri: `data:${file.mimeType};base64,${file.base64}`,
+                  }}
+                  style={styles.image}
+                />
+              </View>
+            );
+          })}
+        </>
+      )}
+      {!isLocal && (
+        <>
+          {urls!.map((url, index) => {
+            return (
+              <View key={index} style={styles.imageContainer}>
+                <Image
+                  resizeMode="cover"
+                  source={{ uri: url }}
+                  style={styles.image}
+                />
+              </View>
+            );
+          })}
+        </>
+      )}
     </ScrollView>
   );
 };
@@ -75,6 +86,9 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     position: "relative",
+    width: 80,
+    height: 80,
+    overflow: "hidden",
     marginRight: 10,
     backgroundColor: COLORS.gray4,
     borderRadius: 8,
@@ -89,7 +103,9 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   image: {
-    height: 100,
+    width: 80,
+    height: "100%",
+    maxHeight: 80,
     borderRadius: 8,
   },
 });

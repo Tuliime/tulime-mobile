@@ -1,7 +1,5 @@
-export type TSearch = {
-  results: any;
-  isSearching: boolean;
-};
+import { TAdvert } from "./advert";
+import { TNews } from "./news";
 
 export type TSearchAction = {
   updateIsSearching: (searching: TSearch["isSearching"]) => void;
@@ -10,4 +8,15 @@ export type TSearchAction = {
 
 export type TSearchAPI = {
   query: string;
+  parameters: string;
+};
+
+type TSearchResult = {
+  news?: TNews["news"][];
+  adverts?: TAdvert["advert"][];
+};
+
+export type TSearch = {
+  results: TSearchResult;
+  isSearching: boolean;
 };

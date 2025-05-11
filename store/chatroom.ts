@@ -1,18 +1,29 @@
 import { create } from "zustand";
 import { TChatroom } from "@/types/chatroom";
+import { produce, enableMapSet } from "immer";
+
+enableMapSet(); // Enable Map & Set support for Immer
 
 export const useChatroomStore = create<
   {
     messages: TChatroom["message"][];
     replies: TChatroom["message"][];
     swipedMessage: TChatroom["swipedMessage"];
-    postingMessage: TChatroom["postingMessage"];
+    messageLoader: TChatroom["messageLoader"];
+    messageLoadingError: TChatroom["messageLoadingError"];
+    postingMessageMap: TChatroom["postingMessage"];
+    onlineStatusMap: TChatroom["onlineStatusMap"];
+    typingStatusMap: TChatroom["typingStatusMap"];
   } & TChatroom["chatroomAction"]
->((set) => ({
+>((set, get) => ({
   messages: [],
   replies: [],
   swipedMessage: null,
-  postingMessage: { status: null, sentAt: "" },
+  messageLoader: { type: "firstTimeMessageLoader", isLoading: false },
+  messageLoadingError: { message: "", isError: false },
+  postingMessageMap: new Map(),
+  onlineStatusMap: new Map(),
+  typingStatusMap: new Map(),
   // Message Actions
   updateAllMessages: (messages) =>
     set(() => ({
@@ -53,10 +64,42 @@ export const useChatroomStore = create<
   clearReplies: () => set(() => ({ replies: [] })),
   // Swiped message actions
   updateSwipedMessage: (message) => set(() => ({ swipedMessage: message })),
-  clearSwipedMessage: () => set(() => ({ swipedMessage: null })),
+  clearSwipedMessage: () =>
+    set(
+      produce((state) => {
+        state.swipedMessage = null;
+      })
+    ),
+  // Message Loader actions
+  updateMessageLoader: (messageLoader) =>
+    set(() => ({ messageLoader: messageLoader })),
+  // Message Loading Error
+  updateMessageLoadingError: (messageLoadingError) =>
+    set(() => ({ messageLoadingError: messageLoadingError })),
   // PostingMessage action
   updatePostingMessage: (postingMessage) =>
-    set(() => ({ postingMessage: postingMessage })),
+    set(
+      produce((state) => {
+        state.postingMessageMap.set(postingMessage.sentAt, postingMessage);
+      })
+    ),
+  getPostingMessage: (sentAt) => get().postingMessageMap.get(sentAt)!,
+  getAllPostingMessages: () => Array.from(get().postingMessageMap.values()),
+  // Online status action
+  updateOnlineStatus: (status) =>
+    set(
+      produce((state) => {
+        state.onlineStatusMap.set(status.userID, status);
+      })
+    ),
+  getAllOnlineStatuses: () => Array.from(get().onlineStatusMap.values()),
+  getOnlineStatusByUser: (userID) => get().onlineStatusMap.get(userID)!,
+  // Typing status action
+  updateTypingStatus: (status) =>
+    set(
+      produce((state) => {
+        state.typingStatusMap.set(status.userID, status);
+      })
+    ),
+  getAllTypingStatuses: () => Array.from(get().typingStatusMap.values()),
 }));
-
-//

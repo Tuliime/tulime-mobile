@@ -1,6 +1,6 @@
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 import React from "react";
 import { View, Text } from "react-native";
-import { MainLayout } from "@/components/shared/layout";
 
 const Feedback: React.FC = () => {
   return (

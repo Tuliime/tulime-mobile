@@ -10,6 +10,7 @@ npm-debug.*
 *.orig.*
 web-build/
 
+
 # macOS
 .DS_Store
 
@@ -18,3 +19,13 @@ web-build/
 
 expo-env.d.ts
 # @end expo-cli
+
+eas2.json
+.env
+
+# Google service account json
+google-services.json 
+# TODO: To remove files "google-services.json" and "reserve-now-firebase-admin.json" rom git history
+# DONE
+
+/typing*

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     width: "96%",
     aspectRatio: "1/1",
-    borderRadius: "50%",
+    borderRadius: 999,
     overflow: "hidden",
     marginBottom: 8,
   },

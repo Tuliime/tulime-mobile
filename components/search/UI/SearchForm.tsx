@@ -1,31 +1,43 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik } from "formik";
-import { View, Text, TextInput, Button } from "react-native";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import * as yup from "yup";
 import { COLORS } from "@/constants";
 import { search } from "@/API/search";
 import { useMutation } from "@tanstack/react-query";
-import { useSearchStore } from "@/store/search";
-import { TSearchAPI } from "@/types/search";
+import { TSearch, TSearchAPI } from "@/types/search";
+import { Buffer } from "buffer";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
-export const SearchForm: React.FC = () => {
-  const updateIsSearching = useSearchStore((state) => state.updateIsSearching);
-  const updateSearchResults = useSearchStore((state) => state.updateResults);
+type SearchFormProps = {
+  parameters: string[];
+  onResultUpdate: (result: TSearch["results"]) => void;
+};
+
+export const SearchForm: React.FC<SearchFormProps> = (props) => {
+  const parameterListEncoding = (parameters: string[]) => {
+    return Buffer.from(JSON.stringify(parameters), "utf-8").toString("base64");
+  };
 
   const initialFormValues: TSearchAPI = {
     query: "",
+    parameters: parameterListEncoding(props.parameters),
   };
+
   const searchValidationSchema = yup.object().shape({
     query: yup.string().required("Search input is required"),
   });
-  // TODO: To update the search results in the global state(Zustand)
-  // TODO: To add search query in the url
 
   const { isPending, mutate } = useMutation({
     mutationFn: search.create,
     onSuccess: (response: any) => {
-      console.log("search response", response);
-      updateSearchResults(response.data);
+      props.onResultUpdate(response.data);
     },
     onError: (error) => {
       console.log("error", error);
@@ -36,10 +48,6 @@ export const SearchForm: React.FC = () => {
     console.log("search values: ", values);
     mutate(values);
   };
-
-  useEffect(() => {
-    updateIsSearching(isPending);
-  }, [isPending]);
 
   return (
     <Formik
@@ -55,23 +63,55 @@ export const SearchForm: React.FC = () => {
         errors,
         isValid,
       }) => (
-        <View style={{ flex: 1, marginLeft: -4 }}>
+        <View style={styles.formView}>
           <TextInput
-            placeholder="Search in Tulime"
+            placeholder="Search Tulime"
             onChangeText={handleChange("query")}
             onBlur={handleBlur("query")}
             value={values.query}
             keyboardType="default"
-            style={{}}
+            style={styles.input}
             placeholderTextColor={COLORS.gray6}
+            multiline
           />
-          <Button
-            onPress={(event: any) => handleSubmit()}
-            title="Search"
-            disabled={!isValid}
-          />
+          <TouchableOpacity
+            style={styles.button}
+            onPress={(_) => handleSubmit()}
+            disabled={isPending || !isValid}
+          >
+            {isPending ? (
+              <ActivityIndicator size={24} color={COLORS.primary} />
+            ) : (
+              <MaterialIcons name="search" size={24} color={COLORS.primary} />
+            )}
+          </TouchableOpacity>
         </View>
       )}
     </Formik>
   );
 };
+
+const styles = StyleSheet.create({
+  formView: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 36,
+    borderColor: COLORS.gray4,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingLeft: 16,
+    paddingHorizontal: 4,
+  },
+  input: {
+    flex: 1,
+    minHeight: 44,
+    maxHeight: 80,
+  },
+  button: {
+    width: 28,
+    height: 28,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

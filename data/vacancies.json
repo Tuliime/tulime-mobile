@@ -1,0 +1,112 @@
+{
+  "vacancies": [
+    {
+      "id": "1f3e8b7d-5a4f-4b2a-9c7d-6e1c2b8a3f9d",
+      "title": "Agricultural Extension Officer",
+      "description": "Provide technical support and training to farmers on modern agricultural techniques.",
+      "organization": "Ministry of Agriculture, Animal Industry and Fisheries",
+      "deadline": "2025-04-15T23:59:59Z",
+      "createdAt": "2025-03-19T10:00:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "f7b2c9d0-8e77-4b21-9d7f-3f12a6c8b9d5",
+      "title": "Farm Manager",
+      "description": "Oversee farm operations, ensure productivity, and manage farm workers.",
+      "organization": "Green Harvest Farms",
+      "deadline": "2025-04-10T23:59:59Z",
+      "createdAt": "2025-03-18T14:30:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "9c7d8a6e-5f2b-4e3d-987a-1a4f6b2c7d5e",
+      "title": "Agricultural Research Assistant",
+      "description": "Assist in conducting agricultural research and data collection.",
+      "organization": "National Agricultural Research Organization (NARO)",
+      "deadline": "2025-04-12T23:59:59Z",
+      "createdAt": "2025-03-17T09:15:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "e2b4d6c8-7a5f-4b9d-8c3e-1f6a7d2b5c9e",
+      "title": "Dairy Production Supervisor",
+      "description": "Supervise dairy production and quality assurance processes.",
+      "organization": "Dairy Development Authority",
+      "deadline": "2025-04-20T23:59:59Z",
+      "createdAt": "2025-03-16T12:45:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "d7a6b2c4-5e3f-4b9d-8a7f-1c6e2d5b9f4e",
+      "title": "Pesticide Specialist",
+      "description": "Develop and promote the use of effective pest control measures.",
+      "organization": "National Agricultural Advisory Services (NAADS)",
+      "deadline": "2025-04-18T23:59:59Z",
+      "createdAt": "2025-03-15T08:00:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "3f2b5c9e-7d4a-4b1d-8a6f-9c7e2d5b4f8e",
+      "title": "Farm Mechanization Engineer",
+      "description": "Design, implement, and maintain farm machinery and irrigation systems.",
+      "organization": "Uganda National Farmers Federation",
+      "deadline": "2025-04-22T23:59:59Z",
+      "createdAt": "2025-03-14T16:20:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "5c7e8b9d-4a2f-4b1d-8a6f-9c3d2d5b7f8e",
+      "title": "Soil Scientist",
+      "description": "Analyze soil health and recommend best soil management practices.",
+      "organization": "Uganda Coffee Development Authority",
+      "deadline": "2025-04-25T23:59:59Z",
+      "createdAt": "2025-03-13T11:30:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "6b9e4d2f-8a7d-4b1d-8c6f-3c7e5d2b9f8e",
+      "title": "Horticulture Specialist",
+      "description": "Support farmers in improving fruit and vegetable production.",
+      "organization": "Fresh Produce Exporters Association of Uganda",
+      "deadline": "2025-04-28T23:59:59Z",
+      "createdAt": "2025-03-12T14:40:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "2f5b7c9d-4a6e-4b1d-8a7f-9c3d2d5b9f8e",
+      "title": "Agribusiness Development Officer",
+      "description": "Provide business advisory services to smallholder farmers.",
+      "organization": "Agricultural Business Initiative (aBi)",
+      "deadline": "2025-04-30T23:59:59Z",
+      "createdAt": "2025-03-11T09:50:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "7c9e5d2b-4a6f-4b1d-8a7d-9c3d2d5b9f8e",
+      "title": "Veterinary Officer",
+      "description": "Conduct disease surveillance and provide veterinary services.",
+      "organization": "Uganda Veterinary Association",
+      "deadline": "2025-04-27T23:59:59Z",
+      "createdAt": "2025-03-10T07:25:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "9f8e5d2b-4a7c-4b1d-8a6f-9c3d2d5b7f8e",
+      "title": "Agricultural Economist",
+      "description": "Conduct economic analysis on agricultural production and markets.",
+      "organization": "Uganda Bureau of Statistics (UBOS)",
+      "deadline": "2025-04-29T23:59:59Z",
+      "createdAt": "2025-03-09T12:10:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    },
+    {
+      "id": "1c3e5d7b-4a9f-4b2d-8a6f-9c3d2d5b9f8e",
+      "title": "Irrigation Technician",
+      "description": "Install and maintain irrigation systems for improved water management.",
+      "organization": "Ministry of Water and Environment",
+      "deadline": "2025-04-26T23:59:59Z",
+      "createdAt": "2025-03-08T15:35:00Z",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Fcassava.png?alt=media&token=10aa528d-a9a8-436c-a838-7a30e7e8e46c"
+    }
+  ]
+}

@@ -5,17 +5,29 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+  Image,
+  StyleProp,
+  ViewStyle,
 } from "react-native";
-import { Stack } from "expo-router";
-import { COLORS, SIZES } from "@/constants";
-import { Footer } from "@/components/shared/layout";
+import { router, Stack } from "expo-router";
+import { COLORS, icons, SIZES } from "@/constants";
+import { Footer } from "./Footer";
+import { NetworkStatusCard } from "@/hooks/NetworkStatusCard";
+
+const headerWidth = Dimensions.get("window").width * 0.999;
 
 type HomeLayoutProps = {
   children: ReactNode;
   header: ReactNode;
+  childrenStyles?: StyleProp<ViewStyle>;
 };
 
 export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
+  const navigateToChatBot = () => {
+    router.push("/chatbot");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -35,8 +47,17 @@ export const HomeLayout: React.FC<HomeLayoutProps> = (props) => {
         }}
       />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.contentContainer}>{props.children}</View>
+        <View style={[styles.contentContainer, props.childrenStyles]}>
+          {props.children}
+        </View>
       </ScrollView>
+      <TouchableOpacity
+        style={styles.botContainer}
+        onPress={() => navigateToChatBot()}
+      >
+        <Image source={icons.bot} resizeMode="contain" style={styles.botIcon} />
+      </TouchableOpacity>
+      <NetworkStatusCard />
       <Footer />
     </SafeAreaView>
   );
@@ -52,14 +73,32 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   headerLeftContainer: {
-    height: 120,
-    width: "100%",
+    width: headerWidth,
     justifyContent: "center",
     alignItems: "center",
-    paddingHorizontal: 0.005,
+    paddingHorizontal: 16,
   },
   contentContainer: {
     flex: 1,
     padding: SIZES.medium,
+    position: "relative",
+  },
+  botContainer: {
+    backgroundColor: COLORS.gray4,
+    width: 44,
+    height: 44,
+    padding: 16,
+    borderRadius: 1000,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    bottom: 240,
+    right: 8,
+    zIndex: 100,
+  },
+  botIcon: {
+    width: 24,
+    height: 24,
+    objectFit: "contain",
   },
 });

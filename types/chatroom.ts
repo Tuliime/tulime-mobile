@@ -15,6 +15,11 @@ type TFile = {
   deletedAt: string | null;
 };
 
+type TLocalFile = {
+  base64: string;
+  mimeType: string;
+};
+
 type Mention = {
   id: string;
   chatroomID: string;
@@ -22,6 +27,7 @@ type Mention = {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  user?: Auth["user"];
 };
 
 type Message = {
@@ -30,6 +36,7 @@ type Message = {
   text: string;
   reply: string;
   file?: TFile;
+  localFile?: TLocalFile;
   mention: Mention[];
   sentAt: string;
   arrivedAt: string;
@@ -50,16 +57,43 @@ type GetMessageInput = {
   limit: number;
   cursor?: string;
   includeCursor?: boolean;
+  direction?: "FORWARD" | "BACKWARD";
   token: string;
 };
 
 type MessageInput = {
+  values: { base64: string };
   userID: string;
   text: string;
   reply: string;
   file: Blob | null;
+  localFile?: TLocalFile;
   sentAt: string;
   mention?: string[];
+};
+
+type MessageLoader = {
+  type: "firstTimeMessageLoader" | "prevMessageLoader" | "nextMessageLoader";
+  isLoading: boolean;
+};
+
+type MessageLoadingError = {
+  message: string;
+  isError: boolean;
+};
+
+type OnlineStatus = {
+  id: string;
+  userID: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type TypingStatus = {
+  userID: string;
+  startedTypingAt: string;
+  recipientID: string;
+  user: Auth["user"];
 };
 
 type GetMessageAPIResponse = {
@@ -71,9 +105,26 @@ type GetMessageAPIResponse = {
   status: string;
 };
 
+type UpdateOnlineStatusInput = {
+  userID: string;
+  token: string;
+};
+
+type UpdateTypingStatusInput = {
+  userID: string;
+  startedTypingAt: string;
+  recipientID: string;
+  type: "messenger" | "chatroom";
+};
+
 type PostingMessage = {
   status: "pending" | "success" | "error" | null;
   sentAt: string;
+};
+
+type SSEData = {
+  type: string;
+  data: any;
 };
 
 type TChatroomAction = {
@@ -88,7 +139,16 @@ type TChatroomAction = {
   clearReplies: () => void;
   updateSwipedMessage: (message: OrganizedMessage) => void;
   clearSwipedMessage: () => void;
+  updateMessageLoader: (messageLoader: MessageLoader) => void;
+  updateMessageLoadingError: (messageLoadingError: MessageLoadingError) => void;
   updatePostingMessage: (postingMessage: PostingMessage) => void;
+  getPostingMessage: (sentAt: string) => PostingMessage;
+  getAllPostingMessages: () => PostingMessage[];
+  updateOnlineStatus: (status: OnlineStatus) => void;
+  getOnlineStatusByUser: (userID: string) => OnlineStatus;
+  getAllOnlineStatuses: () => OnlineStatus[];
+  updateTypingStatus: (status: TypingStatus) => void;
+  getAllTypingStatuses: () => TypingStatus[];
 };
 
 export type TChatroom = {
@@ -96,8 +156,17 @@ export type TChatroom = {
   message: Message;
   organizedMessage: OrganizedMessage;
   swipedMessage: OrganizedMessage | null;
-  postingMessage: PostingMessage;
+  postingMessage: Map<string, PostingMessage>;
   getMessageInput: GetMessageInput;
   getMessageAPIResponse: GetMessageAPIResponse;
+  messageLoader: MessageLoader;
+  messageLoadingError: MessageLoadingError;
+  onlineStatus: OnlineStatus;
+  typingStatus: TypingStatus;
+  onlineStatusMap: Map<string, OnlineStatus>;
+  typingStatusMap: Map<string, TypingStatus>;
+  updateOnlineStatusInput: UpdateOnlineStatusInput;
+  updateTypingStatusInput: UpdateTypingStatusInput;
   chatroomAction: TChatroomAction;
+  sseData: SSEData;
 };

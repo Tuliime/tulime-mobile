@@ -2,7 +2,8 @@ import React from "react";
 import { View, Image, Text } from "react-native";
 import { TAgroproducts } from "@/types/product";
 import { SIZES, COLORS } from "@/constants";
-import { truncateString, addCommasToNumber } from "@/utils";
+import { truncateString } from "@/utils/truncateString";
+import { addCommasToNumber } from "@/utils/addCommaNumber";
 
 export const ProductItem: React.FC<
   TAgroproducts["product"] & {

@@ -9,8 +9,6 @@ import {
 } from "react-native";
 import { useGlobalSearchParams } from "expo-router";
 import { router } from "expo-router";
-import { MainLayout } from "@/components/shared/layout";
-import { Button } from "@/components/shared/UI";
 import { COLORS, SIZES } from "@/constants";
 import { useQuery } from "@tanstack/react-query";
 import { isArrayWithElements } from "@/utils/isArrayWithElements";
@@ -21,6 +19,8 @@ import { VetDoctorCard } from "@/components/farmmanager/UI/VetDoctorCard";
 import { farmManager } from "@/API/farmmanager";
 import { vetDoctor } from "@/API/vetDoctor";
 import { TVetDoctor } from "@/types/vetDoctor";
+import { Button } from "@/components/shared/UI/Button";
+import { MainLayout } from "@/components/shared/layout/MainLayout";
 
 const screenWidth = Dimensions.get("window").width;
 const numColumns = 2;

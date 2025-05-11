@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
 import { COLORS } from "@/constants";
-import { truncateString } from "@/utils";
 import { TNews } from "@/types/news";
 import { elapsedTime } from "@/utils/elapsedTime";
 import { AppDate } from "@/utils/appDate";
+import { truncateString } from "@/utils/truncateString";
 
 export const NewsCard: React.FC<
   TNews["news"] & {

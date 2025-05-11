@@ -38,6 +38,7 @@ export type Auth = {
     telNumber: number;
     imageUrl: string;
     profileBgColor: string;
+    chatroomColor: string; 
     createdAt: string;
     updatedAt: string;
   };

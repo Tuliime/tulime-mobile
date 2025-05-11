@@ -1,5 +1,4 @@
 import React, { useCallback } from "react";
-import { HomeLayout } from "@/components/shared/layout";
 import {
   View,
   Text,
@@ -11,23 +10,37 @@ import {
 } from "react-native";
 import { Link, router } from "expo-router";
 import { COLORS, icons, SIZES } from "@/constants";
-import { NotificationCount } from "@/components/notification/NotificationCount";
+import { NotificationCount } from "@/components/notification/UI/NotificationCount";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ServiceCard } from "@/components/shared/UI/ServiceCard";
 import { TService } from "@/types/service";
-import { Logout } from "@/components/auth/Logout";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { ProfileAvatar } from "@/components/shared/UI/ProfileAvatar";
+import { useAuthStore } from "@/store/auth";
+import { SlideUpPanel } from "@/components/shared/layout/SlideUpPanel";
+import { HomeLayout } from "@/components/shared/layout/HomeLayout";
+import { SearchLayout } from "@/components/search/layout/SearchLayout";
 
 const screenWidth = Dimensions.get("window").width * 0.98;
 const numColumns = 2;
 const itemWidth = screenWidth / numColumns - SIZES.medium;
 
 export default function Home() {
+  const user = useAuthStore((state) => state.auth.user);
+  const isLoggedIn = !!useAuthStore((state) => state.auth.accessToken);
+
   const services: TService[] = [
+    // {
+    //   name: "My Profile",
+    //   icon: icons.account,
+    //   backgroundColor: COLORS.yellow5,
+    //   link: "/settings",
+    // },
     {
-      name: "My Profile",
-      icon: icons.account,
+      name: "Buy/Sell",
+      icon: icons.ecommerce2,
       backgroundColor: COLORS.yellow5,
-      link: "/settings",
+      link: "/ecommerce",
     },
     {
       name: "Agro Product Prices",
@@ -42,19 +55,19 @@ export default function Home() {
       link: "/farminputs",
     },
     {
-      name: "Season Trends & Prediction",
+      name: "Vacancies  & Tenders",
       icon: icons.trend,
       backgroundColor: COLORS.blue5,
-      link: "/seasons",
+      link: "/vacancies",
     },
     {
-      name: "News, G.O.U & Conferences",
+      name: "G.O.U News, Conferences  & Workshops",
       icon: icons.education,
       backgroundColor: COLORS.yellow5,
       link: "/news",
     },
     {
-      name: "Farm Managers & Veterinary Doctors",
+      name: "Farm Managers, Vet Doctors & Agronomists",
       icon: icons.manager,
       backgroundColor: COLORS.green5,
       link: "/farmmanagers",
@@ -75,34 +88,94 @@ export default function Home() {
   }, []);
 
   const navigateToChatroom = () => {
+    if (!isLoggedIn) {
+      router.push("/auth/signin?nextTo=/chatroom");
+      return;
+    }
     router.push("/chatroom");
+  };
+
+  const navigateToBookmark = () => {
+    if (!isLoggedIn) {
+      router.push("/auth/signin?nextTo=/ecommerce/bookmark");
+      return;
+    }
+    router.push("/ecommerce/bookmark");
+  };
+
+  const navigateToSignin = () => {
+    router.push("/auth/signin");
   };
 
   return (
     <HomeLayout
+      childrenStyles={styles.layoutContainer}
       header={
         <View style={styles.headerContainer}>
           <View style={styles.headerTitleContainer}>
             <Text style={styles.headerTitleText}>Tulime</Text>
-            <View
-              style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
-            >
-              <NotificationCount />
-              <Logout />
-            </View>
-          </View>
-          <Link href={"/search"}>
-            <View style={styles.headerSearch}>
-              <Text style={styles.headerSearchText}>Search Tulime</Text>
-              <View>
-                <MaterialIcons name="search" size={24} color={COLORS.primary} />
+            {isLoggedIn && (
+              <View
+                style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+              >
+                <TouchableOpacity onPress={() => navigateToBookmark()}>
+                  <Ionicons
+                    name="bookmark-outline"
+                    size={22}
+                    color={COLORS.white}
+                  />
+                </TouchableOpacity>
+                <NotificationCount />
+                <SlideUpPanel
+                  openSlideUpPanelElement={
+                    <ProfileAvatar
+                      user={user}
+                      width={36}
+                      height={36}
+                      fontWeight={500}
+                    />
+                  }
+                />
               </View>
-            </View>
-          </Link>
+            )}
+            {!isLoggedIn && (
+              <View
+                style={{ flexDirection: "row", gap: 4, alignItems: "center" }}
+              >
+                <TouchableOpacity onPress={() => navigateToSignin()}>
+                  <ProfileAvatar
+                    user={user}
+                    width={36}
+                    height={36}
+                    fontWeight={500}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+          </View>
         </View>
       }
     >
       <View style={styles.contentContainer}>
+        <View style={styles.searchContainer}>
+          <SearchLayout
+            parameters={["*"]}
+            searchLabel={
+              <View style={styles.headerSearchContainer}>
+                <View style={styles.headerSearch}>
+                  <Text style={styles.headerSearchText}>Search Tulime</Text>
+                  <View>
+                    <MaterialIcons
+                      name="search"
+                      size={24}
+                      color={COLORS.primary}
+                    />
+                  </View>
+                </View>
+              </View>
+            }
+          />
+        </View>
         <Text style={styles.contentTitleText}>Tulime services</Text>
         <FlatList
           data={services}
@@ -117,11 +190,6 @@ export default function Home() {
             backgroundColor: "",
           }}
         />
-        <Link href={"/chatbot"}>
-          <View>
-            <Text>Chatbot</Text>
-          </View>
-        </Link>
         <TouchableOpacity
           style={styles.chatroomContainer}
           onPress={() => navigateToChatroom()}
@@ -131,9 +199,7 @@ export default function Home() {
             resizeMode="contain"
             style={styles.chatroomIcon}
           />
-          <Text style={styles.chatroomTitleText}>
-            Tulime Community Chatroom
-          </Text>
+          <Text style={styles.chatroomTitleText}>Tulime Community Chatfam</Text>
           <Text style={styles.chatroomDescriptionText}>
             Connect, share ideas, and grow together in the heart of Tulime!
           </Text>
@@ -144,10 +210,12 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
+  layoutContainer: {
+    padding: 0,
+  },
   headerContainer: {
     width: "100%",
     gap: 8,
-    marginTop: -10,
   },
   headerTitleContainer: {
     width: "100%",
@@ -158,6 +226,10 @@ const styles = StyleSheet.create({
   headerTitleText: {
     fontSize: 24,
     color: COLORS.white,
+  },
+  headerSearchContainer: {
+    width: "100%",
+    height: 48,
   },
   headerSearch: {
     width: "100%",
@@ -177,21 +249,29 @@ const styles = StyleSheet.create({
     width: "100%",
     gap: 16,
   },
+  searchContainer: {
+    backgroundColor: COLORS.primary,
+    paddingTop: 0,
+    padding: 16,
+  },
   contentTitleText: {
     color: COLORS.gray7,
     fontSize: 16,
     fontWeight: 500,
+    paddingHorizontal: 16,
   },
   chatroomContainer: {
     backgroundColor: COLORS.gray1,
     padding: 16,
     borderRadius: 8,
-    elevation: 5,
+    elevation: 2,
     justifyContent: "center",
     alignItems: "center",
     gap: 8,
     borderWidth: 1,
     borderColor: COLORS.gray3,
+    marginHorizontal: 16,
+    marginBottom: 24,
   },
   chatroomIcon: {
     width: 68,

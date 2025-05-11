@@ -1,0 +1,346 @@
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  FlatList,
+  ActivityIndicator,
+} from "react-native";
+import React, { useCallback } from "react";
+import { ModuleCard } from "@/components/shared/UI/ModuleCard";
+import { COLORS, icons, SIZES } from "@/constants";
+import { AdProductCard } from "@/components/ecommerce/UI/AdProductCard";
+import { TEcommerce } from "@/types/ecommerce";
+import { TenderHomeSection } from "@/components/vacancies/TenderHomeSection";
+import { VacancyHomeSection } from "@/components/vacancies/VacancyHomeSection";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { MainLayout } from "@/components/shared/layout/MainLayout";
+import { advert } from "@/API/advert";
+import { useQuery } from "@tanstack/react-query";
+import { ErrorCard } from "@/components/shared/UI/ErrorCard";
+import { TAdvert } from "@/types/advert";
+
+const screenWidth = Dimensions.get("window").width * 0.999;
+const numColumns = 2;
+const itemWidth = screenWidth / numColumns - SIZES.medium;
+
+const index = () => {
+  const { isPending, isError, data, error } = useQuery({
+    queryKey: [`adverts`],
+    queryFn: () => {
+      return advert.getAll();
+    },
+  });
+
+  const adverts: TAdvert["advert"][] = data?.data ?? [];
+
+  console.log("adverts: ", adverts);
+
+  const renderAdItems = useCallback(({ item }: { item: TAdvert["advert"] }) => {
+    return (
+      <View style={{ width: itemWidth - 2, marginHorizontal: 2 }}>
+        <AdProductCard
+          name={""}
+          imageUrl={""}
+          description={""}
+          price={""}
+          priceCurrency={""}
+          advert={item}
+        />
+      </View>
+    );
+  }, []);
+
+  if (isPending) {
+    return (
+      <MainLayout title="E-commerce">
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={COLORS.blue7} />
+        </View>
+      </MainLayout>
+    );
+  }
+
+  if (isError) {
+    return (
+      <MainLayout title="E-commerce">
+        <View style={styles.errorContainer}>
+          <ErrorCard message={error.message} />
+        </View>
+      </MainLayout>
+    );
+  }
+
+  return (
+    <MainLayout
+      title="E-commerce"
+      childrenStyles={{ padding: 0, paddingVertical: 16 }}
+    >
+      <View style={styles.container}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.moduleContainer}
+        >
+          <ModuleCard
+            name={"Got something to sell"}
+            description={"If you have something to sell, just post an ad"}
+            icon={icons.ecommerce1}
+          />
+          <ModuleCard
+            name={"E-commerce"}
+            description={"Sell and buy agro products to anyone in Uganda"}
+            icon={icons.ecommerce1}
+          />
+          <ModuleCard
+            name={"E-commerce"}
+            description={"Sell and buy agro products to anyone in Uganda"}
+            icon={icons.ecommerce1}
+          />
+          <ModuleCard
+            name={"E-commerce"}
+            description={"Sell and buy agro products to anyone in Uganda"}
+            icon={icons.ecommerce1}
+          />
+        </ScrollView>
+        <View style={styles.adsContainer}>
+          <View style={styles.adsTitleContainer}>
+            <MaterialIcons
+              name="workspace-premium"
+              size={24}
+              color={COLORS.gray7}
+            />
+            <Text style={styles.adsTitle}>All ads</Text>
+          </View>
+          <FlatList
+            data={adverts}
+            keyExtractor={(item) => item.id}
+            renderItem={renderAdItems}
+            scrollEnabled={false}
+            numColumns={numColumns}
+            contentContainerStyle={{
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 8,
+            }}
+          />
+        </View>
+        <TenderHomeSection />
+        <VacancyHomeSection />
+      </View>
+    </MainLayout>
+  );
+};
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  noContentText: {
+    textAlign: "center",
+    fontSize: 14,
+    color: COLORS.gray7,
+  },
+  container: {
+    gap: 16,
+  },
+  moduleContainer: {
+    flexDirection: "row",
+    gap: 8,
+    height: 100,
+    alignItems: "center",
+    paddingHorizontal: 16,
+  },
+  adsContainer: {
+    gap: 16,
+    paddingHorizontal: 16,
+  },
+  adsTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+  },
+  adsTitle: {
+    fontSize: 16,
+    fontWeight: 500,
+    color: COLORS.gray7,
+  },
+});
+
+export default index;
+
+const ads = [
+  {
+    name: "Maize Seeds",
+    description: "High-yield hybrid maize seeds for planting.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "25000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Organic Fertilizer",
+    description: "Natural compost-based fertilizer for healthy crops.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "40000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Pesticide Spray",
+    description: "Effective pesticide spray for controlling pests.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "30000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Watering Can",
+    description: "10L watering can for easy irrigation.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "15000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Hoe",
+    description: "Durable steel hoe for tilling land.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "25000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Tractor",
+    description: "Heavy-duty tractor for large-scale farming.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "50000000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Irrigation Pipes",
+    description: "Flexible irrigation pipes for water distribution.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "60000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Cattle Feed",
+    description: "Nutritious feed for cattle growth.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "70000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Poultry Feeder",
+    description: "Automatic poultry feeder for easy feeding.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "30000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Insect Netting",
+    description: "Protects crops from harmful insects.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "45000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Farm Boots",
+    description: "Durable rubber boots for farm work.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "35000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Sprayer Pump",
+    description: "15L sprayer pump for applying chemicals.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "55000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Hand Gloves",
+    description: "Protective gloves for farm work.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "10000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Greenhouse Cover",
+    description: "UV-protected plastic cover for greenhouses.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "120000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Machete",
+    description: "Sharp machete for clearing bushes.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "25000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Wheelbarrow",
+    description: "Heavy-duty wheelbarrow for farm transport.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "80000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Drip Irrigation Kit",
+    description: "Complete kit for efficient water use.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "180000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Broiler Chicks",
+    description: "Day-old broiler chicks for poultry farming.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "3000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Solar Water Pump",
+    description: "Energy-efficient solar-powered water pump.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "1500000",
+    priceCurrency: "UGX",
+  },
+  {
+    name: "Rabbit Cage",
+    description: "Spacious cage for rearing rabbits.",
+    imageUrl:
+      "https://firebasestorage.googleapis.com/v0/b/reserve-now-677ca.appspot.com/o/tulime%2Frice.png?alt=media&token=d9fb8814-0d9a-40e0-8bca-ebec0782fe4a",
+    price: "90000",
+    priceCurrency: "UGX",
+  },
+];
